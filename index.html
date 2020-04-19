@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Dragalia Lost 3D Models</title>
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="css/sidebar.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">Settings </div>
+      <div class="list-group list-group-flush">
+        <button onclick="Still()" class="btn btn-light">Still</button>
+        <button onclick="Bob()" class="btn btn-light">Bob</button>
+        <button onclick="Walk()" class="btn btn-light">Walk</button>
+        <button onclick="Run()" class="btn btn-light">Run</button>
+        <button onclick="Win()" class="btn btn-light">Win</button>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-sm navbar-light">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Settings</button>
+      </nav>
+
+      <div class="container-fluid">
+        <iframe id="ifm" src="" style="height:300px; width:300px; border: none"></iframe>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+    var buffer = 20; //scroll bar buffer
+    var iframe = document.getElementById('ifm');
+
+    function Still()
+    {
+      iframe.src = "https://notte.moe/dl-fbx/c100001_08"
+    }
+    function Bob()
+    {
+      iframe.src = "https://notte.moe/dl-fbx/c100001_08/cmn+CMN_MWM_03"
+    }
+    function Walk()
+    {
+      iframe.src = "https://notte.moe/dl-fbx/c100001_08/cmn+CMN_MWM_01"
+    }
+    function Run()
+    {
+      iframe.src = "https://notte.moe/dl-fbx/c100001_08/cmn+CMN_MWM_02"
+    }
+    function Win()
+    {
+      iframe.src = "https://notte.moe/dl-fbx/c100001_08/wins+SWD_WIN_01_10000108"
+    }
+
+    function pageY(elem) {
+        return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
+    }
+
+    function pageX(elem) {
+        return elem.offsetParent ? (elem.offsetLeft + pageY(elem.offsetParent)) : elem.offsetLeft;
+    }
+
+    function resizeIframe() {
+        var height = document.documentElement.clientHeight;
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+        var width = document.documentElement.clientWidth;
+        width -= pageX(document.getElementById('ifm'))+ buffer ;
+        width = (width < 0) ? 0 : width;
+
+        var size = (width > height) ? height : width
+        iframe.style.height = size + 'px';
+        iframe.style.width = size + 'px';
+    }
+
+    // .onload doesn't work with IE8 and older.
+    if (iframe.attachEvent) {
+        iframe.attachEvent("onload", resizeIframe);
+    } else {
+        iframe.onload=resizeIframe;
+    }
+
+    window.onresize = resizeIframe;
+    window.onload = resizeIframe;
+  </script>
+
+</body>
+
+</html>
