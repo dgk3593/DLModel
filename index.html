@@ -81,7 +81,30 @@
           <button id = 'walk_btn' class="btn btn-info">Walk</button>
           <button id = 'run_btn' class="btn btn-info">Run</button>
         </div>
-          <button id = 'win_btn' class="btn btn-success" style = "width:100%;">Win</button>
+        <br>
+        <p class = 'mt-6 mb-0 border-top' style="padding-left: 10px;width:100%">Win animation settings</p>
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" id = 'wintype'>
+          <label class="btn btn-secondary active">
+            <input type="radio" name="winstyle" id="defaultWin" checked>Default
+          </label>
+          <label class="btn btn-secondary">
+            <input type="radio" name="winstyle" id="weaponWin">Weapon
+          </label>
+          <label class="btn btn-secondary">
+            <input type="radio" name="winstyle" id="spWin">Special
+          </label>
+        </div>
+        <select class="form-control" id="weaponWStyle" style = 'display:none'>
+          <option selected = "selected" value ='SWD'>Sword</option>
+          <option value = 'KAT'>Blade</option>
+          <option value = 'DAG'>Dagger</option>
+          <option value = 'AXE'>Axe</option>
+          <option value = 'LAN'>Lance</option>
+          <option value = 'BOW'>Bow</option>
+          <option value = 'ROD'>Wand</option>
+          <option value = 'CAN'>Staff</option>
+        </select>
+        <button id = 'win_btn' class="btn btn-success" style = "width:100%;">Win</button>
         </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -163,18 +186,23 @@
     import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
     let advBox = document.getElementById('advSelect');
 
-    document.getElementById('weaponSelect').addEventListener("change", filter);
-    document.getElementById('raritySelect').addEventListener("change", filter);
-    document.getElementById('elementSelect').addEventListener("change", filter);
-    document.getElementById('advSelect').addEventListener("change", advSelected);
-    document.getElementById('faceSelect').addEventListener("change", faceSelected);
-    document.getElementById('still_btn').addEventListener("click", Still);
-    document.getElementById('bob_btn').addEventListener("click", Bob);
-    document.getElementById('walk_btn').addEventListener("click", Walk);
-    document.getElementById('run_btn').addEventListener("click", Run);
-    document.getElementById('win_btn').addEventListener("click", Win);
-
-
+    function defaultWinClicked()
+    {
+      console.log('default Win');
+      // console.log(document.getElementById('defaultWin').style);
+    }
+    function weaponWinClicked()
+    {
+      console.log('weapon Win');
+      // document.getElementById('weaponWStyle').style.display= 'inline';
+      // console.log(document.getElementById('weaponWin').style);
+    }
+    function spWinClicked()
+    {
+      console.log('sp Win');
+      // document.getElementById('weaponWStyle').style.display= 'inline';
+      // console.log(document.getElementById('spWin').style);
+    }
     function filter()
     {
       let weapon = document.getElementById('weaponSelect').value;
@@ -213,7 +241,6 @@
       listItem.value = adv.cid;
       advBox.appendChild(listItem);
     }
-
 
     function advSelected()
     {
@@ -344,6 +371,19 @@
     {
       resizeIframe();
       filter();
+      document.getElementById('weaponSelect').addEventListener("change", filter);
+      document.getElementById('raritySelect').addEventListener("change", filter);
+      document.getElementById('elementSelect').addEventListener("change", filter);
+      document.getElementById('advSelect').addEventListener("change", advSelected);
+      document.getElementById('faceSelect').addEventListener("change", faceSelected);
+      document.getElementById('defaultWin').addEventListener("click", defaultWinClicked);
+      document.getElementById('weaponWin').addEventListener("click", weaponWinClicked);
+      document.getElementById('spWin').addEventListener("click", spWinClicked);
+      document.getElementById('still_btn').addEventListener("click", Still);
+      document.getElementById('bob_btn').addEventListener("click", Bob);
+      document.getElementById('walk_btn').addEventListener("click", Walk);
+      document.getElementById('run_btn').addEventListener("click", Run);
+      document.getElementById('win_btn').addEventListener("click", Win);
     }
 
     window.onload = init;
