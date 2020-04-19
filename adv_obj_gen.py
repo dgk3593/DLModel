@@ -7,13 +7,14 @@ data = f.read()
 f.close()
 adv_dict = eval(data)
 
-f = open('adv_list.js','w')
+f = open('js/adv_list.js','w')
 f.write("const adv = [\n")
 
-s = open('sp_adv.js','w')
+s = open('js/sp_adv.js','w')
 s.write("const sp_adv = [\n")
 
 comma = False
+scomma = False
 
 for entry in adv_dict:
     adv = adv_dict[entry]
@@ -31,10 +32,14 @@ for entry in adv_dict:
     f.write('\t}')
 
     if entry in sp_adv:
+        if scomma:
+            s.write(',\n')
+        else:
+            scomma = True
         s.write('\t{\n')
         s.write('\t\tcid: \'' + entry + '\',\n')
         s.write('\t\tname: \'' + adv["name"].replace('\'s','') + '\',\n')
-        s.write('\t\tweapon: \'' + adv["weapon"] + '\',\n')
+        s.write('\t\tweapon: \'' + adv["weapon"] + '\'\n')
         s.write('\t}')
 
 f.write('\n];\n')

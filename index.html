@@ -25,9 +25,9 @@
       <form>
         <div class="form-group">
           <select class="form-control" id="char_set">
-            <option selected = "selected">Regular Adventurers</option>
-            <option>Allies</option>
-            <option>Enemies</option>
+            <option selected = "selected" value = '0'>Regular Adventurers</option>
+            <option value = '1'>Allies</option>
+            <option value = '2'>Enemies</option>
           </select>
           <p style = "border-bottom: medium"></p>
           <select class="form-control" id="raritySelect">
@@ -137,6 +137,7 @@
   <!-- Filter Script -->
   <script type='module'>
     import adv from 'https://dgk3593.github.io/cs50web-project0/js/adv_list.js';
+    import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
     let advBox = document.getElementById('advSelect');
 
     document.getElementById('weaponSelect').addEventListener("change", filter);
