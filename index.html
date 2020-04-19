@@ -55,10 +55,10 @@
             <option>Wand</option>
             <option>Staff</option>
           </select>
-          <p style = "border-bottom: medium"></p>
-          <select class="form-control mt-6 bg-light" id="advSelect" style = "width: 15rem" autofocus>
+          <p style = "font-size:small"></p>
+          <select class="form-control mt-0 bg-light" id="advSelect" style = "width: 15rem" autofocus>
           </select>
-          <p style = "border-bottom: medium"></p>
+          <p style = "font-size:small"></p>
           <select class="form-control" id="faceSelect" style = 'display:none'>
             <option value ='1'>Face 1</option>
             <option selected = "selected" value = '2'>Face 2</option>
@@ -72,28 +72,29 @@
           </select>
         </div>
       </form>
-      <div id = 'ctrl_btn' style = 'display:none'>
+      <div id = 'ctrl_btn' style = 'display:none;text-align:center;'>
         <div class = "button-toolbar mb-1">
           <button id = 'still_btn' class="btn btn-info">Still</button>
           <button id = 'bob_btn' class="btn btn-info">Bob</button>
         </div>
-        <div class = "button-toolbar mb-1">
+        <div class = "button-toolbar mb-0">
           <button id = 'walk_btn' class="btn btn-info">Walk</button>
           <button id = 'run_btn' class="btn btn-info">Run</button>
         </div>
-        <br>
+        <br style = "font-size:small">
         <p class = 'mt-6 mb-0 border-top' style="padding-left: 10px;width:100%">Win animation settings</p>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons" id = 'wintype'>
-          <label class="btn btn-secondary active">
-            <input type="radio" name="winstyle" id="defaultWin" checked>Default
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-secondary active" id="defaultWin">
+            <input type="radio" name="winstyle" checked>Default
           </label>
-          <label class="btn btn-secondary">
-            <input type="radio" name="winstyle" id="weaponWin">Weapon
+          <label class="btn btn-secondary" id="weaponWin">
+            <input type="radio" name="winstyle">Weapon
           </label>
-          <label class="btn btn-secondary">
-            <input type="radio" name="winstyle" id="spWin">Special
+          <label class="btn btn-secondary" id="spWin">
+            <input type="radio" name="winstyle">Special
           </label>
         </div>
+        <p style = "font-size:small"></p>
         <select class="form-control" id="weaponWStyle" style = 'display:none'>
           <option selected = "selected" value ='SWD'>Sword</option>
           <option value = 'KAT'>Blade</option>
@@ -104,8 +105,11 @@
           <option value = 'ROD'>Wand</option>
           <option value = 'CAN'>Staff</option>
         </select>
+        <select class="form-control" id="spWStyle" style = "display:none">
+        </select>
         <button id = 'win_btn' class="btn btn-success" style = "width:100%;">Win</button>
-        </div>
+      </div>
+      <a href='' id='currentLink' style = "display:none">Link of current animation</a>
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -185,24 +189,57 @@
     import adv from 'https://dgk3593.github.io/cs50web-project0/js/adv_list.js';
     import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
     let advBox = document.getElementById('advSelect');
+    let spwinbox = document.getElementById('spWStyle');
+
+    var wintype = 0;  // default
 
     function defaultWinClicked()
     {
-      console.log('default Win');
-      // console.log(document.getElementById('defaultWin').style);
+      if (wintype === 0)
+      {
+        return false;
+      }
+      document.getElementById('weaponWStyle').style.display= 'none';
+      document.getElementById('spWStyle').style.display= 'none';
+      wintype = 0;
     }
+
     function weaponWinClicked()
+
     {
-      console.log('weapon Win');
-      // document.getElementById('weaponWStyle').style.display= 'inline';
-      // console.log(document.getElementById('weaponWin').style);
+      if (wintype === 1)
+      {
+        return false;
+      }
+      document.getElementById('weaponWStyle').style.display= 'block';
+      document.getElementById('spWStyle').style.display= 'none';
+      wintype = 1;
     }
     function spWinClicked()
     {
-      console.log('sp Win');
-      // document.getElementById('weaponWStyle').style.display= 'inline';
-      // console.log(document.getElementById('spWin').style);
+      if (wintype === 2)
+      {
+        return false;
+      }
+      document.getElementById('weaponWStyle').style.display= 'none';
+      document.getElementById('spWStyle').style.display= 'block';
+      wintype = 2;
     }
+
+    function loadSpWin()
+    {
+      spwinbox.innerHTML = '';
+      sp_adv.forEach(spwinhandle);
+    }
+
+    function spwinhandle(sp_adv)
+    {
+      var listItem = document.createElement('option');
+      listItem.innerHTML = sp_adv.name;
+      listItem.value = sp_adv.cid;
+      spwinbox.appendChild(listItem);
+    }
+
     function filter()
     {
       let weapon = document.getElementById('weaponSelect').value;
@@ -247,11 +284,13 @@
       let selected = document.getElementById('advSelect');
       let face = document.getElementById('faceSelect').value;
       let cid = selected.value;
-      document.getElementById('faceSelect').style.display= 'inline';  // Show face control
-      document.getElementById('ctrl_btn').style.display= 'inline';  // Show control button
+      document.getElementById('faceSelect').style.display= 'block';  // Show face control
+      document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
+      document.getElementById('currentLink').style.display= 'block';
 
       let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
 
     function faceSelected()
@@ -265,6 +304,7 @@
       let link = iframe.src
       link = link.substr(0,link.length-1) + face;
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
 
     function Still()
@@ -277,7 +317,9 @@
       }
       let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
+
     function Bob()
     {
       let cid = document.getElementById('advSelect').value;
@@ -288,7 +330,9 @@
       }
       let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
+
     function Walk()
     {
       let cid = document.getElementById('advSelect').value;
@@ -299,7 +343,9 @@
       }
       let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
+
     function Run()
     {
       let cid = document.getElementById('advSelect').value;
@@ -310,7 +356,9 @@
       }
       let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
+
     function Win()
     {
       let cid = document.getElementById('advSelect').value;
@@ -319,41 +367,68 @@
       {
         return false;
       }
-      let sp = 0;
+      let sp = 0;   // equals 1 if playing special animation
+      let wid = cid;  // id of the final animation
+      if (wintype == 2) // special animation
+      {
+        wid = document.getElementById('spWStyle').value;
+        sp = 1;
+      }
       let temp = sp_adv.filter(d => d.cid === cid);
       if (temp.length != 0) // Not a special adventurer
       {
-        sp = 1;  // is a special adventurer
+        sp = 1;  // cid is from a special adventurer
       }
-      temp = adv.filter(d => d.cid === cid);
-      let weapon = temp[0].weapon;
-      let wincode = '';
-      switch (weapon)
+      if (wintype == 1)
       {
-        case 'Sword':
-          wincode = 'SWD';
-          break;
-        case 'Blade':
-          wincode = 'KAT';
-          break;
-        case 'Dagger':
-          wincode = 'DAG';
-          break;
-        case 'Axe':
-          wincode = 'AXE';
-          break;
-        case 'Lance':
-          wincode = 'LAN';
-          break;
-        case 'Bow':
-          wincode = 'BOW';
-          break;
-        case 'Wand':
-          wincode = 'ROD';
-          break;
-        case 'Staff':
-          wincode = 'CAN';
-          break;
+        sp = 0;
+      }
+
+      let wincode = '';
+      let weapon = '';
+
+      if (wintype != 1)
+      {
+        if (wintype == 0)
+        {
+          temp = adv.filter(d => d.cid === cid);
+          weapon = temp[0].weapon;
+        }
+        else // wintype = 2, special animation
+        {
+          temp = sp_adv.filter(d => d.cid === wid);
+          weapon = temp[0].weapon;
+        }
+        switch (weapon)
+          {
+            case 'Sword':
+              wincode = 'SWD';
+              break;
+            case 'Blade':
+              wincode = 'KAT';
+              break;
+            case 'Dagger':
+              wincode = 'DAG';
+              break;
+            case 'Axe':
+              wincode = 'AXE';
+              break;
+            case 'Lance':
+              wincode = 'LAN';
+              break;
+            case 'Bow':
+              wincode = 'BOW';
+              break;
+            case 'Wand':
+              wincode = 'ROD';
+              break;
+            case 'Staff':
+              wincode = 'CAN';
+              break;
+          }
+      }
+      else {
+        wincode = document.getElementById('weaponWStyle').value;
       }
       let link = '';
       if (sp == 0)
@@ -362,15 +437,17 @@
       }
       else
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + cid.replace('_','') + '/face' + face;
+        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
       iframe.src = link;
+      document.getElementById('currentLink').href = link;
     }
 
     function init()
     {
       resizeIframe();
       filter();
+      loadSpWin();
       document.getElementById('weaponSelect').addEventListener("change", filter);
       document.getElementById('raritySelect').addEventListener("change", filter);
       document.getElementById('elementSelect').addEventListener("change", filter);
