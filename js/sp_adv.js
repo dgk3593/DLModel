@@ -25,7 +25,7 @@ const sp_adv = [
 		weapon: 'Wand'
 	},
 	{
-		cid: '100002_013',
+		cid: '100002_13',
 		name: 'Gala Elisanne',
 		weapon: 'Axe'
 	},
@@ -68,6 +68,11 @@ const sp_adv = [
 		cid: '100005_02',
 		name: 'Gala Alex',
 		weapon: 'Sword'
+	},
+	{
+		cid: '100004_10',
+		name: 'Gala Cleo',
+		weapon: 'Wand'
 	},
 	{
 		cid: '110333_01',
