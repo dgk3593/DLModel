@@ -26,8 +26,8 @@
         <div class="form-group">
           <select class="form-control" id="char_set">
             <option selected = "selected" value = '0'>Regular Adventurers</option>
-            <option disabled = 'disabled' value = '1'>Allies</option>
-            <option disabled = 'disabled' value = '2'>Enemies</option>
+            <option disabled = 'disabled' value = '1'>Allies (Coming soon)</option>
+            <option disabled = 'disabled' value = '2'>Enemies (Coming soon)</option>
           </select>
           <p style = "border-bottom: medium"></p>
           <select class="form-control" id="raritySelect">
@@ -56,12 +56,12 @@
             <option>Staff</option>
           </select>
           <p style = "border-bottom: medium"></p>
-          <select class="form-control mt-6" id="advSelect" style = "width: 15rem">
+          <select class="form-control mt-6 bg-light" id="advSelect" style = "width: 15rem" autofocus>
           </select>
           <p style = "border-bottom: medium"></p>
-          <select class="form-control" id="faceSelect">
-            <option selected = "selected" value ='1'>Face 1</option>
-            <option value = '2'>Face 2</option>
+          <select class="form-control" id="faceSelect" style = 'display:none'>
+            <option value ='1'>Face 1</option>
+            <option selected = "selected" value = '2'>Face 2</option>
             <option value = '3'>Face 3</option>
             <option value = '4'>Face 4</option>
             <option value = '5'>Face 5</option>
@@ -72,15 +72,17 @@
           </select>
         </div>
       </form>
-      <div>
-        <button id = 'still_btn' class="btn btn-light">Still</button>
-        <button id = 'bob_btn' class="btn btn-light">Bob</button>
-      </div>
-      <div>
-        <button id = 'walk_btn' class="btn btn-light">Walk</button>
-        <button id = 'run_btn' class="btn btn-light">Run</button>
-      </div>
-        <button id = 'win_btn' class="btn btn-light">Win</button>
+      <div id = 'ctrl_btn' style = 'display:none'>
+        <div class = "button-toolbar mb-1">
+          <button id = 'still_btn' class="btn btn-info">Still</button>
+          <button id = 'bob_btn' class="btn btn-info">Bob</button>
+        </div>
+        <div class = "button-toolbar mb-1">
+          <button id = 'walk_btn' class="btn btn-info">Walk</button>
+          <button id = 'run_btn' class="btn btn-info">Run</button>
+        </div>
+          <button id = 'win_btn' class="btn btn-success" style = "width:100%;">Win</button>
+        </div>
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -218,6 +220,8 @@
       let selected = document.getElementById('advSelect');
       let face = document.getElementById('faceSelect').value;
       let cid = selected.value;
+      document.getElementById('faceSelect').style.display= 'inline';  // Show face control
+      document.getElementById('ctrl_btn').style.display= 'inline';  // Show control button
 
       let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
       iframe.src = link;

@@ -21,6 +21,14 @@ body {
   font-size: 1.2rem;
 }
 
+.button-toolbar button {
+  width:40%;
+  padding: auto;
+}
+
+.button-toolbar {
+  text-align:center;
+}
 
 #page-content-wrapper {
   min-width: 100vw;
