@@ -26,8 +26,8 @@
         <div class="form-group">
           <select class="form-control" id="char_set">
             <option selected = "selected" value = '0'>Regular Adventurers</option>
-            <option value = '1'>Allies</option>
-            <option value = '2'>Enemies</option>
+            <option disabled = 'disabled' value = '1'>Allies</option>
+            <option disabled = 'disabled' value = '2'>Enemies</option>
           </select>
           <p style = "border-bottom: medium"></p>
           <select class="form-control" id="raritySelect">
@@ -77,7 +77,8 @@
 
       <nav class="navbar navbar-expand-sm navbar-light">
         <button class="btn btn-primary" id="menu-toggle">Settings</button>
-        <p class ="nav-item">Using resources from <a href="https://notte.moe/">notte.moe</a></p>
+        <span style="padding-left:5px"></span>
+        <p class ="nav-item"> Using resources from <a href="https://notte.moe/">notte.moe</a></p>
       </nav>
 
       <div class="container-fluid">
@@ -247,7 +248,13 @@
       {
         return false;
       }
-      let temp = adv.filter(d => d.cid === cid);
+      let sp = 0;
+      let temp = sp_adv.filter(d => d.cid === cid);
+      if (temp.length != 0) // Not a special adventurer
+      {
+        sp = 1;  // is a special adventurer
+      }
+      temp = adv.filter(d => d.cid === cid);
       let weapon = temp[0].weapon;
       let wincode = '';
       switch (weapon)
@@ -277,9 +284,18 @@
           wincode = 'CAN';
           break;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01";
+      let link = '';
+      if (sp == 0)
+      {
+        link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01";
+      }
+      else
+      {
+        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + cid.replace('_','');
+      }
       iframe.src = link;
     }
+
     function init()
     {
       resizeIframe();
