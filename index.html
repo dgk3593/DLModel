@@ -22,12 +22,47 @@
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">Settings </div>
+      <form>
+        <div class="form-group">
+          <label for="raritySelect">Rarity</label>
+          <select class="form-control" id="raritySelect">
+            <option selected = "selected">Any</option>
+            <option>3 stars</option>
+            <option>4 stars</option>
+            <option>5 stars</option>
+          </select>
+          <label for="elementSelect">Element</label>
+          <select class="form-control" id="elementSelect">
+            <option selected = "selected">Any</option>
+            <option>Flame</option>
+            <option>Water</option>
+            <option>Wind</option>
+            <option>Light</option>
+            <option>Shadow</option>
+          </select>
+          <label for="weaponSelect">Weapon Type</label>
+          <select class="form-control" id="weaponSelect">
+            <option selected = "selected">Any</option>
+            <option>Sword</option>
+            <option>Blade</option>
+            <option>Dagger</option>
+            <option>Axe</option>
+            <option>Lance</option>
+            <option>Bow</option>
+            <option>Wand</option>
+            <option>Staff</option>
+          </select>
+          <label for="advSelect">Adventurer</label>
+          <select class="form-control" id="advSelect">
+          </select>
+        </div>
+      </form>
       <div class="list-group list-group-flush">
-        <button onclick="Still()" class="btn btn-light">Still</button>
-        <button onclick="Bob()" class="btn btn-light">Bob</button>
-        <button onclick="Walk()" class="btn btn-light">Walk</button>
-        <button onclick="Run()" class="btn btn-light">Run</button>
-        <button onclick="Win()" class="btn btn-light">Win</button>
+        <button id = 'still_btn' class="btn btn-light">Still</button>
+        <button id = 'bob_btn' class="btn btn-light">Bob</button>
+        <button id = 'walk_btn' class="btn btn-light">Walk</button>
+        <button id = 'run_btn' class="btn btn-light">Run</button>
+        <button id = 'win_btn' class="btn btn-light">Win</button>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -37,6 +72,7 @@
 
       <nav class="navbar navbar-expand-sm navbar-light">
         <button class="btn btn-primary" id="menu-toggle">Toggle Settings</button>
+        <p id='name'></p>
       </nav>
 
       <div class="container-fluid">
@@ -61,27 +97,6 @@
     });
     var buffer = 20; //scroll bar buffer
     var iframe = document.getElementById('ifm');
-
-    function Still()
-    {
-      iframe.src = "https://notte.moe/dl-fbx/c100001_08"
-    }
-    function Bob()
-    {
-      iframe.src = "https://notte.moe/dl-fbx/c100001_08/cmn+CMN_MWM_03"
-    }
-    function Walk()
-    {
-      iframe.src = "https://notte.moe/dl-fbx/c100001_08/cmn+CMN_MWM_01"
-    }
-    function Run()
-    {
-      iframe.src = "https://notte.moe/dl-fbx/c100001_08/cmn+CMN_MWM_02"
-    }
-    function Win()
-    {
-      iframe.src = "https://notte.moe/dl-fbx/c100001_08/wins+SWD_WIN_01_10000108"
-    }
 
     function pageY(elem) {
         return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
@@ -114,7 +129,159 @@
     window.onresize = resizeIframe;
     window.onload = resizeIframe;
   </script>
+  <!-- Filter Script -->
+  <script type='module'>
+    import adv from 'https://dgk3593.github.io/cs50web-project0/js/adv_list.js';
+    let advBox = document.getElementById('advSelect');
 
+    document.getElementById('weaponSelect').addEventListener("change", filter);
+    document.getElementById('raritySelect').addEventListener("change", filter);
+    document.getElementById('elementSelect').addEventListener("change", filter);
+    document.getElementById('advSelect').addEventListener("change", advSelected);
+    document.getElementById('still_btn').addEventListener("click", Still);
+    document.getElementById('bob_btn').addEventListener("click", Bob);
+    document.getElementById('walk_btn').addEventListener("click", Walk);
+    document.getElementById('run_btn').addEventListener("click", Run);
+    document.getElementById('win_btn').addEventListener("click", Win);
+
+
+    function filter()
+    {
+      let weapon = document.getElementById('weaponSelect').value;
+      let rarity = document.getElementById('raritySelect').value[0];
+      let ele = document.getElementById('elementSelect').value;
+      let result = adv;
+      if (weapon != 'Any')
+      {
+        result = result.filter(d => d.weapon === weapon);
+      }
+      if (rarity != 'A')
+      {
+        result = result.filter(d => d.rarity === parseInt(rarity));
+      }
+      if (ele != 'Any')
+      {
+        result = result.filter(d => d.element === ele);
+      }
+
+      advBox.innerHTML = '';
+      var listItem = document.createElement('option');
+      listItem.innerHTML = 'Choose an adventurer';
+      listItem.value = '0';
+      listItem.disabled = 'disabled';
+      listItem.selected = 'selected';
+      advBox.appendChild(listItem);
+
+      result.forEach(advhandle);
+    }
+
+    function advhandle(adv)
+    {
+      let img_link = 'images/icon/' + adv.cid + '_r0' + adv.rarity + '.png';
+      var listItem = document.createElement('option');
+      listItem.innerHTML = adv.name;
+      listItem.value = adv.cid;
+      advBox.appendChild(listItem);
+    }
+
+
+    function advSelected()
+    {
+      let selected = document.getElementById('advSelect');
+      let cid = selected.value;
+
+      let link = "https://notte.moe/dl-fbx/c" + cid;
+      iframe.src = link;
+    }
+
+    function Still()
+    {
+      let cid = document.getElementById('advSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = "https://notte.moe/dl-fbx/c" + cid;
+      iframe.src = link;
+    }
+    function Bob()
+    {
+      let cid = document.getElementById('advSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_03";
+      iframe.src = link;
+    }
+    function Walk()
+    {
+      let cid = document.getElementById('advSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_01";
+      iframe.src = link;
+    }
+    function Run()
+    {
+      let cid = document.getElementById('advSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_02";
+      iframe.src = link;
+    }
+    function Win()
+    {
+      let cid = document.getElementById('advSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let temp = adv.filter(d => d.cid === cid);
+      let weapon = temp[0].weapon;
+      let wincode = '';
+      switch (weapon)
+      {
+        case 'Sword':
+          wincode = 'SWD';
+          break;
+        case 'Blade':
+          wincode = 'KAT';
+          break;
+        case 'Dagger':
+          wincode = 'DAG';
+          break;
+        case 'Axe':
+          wincode = 'AXE';
+          break;
+        case 'Lance':
+          wincode = 'LAN';
+          break;
+        case 'Bow':
+          wincode = 'BOW';
+          break;
+        case 'Wand':
+          wincode = 'ROD';
+          break;
+        case 'Staff':
+          wincode = 'CAN';
+          break;
+      }
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01";
+      iframe.src = link;
+    }
+    function init()
+    {
+      resizeIframe();
+      filter();
+    }
+
+    window.onload = init;
+  </script>
 </body>
 
 </html>
