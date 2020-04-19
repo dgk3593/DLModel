@@ -22,12 +22,13 @@ for entry in adv_dict:
         f.write(',\n')
     else:
         comma = True
-        
-    if len(entry) == 10:
-        entry = entry[0:7] + entry[8:]
+
+    tmp = entry
+    if len(tmp) == 10:
+        tmp = tmp[0:7] + tmp[8:]
 
     f.write('\t{\n')
-    f.write('\t\tcid: \'' + entry + '\',\n')
+    f.write('\t\tcid: \'' + tmp + '\',\n')
     f.write('\t\tname: \'' + adv["name"].replace('\'s','') + '\',\n')
     f.write('\t\telement: \'' + adv["element"] + '\',\n')
     f.write('\t\tweapon: \'' + adv["weapon"] + '\',\n')
@@ -40,7 +41,7 @@ for entry in adv_dict:
         else:
             scomma = True
         s.write('\t{\n')
-        s.write('\t\tcid: \'' + entry + '\',\n')
+        s.write('\t\tcid: \'' + tmp + '\',\n')
         s.write('\t\tname: \'' + adv["name"].replace('\'s','') + '\',\n')
         s.write('\t\tweapon: \'' + adv["weapon"] + '\'\n')
         s.write('\t}')
