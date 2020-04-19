@@ -109,7 +109,7 @@
     }
 
     function pageX(elem) {
-        return elem.offsetParent ? (elem.offsetLeft + pageY(elem.offsetParent)) : elem.offsetLeft;
+        return elem.offsetParent ? (elem.offsetLeft + pageX(elem.offsetParent)) : elem.offsetLeft;
     }
 
     function resizeIframe() {
