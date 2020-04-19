@@ -58,6 +58,18 @@
           <p style = "border-bottom: medium"></p>
           <select class="form-control mt-6" id="advSelect" style = "width: 15rem">
           </select>
+          <p style = "border-bottom: medium"></p>
+          <select class="form-control" id="faceSelect">
+            <option selected = "selected" value ='1'>Face 1</option>
+            <option value = '2'>Face 2</option>
+            <option value = '3'>Face 3</option>
+            <option value = '4'>Face 4</option>
+            <option value = '5'>Face 5</option>
+            <option value = '6'>Face 6</option>
+            <option value = '7'>Face 7</option>
+            <option value = '8'>Face 8</option>
+            <option value = '9'>Face 9</option>
+          </select>
         </div>
       </form>
       <div>
@@ -153,6 +165,7 @@
     document.getElementById('raritySelect').addEventListener("change", filter);
     document.getElementById('elementSelect').addEventListener("change", filter);
     document.getElementById('advSelect').addEventListener("change", advSelected);
+    document.getElementById('faceSelect').addEventListener("change", faceSelected);
     document.getElementById('still_btn').addEventListener("click", Still);
     document.getElementById('bob_btn').addEventListener("click", Bob);
     document.getElementById('walk_btn').addEventListener("click", Walk);
@@ -203,55 +216,74 @@
     function advSelected()
     {
       let selected = document.getElementById('advSelect');
+      let face = document.getElementById('faceSelect').value;
       let cid = selected.value;
 
-      let link = "https://notte.moe/dl-fbx/c" + cid;
+      let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
+      iframe.src = link;
+    }
+
+    function faceSelected()
+    {
+      let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = iframe.src
+      link = link.substr(0,link.length-1) + face;
       iframe.src = link;
     }
 
     function Still()
     {
       let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid;
+      let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
       iframe.src = link;
     }
     function Bob()
     {
       let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_03";
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
       iframe.src = link;
     }
     function Walk()
     {
       let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_01";
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
       iframe.src = link;
     }
     function Run()
     {
       let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_02";
+      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
       iframe.src = link;
     }
     function Win()
     {
       let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -295,11 +327,11 @@
       let link = '';
       if (sp == 0)
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01";
+        link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
       }
       else
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + cid.replace('_','');
+        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + cid.replace('_','') + '/face' + face;
       }
       iframe.src = link;
     }
