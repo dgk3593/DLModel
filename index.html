@@ -78,11 +78,11 @@
       <nav class="navbar navbar-expand-sm navbar-light">
         <button class="btn btn-primary" id="menu-toggle">Settings</button>
         <span style="padding-left:5px"></span>
-        <p class ="nav-item"> Using resources from <a href="https://notte.moe/">notte.moe</a></p>
+        <p class ="nav-item"> Using resources from <a href="https://notte.moe/" target="_blank">notte.moe</a></p>
       </nav>
 
       <div class="container-fluid">
-        <iframe id="ifm" src="" style="height:300px; width:300px; border: none"></iframe>
+        <iframe id="ifm" src="" style="height:500px; width:500px; border: none"></iframe>
       </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -113,14 +113,21 @@
     }
 
     function resizeIframe() {
-        var height = document.documentElement.clientHeight;
-        height -= pageY(document.getElementById('ifm'))+ buffer ;
-        height = (height < 0) ? 0 : height;
-        var width = document.documentElement.clientWidth;
-        width -= pageX(document.getElementById('ifm'))+ buffer ;
-        width = (width < 0) ? 0 : width;
 
-        var size = (width > height) ? height : width
+        var width = document.documentElement.clientWidth;
+        if (width >= 768)
+        {
+          width -= pageX(document.getElementById('ifm'))+ buffer ;
+          width = (width < 0) ? 0 : width;
+          var height = document.documentElement.clientHeight;
+          height -= pageY(document.getElementById('ifm'))+ buffer ;
+          height = (height < 0) ? 0 : height;
+          var size = (width > height) ? height : width;
+        }
+        else
+        {
+          size = width;
+        }
         iframe.style.height = size + 'px';
         iframe.style.width = size + 'px';
     }
