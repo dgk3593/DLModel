@@ -115,19 +115,20 @@
     function resizeIframe() {
 
         var width = document.documentElement.clientWidth;
+        var height = document.documentElement.clientHeight;
         if (width >= 768)
         {
           width -= pageX(document.getElementById('ifm'))+ buffer ;
           width = (width < 0) ? 0 : width;
-          var height = document.documentElement.clientHeight;
           height -= pageY(document.getElementById('ifm'))+ buffer ;
           height = (height < 0) ? 0 : height;
-          var size = (width > height) ? height : width;
         }
         else
         {
-          size = width;
+          height -= pageY(document.getElementById('ifm'))+ buffer ;
+          height = (height < 0) ? 0 : height;
         }
+        var size = (width > height) ? height : width;
         iframe.style.height = size + 'px';
         iframe.style.width = size + 'px';
     }
