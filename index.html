@@ -24,25 +24,28 @@
       <div class="sidebar-heading">Settings </div>
       <form>
         <div class="form-group">
-          <label for="raritySelect">Rarity</label>
+          <select class="form-control" id="char_set">
+            <option selected = "selected">Regular Adventurers</option>
+            <option>Allies</option>
+            <option>Enemies</option>
+          </select>
+          <p style = "border-bottom: medium"></p>
           <select class="form-control" id="raritySelect">
-            <option selected = "selected">Any</option>
+            <option selected = "selected">Any rarity</option>
             <option>3 stars</option>
             <option>4 stars</option>
             <option>5 stars</option>
           </select>
-          <label for="elementSelect">Element</label>
           <select class="form-control" id="elementSelect">
-            <option selected = "selected">Any</option>
+            <option selected = "selected">Any element</option>
             <option>Flame</option>
             <option>Water</option>
             <option>Wind</option>
             <option>Light</option>
             <option>Shadow</option>
           </select>
-          <label for="weaponSelect">Weapon Type</label>
           <select class="form-control" id="weaponSelect">
-            <option selected = "selected">Any</option>
+            <option selected = "selected">Any weapon</option>
             <option>Sword</option>
             <option>Blade</option>
             <option>Dagger</option>
@@ -52,18 +55,20 @@
             <option>Wand</option>
             <option>Staff</option>
           </select>
-          <label for="advSelect">Adventurer</label>
-          <select class="form-control" id="advSelect">
+          <p style = "border-bottom: medium"></p>
+          <select class="form-control mt-6" id="advSelect" style = "width: 15rem">
           </select>
         </div>
       </form>
-      <div class="list-group list-group-flush">
+      <div>
         <button id = 'still_btn' class="btn btn-light">Still</button>
         <button id = 'bob_btn' class="btn btn-light">Bob</button>
+      </div>
+      <div>
         <button id = 'walk_btn' class="btn btn-light">Walk</button>
         <button id = 'run_btn' class="btn btn-light">Run</button>
-        <button id = 'win_btn' class="btn btn-light">Win</button>
       </div>
+        <button id = 'win_btn' class="btn btn-light">Win</button>
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -71,8 +76,8 @@
     <div id="page-content-wrapper">
 
       <nav class="navbar navbar-expand-sm navbar-light">
-        <button class="btn btn-primary" id="menu-toggle">Toggle Settings</button>
-        Using resources from <a href="https://notte.moe/">notte.moe</a>
+        <button class="btn btn-primary" id="menu-toggle">Settings</button>
+        <p class ="nav-item">Using resources from <a href="https://notte.moe/">notte.moe</a></p>
       </nav>
 
       <div class="container-fluid">
@@ -151,7 +156,7 @@
       let rarity = document.getElementById('raritySelect').value[0];
       let ele = document.getElementById('elementSelect').value;
       let result = adv;
-      if (weapon != 'Any')
+      if (weapon != 'Any weapon')
       {
         result = result.filter(d => d.weapon === weapon);
       }
@@ -159,7 +164,7 @@
       {
         result = result.filter(d => d.rarity === parseInt(rarity));
       }
-      if (ele != 'Any')
+      if (ele != 'Any element')
       {
         result = result.filter(d => d.element === ele);
       }
