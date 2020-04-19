@@ -364,7 +364,7 @@ const adv = [
 		rarity: 5
 	},
 	{
-		cid: '100002_013',
+		cid: '100002_13',
 		name: 'Gala Elisanne',
 		element: 'Water',
 		weapon: 'Axe',
@@ -1211,7 +1211,7 @@ const adv = [
 		rarity: 5
 	},
 	{
-		cid: '100004_010',
+		cid: '100004_10',
 		name: 'Gala Cleo',
 		element: 'Shadow',
 		weapon: 'Wand',

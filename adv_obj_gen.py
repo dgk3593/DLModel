@@ -22,6 +22,9 @@ for entry in adv_dict:
         f.write(',\n')
     else:
         comma = True
+        
+    if len(entry) == 10:
+        entry = entry[0:7] + entry[8:]
 
     f.write('\t{\n')
     f.write('\t\tcid: \'' + entry + '\',\n')
@@ -36,8 +39,6 @@ for entry in adv_dict:
             s.write(',\n')
         else:
             scomma = True
-        if len(entry) == 10:
-            entry = entry[0:7] + entry[8:]
         s.write('\t{\n')
         s.write('\t\tcid: \'' + entry + '\',\n')
         s.write('\t\tname: \'' + adv["name"].replace('\'s','') + '\',\n')
