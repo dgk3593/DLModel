@@ -13,7 +13,7 @@ const enemy = [
 	},
 	{
 		cid: '100034_01',
-		name: 'Kai Yan',
+		name: 'Kai Yan*',
 	}
 ];
 export default enemy;
