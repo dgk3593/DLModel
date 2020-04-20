@@ -22,10 +22,6 @@ const allies = [
 	{
 		cid: '100029_01',
 		name: 'Sarisse',
-	},
-	{
-		cid: '100009_01',
-		name: 'Zethia',
 	}
 ];
 export default allies;
