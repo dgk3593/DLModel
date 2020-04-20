@@ -15,15 +15,15 @@ const allies = [
 		cid: '100018_01',
 		name: 'Leif',
 	},
-  {
+	{
 		cid: '100027_01',
 		name: 'Summon Lady',
 	},
-  {
+	{
 		cid: '100029_01',
 		name: 'Sarisse',
 	},
-  {
+	{
 		cid: '100009_01',
 		name: 'Zethia',
 	}
