@@ -1,13 +1,5 @@
 const allies = [
 	{
-		cid: '100007_01',
-		name: 'Notte*',
-	},
-	{
-		cid: '100007_05',
-		name: 'Anniversary Notte*',
-	},
-	{
 		cid: '100009_01',
 		name: 'Zethia',
 	},
@@ -22,6 +14,14 @@ const allies = [
 	{
 		cid: '100029_01',
 		name: 'Sarisse',
+	},
+  {
+		cid: '100007_01',
+		name: 'Notte*',
+	},
+	{
+		cid: '100007_05',
+		name: 'Anniversary Notte*',
 	}
 ];
 export default allies;
