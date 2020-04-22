@@ -193,6 +193,8 @@
     import sp_adv from './js/sp_adv.js';
     import allies from './js/allies.js';
     import enemy from './js/enemy.js';
+    adv.sort((a, b) => a.name.localeCompare(b.name)); // Sort adv by name
+    sp_adv.sort((a, b) => a.name.localeCompare(b.name));
 
     let advBox = document.getElementById('advSelect');
     let spwinbox = document.getElementById('spWStyle');
@@ -427,8 +429,8 @@
         wid = document.getElementById('spWStyle').value;
         sp = 1;
       }
-      let temp = sp_adv.filter(d => d.cid === cid);
-      if (temp.length != 0) // Not a special adventurer
+      let temp = sp_adv.find(d => d.cid === cid);
+      if (type(temp) != undefined) // Not a special adventurer
       {
         sp = 1;  // cid is from a special adventurer
       }
