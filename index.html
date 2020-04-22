@@ -451,12 +451,12 @@
           }
           else
           {
-            temp = adv.filter(d => d.cid === cid);
+            temp = adv.find(d => d.cid === cid);
             weapon = temp[0].weapon;
           }
         else // wintype = 2, special animation
         {
-          temp = sp_adv.filter(d => d.cid === wid);
+          temp = sp_adv.find(d => d.cid === wid);
           weapon = temp[0].weapon;
         }
         switch (weapon)
