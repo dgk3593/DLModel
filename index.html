@@ -452,12 +452,12 @@
           else
           {
             temp = adv.find(d => d.cid === cid);
-            weapon = temp[0].weapon;
+            weapon = temp.weapon;
           }
         else // wintype = 2, special animation
         {
           temp = sp_adv.find(d => d.cid === wid);
-          weapon = temp[0].weapon;
+          weapon = temp.weapon;
         }
         switch (weapon)
           {
