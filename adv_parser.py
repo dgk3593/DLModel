@@ -1,5 +1,15 @@
-# Get data from Gamepedia Grid
+#function to replace eacute with unicode
+def replaceEacute(s):
+    temp = ''
+    for i in range(len(s)):
+        if s[i] != 'é':
+            temp += s[i]
+        else:
+            temp += '&#x00e9'
+    return temp
 
+
+# Get data from Gamepedia Grid
 try:
     from BeautifulSoup import BeautifulSoup
 except ImportError:
@@ -10,7 +20,6 @@ url = "https://dragalialost.gamepedia.com/Adventurer_Grid"
 html = requests.get(url).text
 soup = BeautifulSoup(html, features="html.parser")
 advs = soup.find_all(class_="character-grid-entry grid-entry")
-
 adv_dict = {}
 
 for adv in advs:
@@ -24,13 +33,13 @@ for adv in advs:
     # Get name
     temp = adv.select(".character-grid-entry-title")
     title = temp[0].find('a')['title']
-    tmpdict['name'] = title.replace('\'s','') # remove '
+    tmpdict['name'] = title.replace('\'','&#x0092') # remove '
 
     # Get title
     temp = adv.select(".character-grid-entry-subtitle")
     temp = temp[0].contents
-    subtitle = temp[0]
-    tmpdict['title'] = subtitle
+    subtitle = replaceEacute(temp[0])
+    tmpdict['title'] = subtitle.replace('\'','&#x0092')
 
     # Look for image link
     temp = adv.find_all('img')

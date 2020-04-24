@@ -24,6 +24,30 @@
   }
 }
 
+.card-deck .card:hover {
+  box-shadow: 0px 0px 3px 1px #000000;
+}
+
+#filter .btn-light{
+  background-color: #dae0e5;
+}
+
+#filter .btn-light.active {
+  background-color: #ffffff;
+}
+
+.filterIcon {
+  width:20px;
+  height:20px;
+}
+
+.filter_box {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-bottom-style: solid;
+  border-left-style: hidden;
+}
+
 footer {
   color: white;
 }

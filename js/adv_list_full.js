@@ -57,8 +57,8 @@ const adv = [
 	},
 	{
 		cid: '110052_03',
-		name: 'Valentine Orion',
-		title: 'Valentine Guardian',
+		name: 'Valentine&#x0092s Orion',
+		title: 'Valentine&#x0092s Guardian',
 		element: 'Flame',
 		weapon: 'Sword',
 		rarity: 3
@@ -90,7 +90,7 @@ const adv = [
 	{
 		cid: '110010_01',
 		name: 'Mikoto',
-		title: 'Nature Avatar',
+		title: 'Nature&#x0092s Avatar',
 		element: 'Flame',
 		weapon: 'Blade',
 		rarity: 5
@@ -225,7 +225,7 @@ const adv = [
 	},
 	{
 		cid: '110011_02',
-		name: 'Valentine Ezelith',
+		name: 'Valentine&#x0092s Ezelith',
 		title: 'Stunning Sweetheart',
 		element: 'Flame',
 		weapon: 'Bow',
@@ -234,7 +234,7 @@ const adv = [
 	{
 		cid: '110003_01',
 		name: 'Joe',
-		title: 'Fire Fletcher',
+		title: 'Fire&#x0092s Fletcher',
 		element: 'Flame',
 		weapon: 'Bow',
 		rarity: 3
@@ -273,7 +273,7 @@ const adv = [
 	},
 	{
 		cid: '110043_02',
-		name: 'Valentine Hildegarde',
+		name: 'Valentine&#x0092s Hildegarde',
 		title: 'Rosy Saint',
 		element: 'Flame',
 		weapon: 'Staff',
@@ -697,7 +697,7 @@ const adv = [
 	},
 	{
 		cid: '110027_02',
-		name: 'Valentine Melody',
+		name: 'Valentine&#x0092s Melody',
 		title: 'Lovestruck Maid',
 		element: 'Wind',
 		weapon: 'Axe',
@@ -810,7 +810,7 @@ const adv = [
 	{
 		cid: '110021_03',
 		name: 'Dragonyule Xainfried',
-		title: 'Saint Aegis',
+		title: 'Saint&#x0092s Aegis',
 		element: 'Wind',
 		weapon: 'Wand',
 		rarity: 4
@@ -1210,7 +1210,7 @@ const adv = [
 	{
 		cid: '110326_01',
 		name: 'Natalie',
-		title: 'Devoted Festival Protégé',
+		title: 'Devoted Festival Prot&#x00e9g&#x00e9',
 		element: 'Shadow',
 		weapon: 'Blade',
 		rarity: 5
@@ -1353,7 +1353,7 @@ const adv = [
 	},
 	{
 		cid: '110310_02',
-		name: 'Valentine Addis',
+		name: 'Valentine&#x0092s Addis',
 		title: 'Devoted Samurai',
 		element: 'Shadow',
 		weapon: 'Bow',

@@ -10,7 +10,7 @@ f.write("const adv = [\n")
 
 
 comma = False
-scomma = False
+# scomma = False
 
 for entry in adv_dict:
     adv = adv_dict[entry]
@@ -22,7 +22,6 @@ for entry in adv_dict:
     tmp = entry
     if len(tmp) == 10:
         tmp = tmp[0:7] + tmp[8:]
-
     f.write('\t{\n')
     f.write('\t\tcid: \'' + tmp + '\',\n')
     f.write('\t\tname: \'' + adv["name"].replace('\'s','') + '\',\n')

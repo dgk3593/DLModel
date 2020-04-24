@@ -50,7 +50,7 @@ const adv = [
 	},
 	{
 		cid: '110052_03',
-		name: 'Valentine Orion',
+		name: 'Valentine&#x0092s Orion',
 		element: 'Flame',
 		weapon: 'Sword',
 		rarity: 3
@@ -197,7 +197,7 @@ const adv = [
 	},
 	{
 		cid: '110011_02',
-		name: 'Valentine Ezelith',
+		name: 'Valentine&#x0092s Ezelith',
 		element: 'Flame',
 		weapon: 'Bow',
 		rarity: 4
@@ -239,7 +239,7 @@ const adv = [
 	},
 	{
 		cid: '110043_02',
-		name: 'Valentine Hildegarde',
+		name: 'Valentine&#x0092s Hildegarde',
 		element: 'Flame',
 		weapon: 'Staff',
 		rarity: 5
@@ -610,7 +610,7 @@ const adv = [
 	},
 	{
 		cid: '110027_02',
-		name: 'Valentine Melody',
+		name: 'Valentine&#x0092s Melody',
 		element: 'Wind',
 		weapon: 'Axe',
 		rarity: 5
@@ -1184,7 +1184,7 @@ const adv = [
 	},
 	{
 		cid: '110310_02',
-		name: 'Valentine Addis',
+		name: 'Valentine&#x0092s Addis',
 		element: 'Shadow',
 		weapon: 'Bow',
 		rarity: 5
