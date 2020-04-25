@@ -66,10 +66,6 @@ footer {
     height:15px;
   }
 
-  .cardIcon img {
-    width:20px;
-    height:20px;
-  }
 
   .modal-dialog {
     margin:5px;
@@ -79,34 +75,4 @@ footer {
     padding: 5px;
   }
 
-  #adv_icon {
-    width:30px;
-    height:30px;
-    margin-left:25px;
-    margin-right:5px;
-  }
-
-  #card_list {
-    margin-top:5px;
-    margin-left:5px;
-    margin-right:5px;
-  }
-
-  #card_list .card {
-    min-width: 140px;
-    max-width: 140px;
-    margin:2px;
-    padding:3px;
-  }
-
-  #card_list .cardImg_r {
-    margin:auto;
-    width: 98px;
-    height: 24px;
-  }
-
-  #card_list .card-img-top {
-    max-width:150px;
-    margin:auto;
-  }
 }
