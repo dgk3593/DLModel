@@ -12,36 +12,11 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
   <!-- Custom styles for this template -->
-  <link rel="stylesheet" href="./css/styles.css">
   <link href="css/sidebar.css" rel="stylesheet">
-
 
 </head>
 
 <body>
-  <div class="modal fade w-100 h-100" id="SelectBox" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog m-3 p-0" role="document" style="max-width:95%">
-      <div class="modal-content">
-        <div class="modal-header pt-3 border-0 pb-1">
-          <h5 class="modal-title mx-auto">Choose an adventurer</h5>
-          <button type="button" class="close float-right mx-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Placeholder for filter -->
-          <div class = "card mx-auto filter_box pb-2 pt-0" style="margin-top:0px;">
-            <div class = "btn-toolbar" id ='filter'></div>
-          </div>
-          <!-- Placeholder for adventurer cards -->
-          <div class="card-deck justify-content-center" id="card_list" style="margin-top:10px; margin-left:15px; margin-right:15px"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="d-flex" id="wrapper">
 
@@ -50,15 +25,43 @@
       <div class="sidebar-heading">Settings </div>
       <form>
         <div class="form-group">
-          <select class="form-control" id="char_set" style = "width: 15rem">
+          <select class="form-control" id="char_set">
             <option selected = "selected" value = '0'>Regular Adventurers</option>
             <option value = '1'>Allies</option>
             <option value = '2'>Enemies</option>
           </select>
-          <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#SelectBox" id='chooseBtn' style='margin-top:10px; margin-bottom:10px'>Choose an Adventurer</button>
-          <div id='selectedAdvId' style='display:none'></div>
-          <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:10px; margin-bottom:10px" autofocus>
+          <p style = "border-bottom: medium"></p>
+          <div id="filter"> <!-- Filter -->
+            <select class="form-control" id="raritySelect">
+              <option selected = "selected">Any rarity</option>
+              <option>3 stars</option>
+              <option>4 stars</option>
+              <option>5 stars</option>
+            </select>
+            <select class="form-control" id="elementSelect">
+              <option selected = "selected">Any element</option>
+              <option>Flame</option>
+              <option>Water</option>
+              <option>Wind</option>
+              <option>Light</option>
+              <option>Shadow</option>
+            </select>
+            <select class="form-control" id="weaponSelect">
+            <option selected = "selected">Any weapon</option>
+            <option>Sword</option>
+            <option>Blade</option>
+            <option>Dagger</option>
+            <option>Axe</option>
+            <option>Lance</option>
+            <option>Bow</option>
+            <option>Wand</option>
+            <option>Staff</option>
           </select>
+          </div>
+          <p style = "font-size:small"></p>
+          <select class="form-control mt-0 bg-light" id="advSelect" style = "width: 15rem" autofocus>
+          </select>
+          <p style = "font-size:small"></p>
           <select class="form-control" id="faceSelect" style = 'display:none'>
             <option value ='1'>Face 1</option>
             <option selected = "selected" value = '2'>Face 2</option>
@@ -81,7 +84,8 @@
           <button id = 'walk_btn' class="btn btn-info">Walk</button>
           <button id = 'run_btn' class="btn btn-info">Run</button>
         </div>
-        <p class = 'mb-0 border-top' style="margin-top:10px;padding-left: 10px;width:100%">Win animation settings</p>
+        <br style = "font-size:small">
+        <p class = 'mt-6 mb-0 border-top' style="padding-left: 10px;width:100%">Win animation settings</p>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <label class="btn btn-secondary active" id="defaultWin">
             <input type="radio" name="winstyle" id="defaultWinbtn" checked>Default
@@ -108,7 +112,7 @@
         </select>
         <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:10px; margin-bottom:10px">Win</button>
       </div>
-      <a href='' target="_blank" id='currentLink' style = "margin-left:10px;display:none">Link of current animation</a>
+      <a href='' target="_blank" id='currentLink' style = "display:none">Link of current animation</a>
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -185,7 +189,7 @@
   </script>
   <!-- Other Scripts -->
   <script type='module'>
-    import adv from 'https://dgk3593.github.io/cs50web-project0/js/adv_list_full.js';
+    import adv from 'https://dgk3593.github.io/DLModel/js/adv_list.js';
     import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
     import allies from 'https://dgk3593.github.io/DLModel/js/allies.js';
     import enemy from 'https://dgk3593.github.io/DLModel/js/enemy.js';
@@ -197,157 +201,6 @@
 
     var wintype = 0;  // default
     var ch_set = '0';
-    var card_list = document.getElementById('card_list');
-    // Sort list by rarity then name
-    // Sort by name first
-    adv.sort((a, b) => a.name.localeCompare(b.name));
-    // Then sort by rarity
-    adv.sort(function(a,b){
-      return b.rarity - a.rarity;
-    });
-
-    var rarity_cond = [];
-    var wea_cond = [];
-    var ele_cond =[];
-    var checked = {};
-
-    const filters = {rarity:[3, 4, 5],
-                    ele:['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
-                    wea:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
-                    };
-
-    function createFilter(key, e){
-      let label = document.createElement('label');
-      label.className = "btn btn-light border-dark";
-
-      let input = document.createElement('input');
-      input.type = 'checkbox';
-      input.name = key;
-      input.setAttribute('data', e);
-      input.autocomplete = 'off';
-      label.appendChild(input);
-
-      let img = document.createElement('img');
-      img.src = 'images/' + key + '_' + e + '.png';
-      img.className = "filterIcon";
-      label.appendChild(img);
-
-      return label;
-    }
-
-    function createFilterGroup(key, el){
-      let filter_box = document.getElementById('filter');
-      let filter_group = document.createElement('div');
-      filter_group.className = "btn-group-toggle btn-group mx-auto";
-      filter_group.setAttribute('role', "group");
-      filter_group.setAttribute('data-toggle', 'buttons');
-      el.forEach((item, i) => {
-        let label = createFilter(key, item);
-        filter_group.appendChild(label);
-      });
-      filter_box.appendChild(filter_group);
-    }
-
-
-    function getChecked(name) {
-      checked[name] = Array.from(document.querySelectorAll('input[name=' + name + '][value = "on"]')).map(function (el) {
-        return el.getAttribute('data');
-      });
-    }
-
-    function updateRarity() {
-      getChecked('rarity');
-      rarity_cond = checked['rarity'].map(Number);
-      if (rarity_cond.length == 0){
-        rarity_cond = filters['rarity'];
-      }
-    }
-
-    function updateWeapon() {
-      getChecked('wea');
-      wea_cond = checked['wea'];
-      if (wea_cond.length == 0){
-        wea_cond = filters['wea'];
-      }
-    }
-
-    function updateElement() {
-      getChecked('ele');
-      ele_cond = checked['ele'];
-      if (ele_cond.length == 0){
-        ele_cond = filters['ele'];
-      }
-    }
-
-    function filter() {
-      updateRarity();
-      updateWeapon();
-      updateElement();
-      card_list.innerHTML = '';
-      let temp_list = adv;
-      temp_list = temp_list.filter(d => rarity_cond.includes(d.rarity));
-      temp_list = temp_list.filter(d => wea_cond.includes(d.weapon));
-      temp_list = temp_list.filter(d => ele_cond.includes(d.element));
-      temp_list.forEach(advhandleCard);
-    }
-
-    function advhandle(adv)
-    {
-      let img_link = 'images/icon/' + adv.cid + '_r0' + adv.rarity + '.png';
-      var listItem = document.createElement('option');
-      listItem.innerHTML = adv.name;
-      listItem.value = adv.cid;
-      advBox.appendChild(listItem);
-    }
-
-    function advhandleCard(adv) {
-      let img_link = 'images/full_body_300/' + adv.cid + '.png';
-
-      let tmpCard = document.createElement('div');
-      tmpCard.className = "card text-center border-primary rounded";
-      tmpCard.cid = adv.cid;
-      tmpCard.style="min-width:200px;max-width:200px;margin:5px; padding:5px;";
-      tmpCard.onclick = function(){
-        document.getElementById('selectedAdvId').innerHTML = adv.cid;
-        $('#SelectBox').modal('hide');
-        advSelected();
-      };
-
-      let title = document.createElement('h5');
-      title.className = "card-title mb-0";
-      title.innerHTML = adv.name;
-      tmpCard.appendChild(title);
-
-      let subtitle = document.createElement('h6');
-      subtitle.className = "card-text mb-2 text-muted";
-      subtitle.innerHTML = adv.title;
-      tmpCard.appendChild(subtitle);
-
-      let r_img = document.createElement('img');
-      r_img.style = "margin:auto";
-      r_img.src = 'images/rarity_' + adv.rarity + '_line.png';
-      tmpCard.appendChild(r_img);
-
-      let img = document.createElement('img');
-      img.className = "card-img-top my-3";
-      img.style = "max-width:200px; margin:auto";
-      img.src = img_link;
-      tmpCard.appendChild(img);
-
-      let icons = document.createElement('div');
-      icons.className = "row cardIcon";
-      icons.style="margin:auto";
-      let icon1 = document.createElement('img');
-      icon1.style = "margin-right:5px";
-      icon1.src = 'images/ele_' + adv.element + '.png';
-      icons.appendChild(icon1);
-      let icon2 = document.createElement('img');
-      icon2.src = 'images/wea_' + adv.weapon + '.png';
-      icons.appendChild(icon2);
-      tmpCard.appendChild(icons);
-
-      card_list.appendChild(tmpCard);
-    }
 
     function defaultWinClicked()
     {
@@ -420,16 +273,15 @@
       switch (ch_set)
       {
         case '0':
-          document.getElementById('advSelect').style.display= 'none';
+          document.getElementById('filter').style.display= 'block';
+          filter();
           break;
         case '1': // allies
-          document.getElementById('advSelect').style.display= 'block';
-          document.getElementById('chooseBtn').style.display= 'none';
+          document.getElementById('filter').style.display= 'none';
           loadAllies();
           break;
         case '2': // enemy
-          document.getElementById('advSelect').style.display= 'block';
-          document.getElementById('chooseBtn').style.display= 'none';
+          document.getElementById('filter').style.display= 'none';
           loadEnemy();
           break;
       }
@@ -443,24 +295,53 @@
       spwinbox.appendChild(listItem);
     }
 
+    function filter()
+    {
+      let weapon = document.getElementById('weaponSelect').value;
+      let rarity = document.getElementById('raritySelect').value[0];
+      let ele = document.getElementById('elementSelect').value;
+      let result = adv;
+      if (weapon != 'Any weapon')
+      {
+        result = result.filter(d => d.weapon === weapon);
+      }
+      if (rarity != 'A')
+      {
+        result = result.filter(d => d.rarity === parseInt(rarity));
+      }
+      if (ele != 'Any element')
+      {
+        result = result.filter(d => d.element === ele);
+      }
+
+      advBox.innerHTML = '';
+      var listItem = document.createElement('option');
+      listItem.innerHTML = 'Choose an adventurer';
+      listItem.value = '0';
+      listItem.disabled = 'disabled';
+      listItem.selected = 'selected';
+      advBox.appendChild(listItem);
+
+      result.forEach(advhandle);
+    }
+
+    function advhandle(adv)
+    {
+      let img_link = 'images/icon/' + adv.cid + '_r0' + adv.rarity + '.png';
+      var listItem = document.createElement('option');
+      listItem.innerHTML = adv.name;
+      listItem.value = adv.cid;
+      advBox.appendChild(listItem);
+    }
 
     function advSelected()
     {
-      let selected = '';
-      let cid = '';
-
-      if (ch_set != '0'){
-        cid = document.getElementById('advSelect').value;
-        document.getElementById('selectedAdvId').innerHTML = cid;
-      }
-      else {
-        cid = document.getElementById('selectedAdvId').innerHTML;
-      }
-
+      let selected = document.getElementById('advSelect');
+      let face = document.getElementById('faceSelect').value;
+      let cid = selected.value;
       document.getElementById('faceSelect').style.display= 'block';  // Show face control
       document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
       document.getElementById('currentLink').style.display= 'block';
-      let face = document.getElementById('faceSelect').value;
 
       let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
       iframe.src = link;
@@ -469,7 +350,7 @@
 
     function faceSelected()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let cid = document.getElementById('advSelect').value;
       let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
@@ -483,7 +364,7 @@
 
     function Still()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let cid = document.getElementById('advSelect').value;
       let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
@@ -496,7 +377,7 @@
 
     function Bob()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let cid = document.getElementById('advSelect').value;
       let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
@@ -509,7 +390,7 @@
 
     function Walk()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let cid = document.getElementById('advSelect').value;
       let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
@@ -522,7 +403,7 @@
 
     function Run()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let cid = document.getElementById('advSelect').value;
       let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
@@ -535,7 +416,7 @@
 
     function Win()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let cid = document.getElementById('advSelect').value;
       let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
@@ -557,6 +438,7 @@
       {
         sp = 0;
       }
+
       let wincode = '';
       let weapon = '';
 
@@ -621,14 +503,15 @@
       document.getElementById('currentLink').href = link;
     }
 
-
     function init()
     {
       resizeIframe();
       filter();
       loadSpWin();
       document.getElementById('char_set').addEventListener("change", charSetChanged);
-      document.getElementById('selectedAdvId').addEventListener("change", advSelected);
+      document.getElementById('weaponSelect').addEventListener("change", filter);
+      document.getElementById('raritySelect').addEventListener("change", filter);
+      document.getElementById('elementSelect').addEventListener("change", filter);
       document.getElementById('advSelect').addEventListener("change", advSelected);
       document.getElementById('faceSelect').addEventListener("change", faceSelected);
       document.getElementById('defaultWin').addEventListener("click", defaultWinClicked);
@@ -639,23 +522,6 @@
       document.getElementById('walk_btn').addEventListener("click", Walk);
       document.getElementById('run_btn').addEventListener("click", Run);
       document.getElementById('win_btn').addEventListener("click", Win);
-      // Generates filters
-      for(var key in filters){
-        let value = filters[key];
-        createFilterGroup(key, value);
-      }
-
-      // Add toggle on click to all filter
-      $('#filter label').each(function(){
-        $(this).on('click',function filterClicked(e){
-          let value = this.children[[0]].value;
-          this.children[[0]].value = value === 'on' ? 'off' : 'on';
-          filter();
-        });
-      });
-
-      $('input[type=checkbox]').val('off'); // Reset filters
-      filter();
     }
 
     window.onload = init;
