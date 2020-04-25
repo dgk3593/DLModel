@@ -72,9 +72,9 @@ footer {
   }
 
   .modal-dialog {
-    margin:10px;
+    margin:5px;
   }
-  
+
   .modal-body {
     padding: 5px;
   }
@@ -93,9 +93,9 @@ footer {
   }
 
   #card_list .card {
-    min-width: 150px;
-    max-width: 150px;
-    margin:3px;
+    min-width: 140px;
+    max-width: 140px;
+    margin:2px;
     padding:3px;
   }
 
