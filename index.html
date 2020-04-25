@@ -59,6 +59,10 @@
           <div id='selectedAdvId' style='display:none'></div>
           <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:10px; margin-bottom:10px" autofocus>
           </select>
+          <!-- Chosen adventurer's details -->
+          <div id="advDetails" class ='row mb-2' style="display:none">
+            <img src='' class='d-inline-block' id='adv_icon'><span class='d-inline-block'><h6 id='adv_name'></h6></span>
+          </div>
           <select class="form-control" id="faceSelect" style = 'display:none'>
             <option value ='1'>Face 1</option>
             <option selected = "selected" value = '2'>Face 2</option>
@@ -309,6 +313,7 @@
       tmpCard.style="min-width:200px;max-width:200px;margin:5px; padding:5px;";
       tmpCard.onclick = function(){
         document.getElementById('selectedAdvId').innerHTML = adv.cid;
+        document.getElementById('advDetails').style.display = 'block';
         $('#SelectBox').modal('hide');
         advSelected();
       };
@@ -455,6 +460,10 @@
       }
       else {
         cid = document.getElementById('selectedAdvId').innerHTML;
+        let s_adv = adv.find(d => d.cid == cid);
+        let icon_link = 'images/icons/' + cid + '_r0' + s_adv.rarity + '.png';
+        document.getElementById('adv_icon').src = icon_link;
+        document.getElementById('adv_name').innerHTML = s_adv.name;
       }
 
       document.getElementById('faceSelect').style.display= 'block';  // Show face control
