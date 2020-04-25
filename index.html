@@ -309,7 +309,6 @@
       let tmpCard = document.createElement('div');
       tmpCard.className = "card text-center border-primary rounded";
       tmpCard.cid = adv.cid;
-      tmpCard.style="min-width:200px;max-width:200px;margin:5px; padding:5px;";
       tmpCard.onclick = function(){
         document.getElementById('selectedAdvId').innerHTML = adv.cid;
         document.getElementById('advDetails').style.display = 'block';
@@ -328,13 +327,12 @@
       tmpCard.appendChild(subtitle);
 
       let r_img = document.createElement('img');
-      r_img.style = "margin:auto";
+      r_img.className = "cardImg_r";
       r_img.src = 'images/rarity_' + adv.rarity + '_line.png';
       tmpCard.appendChild(r_img);
 
       let img = document.createElement('img');
       img.className = "card-img-top my-3";
-      img.style = "max-width:200px; margin:auto";
       img.src = img_link;
       tmpCard.appendChild(img);
 
