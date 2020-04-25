@@ -196,7 +196,7 @@
     let spwinbox = document.getElementById('spWStyle');
 
     var wintype = 0;  // default
-    var char_set = '0';
+    var ch_set = '0';
     var card_list = document.getElementById('card_list');
     // Sort list by rarity then name
     // Sort by name first
@@ -558,14 +558,14 @@
       {
         sp = 0;
       }
-      console.log('wintype: ' + wintype + ', char_set: ' + char_set);
+      console.log('wintype: ' + wintype + ', ch_set: ' + ch_set);
       let wincode = '';
       let weapon = '';
 
       if (wintype != 1)
       {
         if (wintype == 0)
-          if (char_set != '0')
+          if (ch_set != '0')
           {
             weapon = "Sword"
           }
@@ -573,6 +573,7 @@
           {
             console.log('check');
             temp = adv.find(d => d.cid === cid);
+            console.log(temp);
             weapon = temp.weapon;
           }
         else // wintype = 2, special animation
