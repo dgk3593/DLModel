@@ -4,7 +4,7 @@
 <head>
 
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, shrink-to-fit=no">
   <link rel="icon" href="images/favicon.png">
 
   <title>Dragalia Lost 3D Models</title>
@@ -297,7 +297,6 @@
 
     function advhandle(adv)
     {
-      let img_link = 'images/icon/' + adv.cid + '_r0' + adv.rarity + '.png';
       var listItem = document.createElement('option');
       listItem.innerHTML = adv.name;
       listItem.value = adv.cid;
@@ -426,15 +425,27 @@
       {
         case '0':
           document.getElementById('advSelect').style.display= 'none';
+          document.getElementById('chooseBtn').style.display= 'block';
+          document.getElementById('faceSelect').style.display= 'none';  // Show face control
+          document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
+          document.getElementById('currentLink').style.display= 'none';
           break;
         case '1': // allies
           document.getElementById('advSelect').style.display= 'block';
           document.getElementById('chooseBtn').style.display= 'none';
+          document.getElementById('advDetails').style.display = 'none';
+          document.getElementById('faceSelect').style.display= 'none';  // Show face control
+          document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
+          document.getElementById('currentLink').style.display= 'none';
           loadAllies();
           break;
         case '2': // enemy
           document.getElementById('advSelect').style.display= 'block';
           document.getElementById('chooseBtn').style.display= 'none';
+          document.getElementById('advDetails').style.display = 'none';
+          document.getElementById('faceSelect').style.display= 'none';  // Show face control
+          document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
+          document.getElementById('currentLink').style.display= 'none';
           loadEnemy();
           break;
       }
