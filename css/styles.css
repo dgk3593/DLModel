@@ -62,10 +62,9 @@ footer {
 
 @media (max-width: 768px) {
   .filterIcon {
-    width:15px;
-    height:15px;
+    width:18px;
+    height:18px;
   }
-
 
   .modal-dialog {
     margin:5px;
@@ -74,5 +73,4 @@ footer {
   .modal-body {
     padding: 5px;
   }
-
 }
