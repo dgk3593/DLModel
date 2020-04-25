@@ -550,7 +550,7 @@
         sp = 1;
       }
       let temp = sp_adv.find(d => d.cid === cid);
-      if (typeof(temp) != undefined) // Not a special adventurer
+      if (typeof(temp) != 'undefined') // Not a special adventurer
       {
         sp = 1;  // cid is from a special adventurer
       }
@@ -558,7 +558,7 @@
       {
         sp = 0;
       }
-      console.log('wintype: ' + wintype + ', ch_set: ' + ch_set);
+      console.log('wintype: ' + wintype + ', sp: ' + sp);
       let wincode = '';
       let weapon = '';
 
@@ -571,9 +571,7 @@
           }
           else
           {
-            console.log('check');
             temp = adv.find(d => d.cid === cid);
-            console.log(temp);
             weapon = temp.weapon;
           }
         else // wintype = 2, special animation
