@@ -106,9 +106,9 @@
         </select>
         <select class="form-control" id="spWStyle" style = "display:none">
         </select>
-        <button id = 'win_btn' class="btn btn-success" style = "width:100%;">Win</button>
+        <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:10px; margin-bottom:10px">Win</button>
       </div>
-      <a href='' target="_blank" id='currentLink' style = "display:none">Link of current animation</a>
+      <a href='' target="_blank" id='currentLink' style = "margin-left:10px;display:none">Link of current animation</a>
     </div>
     <!-- /#sidebar-wrapper -->
 
@@ -450,8 +450,7 @@
       let cid = '';
 
       if (ch_set != '0'){
-        selected = document.getElementById('advSelect');
-        cid = selected.value;
+        cid = document.getElementById('advSelect').value;
         document.getElementById('selectedAdvId').innerHTML = cid;
       }
       else {
@@ -558,7 +557,6 @@
       {
         sp = 0;
       }
-      console.log('wintype: ' + wintype + ', sp: ' + sp);
       let wincode = '';
       let weapon = '';
 
@@ -578,7 +576,6 @@
         {
           temp = sp_adv.find(d => d.cid === wid);
           weapon = temp.weapon;
-          console.log(weapon);
         }
         switch (weapon)
           {
@@ -632,6 +629,7 @@
       loadSpWin();
       document.getElementById('char_set').addEventListener("change", charSetChanged);
       document.getElementById('selectedAdvId').addEventListener("change", advSelected);
+      document.getElementById('advSelect').addEventListener("change", advSelected);
       document.getElementById('faceSelect').addEventListener("change", faceSelected);
       document.getElementById('defaultWin').addEventListener("click", defaultWinClicked);
       document.getElementById('weaponWin').addEventListener("click", weaponWinClicked);
