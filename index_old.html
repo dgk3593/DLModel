@@ -44,25 +44,6 @@
     </div>
   </div>
 
-  <div class="modal fade mx-auto" id="FaceBox" tabindex="-1" role="dialog" aria-hidden="true" style="max-width:300px">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title mx-auto">Choose a face</h5>
-          <button type="button" class="close float-right mx-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Placeholder for adventurer faces -->
-          <div class="row row-cols-3" id='faces'></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="d-flex" id="wrapper">
 
     <!-- Sidebar -->
@@ -77,14 +58,23 @@
           </select>
           <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#SelectBox" id='chooseBtn' style='margin-top:10px; margin-bottom:10px'>Choose an Adventurer</button>
           <div id='selectedAdvId' style='display:none'></div>
-          <div id='selectedFace' style='display:none'>2</div>
           <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:10px; margin-bottom:10px" autofocus>
           </select>
           <!-- Chosen adventurer's details -->
           <div id="advDetails" class ='row mb-2' style="display:none">
             <img src='' class='d-inline-block' id='adv_icon'><span class='d-inline-block'><h6 id='adv_name'></h6></span>
           </div>
-          <button type="button" class="btn btn-secondary w-100" data-toggle="modal" data-target="#FaceBox" id='faceBtn' style='margin-top:10px; margin-bottom:10px; display:none'>Choose a face</button>
+          <select class="form-control" id="faceSelect" style = 'display:none'>
+            <option value ='1'>Face 1</option>
+            <option selected = "selected" value = '2'>Face 2</option>
+            <option value = '3'>Face 3</option>
+            <option value = '4'>Face 4</option>
+            <option value = '5'>Face 5</option>
+            <option value = '6'>Face 6</option>
+            <option value = '7'>Face 7</option>
+            <option value = '8'>Face 8</option>
+            <option value = '9'>Face 9</option>
+          </select>
         </div>
       </form>
       <div id = 'ctrl_btn' style = 'display:none;text-align:center;'>
@@ -263,6 +253,7 @@
       filter_box.appendChild(filter_group);
     }
 
+
     function getChecked(name) {
       checked[name] = Array.from(document.querySelectorAll('input[name=' + name + '][value = "on"]')).map(function (el) {
         return el.getAttribute('data');
@@ -436,7 +427,7 @@
         case '0':
           document.getElementById('advSelect').style.display= 'none';
           document.getElementById('chooseBtn').style.display= 'block';
-          document.getElementById('faceBtn').style.display= 'none';  // Show face control
+          document.getElementById('faceSelect').style.display= 'none';  // Show face control
           document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
           document.getElementById('currentLink').style.display= 'none';
           break;
@@ -444,7 +435,7 @@
           document.getElementById('advSelect').style.display= 'block';
           document.getElementById('chooseBtn').style.display= 'none';
           document.getElementById('advDetails').style.display = 'none';
-          document.getElementById('faceBtn').style.display= 'none';  // Show face control
+          document.getElementById('faceSelect').style.display= 'none';  // Show face control
           document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
           document.getElementById('currentLink').style.display= 'none';
           loadAllies();
@@ -453,7 +444,7 @@
           document.getElementById('advSelect').style.display= 'block';
           document.getElementById('chooseBtn').style.display= 'none';
           document.getElementById('advDetails').style.display = 'none';
-          document.getElementById('faceBtn').style.display= 'none';  // Show face control
+          document.getElementById('faceSelect').style.display= 'none';  // Show face control
           document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
           document.getElementById('currentLink').style.display= 'none';
           loadEnemy();
@@ -469,37 +460,6 @@
       spwinbox.appendChild(listItem);
     }
 
-    function addFace(n){
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let img_link = 'https://notte.moe/dl-fbx//fbx/c' + cid + '/c' + cid +'.png';
-      let faceBox = document.getElementById('faces');
-      let idName = 'face' + n;
-
-      let outer = document.createElement('div');
-      outer.className = "col-4 mb-2 align-items-center"
-      outer.onclick = function(){
-        document.getElementById('selectedFace').innerHTML = n;
-        $('#FaceBox').modal('hide');
-        faceSelected();
-      };
-
-      let tmpCard = document.createElement('div');
-      tmpCard.id = idName;
-      tmpCard.style = 'background-image: url(' + img_link + ');';
-      tmpCard.className = "mx-auto rounded";
-
-      outer.appendChild(tmpCard);
-
-      faceBox.appendChild(outer);
-    }
-
-    function loadFaces(){
-      document.getElementById('faces').innerHTML = '';
-      var i;
-      for (i=1; i < 10; i++){
-        addFace(i);
-      }
-    }
 
     function advSelected()
     {
@@ -518,11 +478,10 @@
         document.getElementById('adv_name').innerHTML = s_adv.name;
       }
 
-      document.getElementById('faceBtn').style.display= 'block';  // Show face control
+      document.getElementById('faceSelect').style.display= 'block';  // Show face control
       document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
       document.getElementById('currentLink').style.display= 'block';
-      loadFaces();
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
 
       let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
       iframe.src = link;
@@ -532,7 +491,7 @@
     function faceSelected()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -546,7 +505,7 @@
     function Still()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -559,7 +518,7 @@
     function Bob()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -572,7 +531,7 @@
     function Walk()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -585,7 +544,7 @@
     function Run()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -598,7 +557,7 @@
     function Win()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -696,7 +655,7 @@
       document.getElementById('char_set').addEventListener("change", charSetChanged);
       document.getElementById('selectedAdvId').addEventListener("change", advSelected);
       document.getElementById('advSelect').addEventListener("change", advSelected);
-      // document.getElementById('selectedFace').addEventListener("change", faceSelected);
+      document.getElementById('faceSelect').addEventListener("change", faceSelected);
       document.getElementById('defaultWin').addEventListener("click", defaultWinClicked);
       document.getElementById('weaponWin').addEventListener("click", weaponWinClicked);
       document.getElementById('spWin').addEventListener("click", spWinClicked);
