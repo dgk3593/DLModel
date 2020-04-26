@@ -80,6 +80,10 @@ footer {
     margin:5px;
     padding:5px;
   }
+  #card_list .cardImg_r {
+    max-width: 120px;
+    margin:auto;
+  }
 }
 
 #face1 {
