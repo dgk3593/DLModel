@@ -36,7 +36,7 @@
 
 #card_list {
   margin-top:10px;
-  margin-left:15px;
+  margin-left:5px;
   margin-right:5px;
 }
 
@@ -72,6 +72,12 @@ footer {
 
   .modal-body {
     padding: 0px;
+  }
+
+  #card_list {
+    margin-top:10px;
+    margin-left:2px;
+    margin-right:2px;
   }
 
   #card_list .card {
