@@ -23,6 +23,7 @@
     <div class="modal-dialog p-0" role="document" style="max-width:95%; min-width:95%">
       <div class="modal-content">
         <div class="modal-header pt-3 border-0 pb-1">
+          <button type = "button" class ="btn btn-primary float-left mx-0" id='filterReset'>Reset filter</button>
           <h5 class="modal-title mx-auto">Choose an adventurer</h5>
           <button type="button" class="close float-right mx-0" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -640,6 +641,10 @@
       iframe.src = link;
       document.getElementById('currentLink').href = link;
     }
+    document.getElementById('filterReset').onclick = function(){
+      $(":checkbox").prop('checked', false).parent().removeClass('active');
+      $('input[type=checkbox]').val('off');
+      filter()};
 
 
     function init()
