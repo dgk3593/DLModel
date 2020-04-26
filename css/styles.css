@@ -52,7 +52,8 @@
 }
 
 #card_list .card-img-top {
-  max-width:250px;
+  min-width: 120px;
+  max-width:200px;
   margin:auto;
 }
 
@@ -77,11 +78,12 @@ footer {
   #card_list .card {
     min-width:150px;
     max-width:150px;
-    margin:5px;
+    margin:3px;
     padding:5px;
   }
+
   #card_list .cardImg_r {
-    max-width: 120px;
+    max-width: 100px;
     margin:auto;
   }
 }
