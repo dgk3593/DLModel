@@ -136,7 +136,7 @@
         <p class ="nav-item"> Using resources from <a href="https://mushymato.github.io/dl-fbx/#/" target="_blank">mushymato's GitHub</a></p>
       </nav>
 
-      <div class="container-fluid">
+      <div class="container-fluid" id='ifm_container'>
         <iframe id="ifm" src="" style="height:500px; width:500px; border: none"></iframe>
       </div>
     </div>
@@ -157,7 +157,6 @@
       $("#wrapper").toggleClass("toggled");
     });
     var buffer = 20; //scroll bar buffer
-    var iframe = document.getElementById('ifm');
 
     function pageY(elem) {
         return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
@@ -168,7 +167,7 @@
     }
 
     function resizeIframe() {
-
+        let iframe = document.getElementById('ifm');
         var width = document.documentElement.clientWidth;
         var height = document.documentElement.clientHeight;
         if (width >= 768)
@@ -231,6 +230,15 @@
                     wea:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
                     };
 
+    function updateIframe(link){
+      document.getElementById('ifm_container').innerHTML ='';
+      let tempifm = document.createElement('iframe');
+      tempifm.style = "border:none";
+      tempifm.id = 'ifm';
+      tempifm.src = link;
+      document.getElementById('ifm_container').appendChild(tempifm);
+      resizeIframe();
+    }
     function createFilter(key, e){
       let label = document.createElement('label');
       label.className = "btn btn-light border-dark";
@@ -525,7 +533,7 @@
       let face = document.getElementById('selectedFace').innerHTML;
 
       let link = "https://mushymato.github.io/dl-fbx/#/c" + cid +'/-/face' + face;
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -537,9 +545,9 @@
       {
         return false;
       }
-      let link = iframe.src
+      let link = document.getElementById('ifm').src;
       link = link.substr(0,link.length-1) + face;
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -552,7 +560,7 @@
         return false;
       }
       let link = "https://mushymato.github.io/dl-fbx/#/c" + cid +'/-/face' + face;
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -565,7 +573,7 @@
         return false;
       }
       let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -578,7 +586,7 @@
         return false;
       }
       let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -591,7 +599,7 @@
         return false;
       }
       let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -679,7 +687,7 @@
       {
         link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
-      iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
     document.getElementById('filterReset').onclick = function(){
