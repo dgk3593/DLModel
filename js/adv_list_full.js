@@ -407,14 +407,14 @@ const adv = [
 		weapon: 'Dagger',
 		rarity: 4
 	},
-	// {
-	// 	cid: '110355_01',
-	// 	name: 'Lazry',
-	// 	title: 'Mechanized Blacksmith',
-	// 	element: 'Water',
-	// 	weapon: 'Axe',
-	// 	rarity: 5
-	// },
+	{
+		cid: '110355_01',
+		name: 'Lazry',
+		title: 'Mechanized Blacksmith',
+		element: 'Water',
+		weapon: 'Axe',
+		rarity: 5
+	},
 	{
 		cid: '100002_13',
 		name: 'Gala Elisanne',

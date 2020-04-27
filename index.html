@@ -133,7 +133,7 @@
       <nav class="navbar navbar-expand-sm navbar-light">
         <button class="btn btn-primary" id="menu-toggle">Settings</button>
         <span style="padding-left:5px"></span>
-        <p class ="nav-item"> Using resources from <a href="https://notte.moe/" target="_blank">notte.moe</a></p>
+        <p class ="nav-item"> Using resources from <a href="https://mushymato.github.io/dl-fbx/#/" target="_blank">mushymato's GitHub</a></p>
       </nav>
 
       <div class="container-fluid">
@@ -471,7 +471,7 @@
 
     function addFace(n){
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let img_link = 'https://notte.moe/dl-fbx//fbx/c' + cid + '/c' + cid +'.png';
+      let img_link = 'https://mushymato.github.io/dl-fbx/fbx/c' + cid + '/c' + cid +'.png';
       let faceBox = document.getElementById('faces');
       let idName = 'face' + n;
 
@@ -524,7 +524,7 @@
       loadFaces();
       let face = document.getElementById('selectedFace').innerHTML;
 
-      let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
+      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid +'/-/face' + face;
       iframe.src = link;
       document.getElementById('currentLink').href = link;
     }
@@ -551,7 +551,7 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
+      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid +'/-/face' + face;
       iframe.src = link;
       document.getElementById('currentLink').href = link;
     }
@@ -564,7 +564,7 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
+      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
       iframe.src = link;
       document.getElementById('currentLink').href = link;
     }
@@ -577,7 +577,7 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
+      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
       iframe.src = link;
       document.getElementById('currentLink').href = link;
     }
@@ -590,7 +590,7 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
+      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
       iframe.src = link;
       document.getElementById('currentLink').href = link;
     }
@@ -673,11 +673,11 @@
       let link = '';
       if (sp == 0)
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
+        link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
       }
       else
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
+        link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
       iframe.src = link;
       document.getElementById('currentLink').href = link;
