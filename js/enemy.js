@@ -14,8 +14,7 @@ const enemy = [
 	{
 		cid: '100034_01',
 		name: 'Kai Yan*',
-	}
-
+	},
 	{
 		cid: '100035_01',
 		name: 'Ciella',
