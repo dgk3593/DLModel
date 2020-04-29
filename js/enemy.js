@@ -19,6 +19,5 @@ const enemy = [
 		cid: '100035_01',
 		name: 'Ciella',
 	}
-
 ];
 export default enemy;
