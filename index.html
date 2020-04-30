@@ -167,24 +167,24 @@
     }
 
     function resizeIframe() {
-        let iframe = document.getElementById('ifm');
-        var width = document.documentElement.clientWidth;
-        var height = document.documentElement.clientHeight;
-        if (width >= 768)
-        {
-          width -= pageX(document.getElementById('ifm'))+ buffer ;
-          width = (width < 0) ? 0 : width;
-          height -= pageY(document.getElementById('ifm'))+ buffer ;
-          height = (height < 0) ? 0 : height;
-        }
-        else
-        {
-          height -= pageY(document.getElementById('ifm'))+ buffer ;
-          height = (height < 0) ? 0 : height;
-        }
-        var size = (width > height) ? height : width;
-        iframe.style.height = size + 'px';
-        iframe.style.width = size + 'px';
+      let iframe = document.getElementById('ifm');
+      var width = document.documentElement.clientWidth;
+      var height = document.documentElement.clientHeight;
+      if (width >= 768)
+      {
+        width -= pageX(document.getElementById('ifm'))+ buffer ;
+        width = (width < 0) ? 0 : width;
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+      }
+      else
+      {
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+      }
+      var size = (width > height) ? height : width;
+      iframe.style.height = size + 'px';
+      iframe.style.width = size + 'px';
     }
 
     // .onload doesn't work with IE8 and older.
@@ -208,6 +208,8 @@
 
     let advBox = document.getElementById('advSelect');
     let spwinbox = document.getElementById('spWStyle');
+
+    var base_url = 'https://mushymato.github.io/dl-fbx/#/c';
 
     var wintype = 0;  // default
     var ch_set = '0';
@@ -532,7 +534,7 @@
       loadFaces();
       let face = document.getElementById('selectedFace').innerHTML;
 
-      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid +'/-/face' + face;
+      let link = base_url + cid +'/-/face' + face;
       updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
@@ -559,7 +561,7 @@
       {
         return false;
       }
-      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid +'/-/face' + face;
+      let link = base_url + cid +'/-/face' + face;
       updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
@@ -572,7 +574,7 @@
       {
         return false;
       }
-      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
+      let link = base_url + cid + "/cmn+CMN_MWM_03" + '/face' + face;
       updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
@@ -585,7 +587,7 @@
       {
         return false;
       }
-      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
+      let link = base_url + cid + "/cmn+CMN_MWM_01" + '/face' + face;
       updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
@@ -598,7 +600,7 @@
       {
         return false;
       }
-      let link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
+      let link = base_url + cid + "/cmn+CMN_MWM_02" + '/face' + face;
       updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
@@ -681,11 +683,11 @@
       let link = '';
       if (sp == 0)
       {
-        link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
+        link = base_url + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
       }
       else
       {
-        link = "https://mushymato.github.io/dl-fbx/#/c" + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
+        link = base_url + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
       updateIframe(link);
       document.getElementById('currentLink').href = link;

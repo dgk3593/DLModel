@@ -125,7 +125,7 @@
         <p class ="nav-item"> Using resources from <a href="https://notte.moe/" target="_blank">notte.moe</a></p>
       </nav>
 
-      <div class="container-fluid">
+      <div class="container-fluid" id='ifm_container'>
         <iframe id="ifm" src="" style="height:500px; width:500px; border: none"></iframe>
       </div>
     </div>
@@ -157,24 +157,24 @@
     }
 
     function resizeIframe() {
-
-        var width = document.documentElement.clientWidth;
-        var height = document.documentElement.clientHeight;
-        if (width >= 768)
-        {
-          width -= pageX(document.getElementById('ifm'))+ buffer ;
-          width = (width < 0) ? 0 : width;
-          height -= pageY(document.getElementById('ifm'))+ buffer ;
-          height = (height < 0) ? 0 : height;
-        }
-        else
-        {
-          height -= pageY(document.getElementById('ifm'))+ buffer ;
-          height = (height < 0) ? 0 : height;
-        }
-        var size = (width > height) ? height : width;
-        iframe.style.height = size + 'px';
-        iframe.style.width = size + 'px';
+      let iframe = document.getElementById('ifm');
+      var width = document.documentElement.clientWidth;
+      var height = document.documentElement.clientHeight;
+      if (width >= 768)
+      {
+        width -= pageX(document.getElementById('ifm'))+ buffer ;
+        width = (width < 0) ? 0 : width;
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+      }
+      else
+      {
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+      }
+      var size = (width > height) ? height : width;
+      iframe.style.height = size + 'px';
+      iframe.style.width = size + 'px';
     }
 
     // .onload doesn't work with IE8 and older.
@@ -199,9 +199,20 @@
     let advBox = document.getElementById('advSelect');
     let spwinbox = document.getElementById('spWStyle');
 
+    var base_url = 'https://mushymato.github.io/dl-fbx/#/c';
+
     var wintype = 0;  // default
     var ch_set = '0';
 
+    function updateIframe(link){
+      document.getElementById('ifm_container').innerHTML ='';
+      let tempifm = document.createElement('iframe');
+      tempifm.style = "border:none";
+      tempifm.id = 'ifm';
+      tempifm.src = link;
+      document.getElementById('ifm_container').appendChild(tempifm);
+      resizeIframe();
+    }
     function defaultWinClicked()
     {
       if (wintype === 0)
@@ -343,8 +354,9 @@
       document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
       document.getElementById('currentLink').style.display= 'block';
 
-      let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
+      let link = base_url + cid +'/-/face' + face;
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -359,6 +371,7 @@
       let link = iframe.src
       link = link.substr(0,link.length-1) + face;
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -370,8 +383,9 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid +'/-/face' + face;
+      let link = base_url + cid +'/-/face' + face;
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -383,8 +397,9 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_03" + '/face' + face;
+      let link = base_url + cid + "/cmn+CMN_MWM_03" + '/face' + face;
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -396,8 +411,9 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_01" + '/face' + face;
+      let link = base_url + cid + "/cmn+CMN_MWM_01" + '/face' + face;
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -409,8 +425,9 @@
       {
         return false;
       }
-      let link = "https://notte.moe/dl-fbx/c" + cid + "/cmn+CMN_MWM_02" + '/face' + face;
+      let link = base_url + cid + "/cmn+CMN_MWM_02" + '/face' + face;
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
@@ -493,13 +510,14 @@
       let link = '';
       if (sp == 0)
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
+        link = base_url + cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
       }
       else
       {
-        link = "https://notte.moe/dl-fbx/c" + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
+        link = base_url + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
       iframe.src = link;
+      updateIframe(link);
       document.getElementById('currentLink').href = link;
     }
 
