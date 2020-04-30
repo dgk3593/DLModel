@@ -1454,6 +1454,38 @@ const adv = [
 		element: 'Shadow',
 		weapon: 'Staff',
 		rarity: 3
+	},
+	{
+		cid: '110358_01',
+		name: 'Sharena',
+		title: 'Princess of Askr',
+		element: 'Light',
+		weapon: 'Lance',
+		rarity: 5
+	},
+	{
+		cid: '110361_01',
+		name: 'Peony',
+		title: 'Sweet Dream',
+		element: 'Light',
+		weapon: 'Wand',
+		rarity: 5
+	},
+	{
+		cid: '110359_01',
+		name: 'Chrom',
+		title: 'Prince of Ylisse',
+		element: 'Flame',
+		weapon: 'Sword',
+		rarity: 5
 	}
+	// {
+	// 	cid: '110360_01',
+	// 	name: 'Tiki',
+	// 	title: 'Unknown',
+	// 	element: 'Water',
+	// 	weapon: 'Dagger',
+	// 	rarity: 5
+	// }
 ];
 export default adv;
