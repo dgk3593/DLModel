@@ -93,6 +93,11 @@ const sp_adv = [
 		cid: '110361_01',
 		name: 'Peony',
 		weapon: 'Wand'
+	},
+	{
+		cid: '110360_01',
+		name: 'Tiki',
+		weapon: 'Dagger'
 	}
 ];
 export default sp_adv;
