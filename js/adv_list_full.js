@@ -1478,14 +1478,14 @@ const adv = [
 		element: 'Flame',
 		weapon: 'Sword',
 		rarity: 5
+	},
+	{
+		cid: '110360_01',
+		name: 'Tiki',
+		title: 'Dragon Scion',
+		element: 'Water',
+		weapon: 'Dagger',
+		rarity: 5
 	}
-	// {
-	// 	cid: '110360_01',
-	// 	name: 'Tiki',
-	// 	title: 'Unknown',
-	// 	element: 'Water',
-	// 	weapon: 'Dagger',
-	// 	rarity: 5
-	// }
 ];
 export default adv;
