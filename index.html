@@ -92,9 +92,13 @@
           <button id = 'still_btn' class="btn btn-info">Still</button>
           <button id = 'bob_btn' class="btn btn-info">Bob</button>
         </div>
-        <div class = "button-toolbar mb-0">
+        <div class = "button-toolbar mb-1">
           <button id = 'walk_btn' class="btn btn-info">Walk</button>
           <button id = 'run_btn' class="btn btn-info">Run</button>
+        </div>
+        <div class = "button-toolbar mb-0">
+          <button id = 'stun_btn' class="btn btn-info">Stunned</button>
+          <button id = 'die_btn' class="btn btn-info">Die</button>
         </div>
         <p class = 'mb-0 border-top' style="margin-top:10px;padding-left: 10px;width:100%">Win animation settings</p>
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -240,6 +244,7 @@
       tempifm.src = link;
       document.getElementById('ifm_container').appendChild(tempifm);
       resizeIframe();
+      document.getElementById('currentLink').href = link;
     }
     function createFilter(key, e){
       let label = document.createElement('label');
@@ -536,7 +541,6 @@
 
       let link = base_url + cid +'/-/face' + face;
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
     }
 
     function faceSelected()
@@ -550,7 +554,6 @@
       let link = document.getElementById('ifm').src;
       link = link.substr(0,link.length-1) + face;
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
     }
 
     function Still()
@@ -563,7 +566,6 @@
       }
       let link = base_url + cid +'/-/face' + face;
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
     }
 
     function Bob()
@@ -576,7 +578,6 @@
       }
       let link = base_url + cid + "/cmn+CMN_MWM_03" + '/face' + face;
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
     }
 
     function Walk()
@@ -589,7 +590,6 @@
       }
       let link = base_url + cid + "/cmn+CMN_MWM_01" + '/face' + face;
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
     }
 
     function Run()
@@ -602,7 +602,30 @@
       }
       let link = base_url + cid + "/cmn+CMN_MWM_02" + '/face' + face;
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
+    }
+
+    function Stun()
+    {
+      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let face = document.getElementById('selectedFace').innerHTML;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = base_url + cid + "/cmn+CMN_SWN_01" + '/face' + face;
+      updateIframe(link);
+    }
+
+    function Die()
+    {
+      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let face = document.getElementById('selectedFace').innerHTML;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = base_url + cid + "/cmn+CMN_DIE_02" + '/face' + face;
+      updateIframe(link);
     }
 
     function Win()
@@ -690,7 +713,6 @@
         link = base_url + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
       updateIframe(link);
-      document.getElementById('currentLink').href = link;
     }
     document.getElementById('filterReset').onclick = function(){
       $(":checkbox").prop('checked', false).parent().removeClass('active');
@@ -714,6 +736,8 @@
       document.getElementById('walk_btn').addEventListener("click", Walk);
       document.getElementById('run_btn').addEventListener("click", Run);
       document.getElementById('win_btn').addEventListener("click", Win);
+      document.getElementById('stun_btn').addEventListener("click", Stun);
+      document.getElementById('die_btn').addEventListener("click", Die);
       // Generates filters
       for(var key in filters){
         let value = filters[key];
