@@ -75,44 +75,64 @@
             <option value = '1'>Allies</option>
             <option value = '2'>Enemies</option>
           </select>
-          <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#SelectBox" id='chooseBtn' style='margin-top:10px; margin-bottom:10px'>Choose an Adventurer</button>
+          <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#SelectBox" id='chooseBtn' style='margin-top:5px; margin-bottom:5px'>Choose an Adventurer</button>
           <div id='selectedAdvId' style='display:none'></div>
           <div id='selectedFace' style='display:none'>2</div>
-          <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:10px; margin-bottom:10px" autofocus>
+          <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:5px; margin-bottom:5px" autofocus>
           </select>
           <!-- Chosen adventurer's details -->
-          <div id="advDetails" class ='row mb-2' style="display:none">
+          <div id="advDetails" class ='row mb-0' style="display:none">
             <img src='' class='d-inline-block' id='adv_icon'><span class='d-inline-block'><h6 id='adv_name'></h6></span>
           </div>
-          <button type="button" class="btn btn-secondary w-100" data-toggle="modal" data-target="#FaceBox" id='faceBtn' style='margin-top:10px; margin-bottom:10px; display:none'>Choose a face</button>
+          <button type="button" class="btn btn-secondary w-100" data-toggle="modal" data-target="#FaceBox" id='faceBtn' style='margin-top:3px; display:none'>Choose a face</button>
         </div>
       </form>
       <div id = 'ctrl_btn' style = 'display:none;text-align:center;'>
         <div class = "button-toolbar mb-1">
           <button id = 'still_btn' class="btn btn-info">Still</button>
           <button id = 'bob_btn' class="btn btn-info">Bob</button>
+          <button id = 'stun_btn' class="btn btn-info">Stun</button>
         </div>
         <div class = "button-toolbar mb-1">
           <button id = 'walk_btn' class="btn btn-info">Walk</button>
           <button id = 'run_btn' class="btn btn-info">Run</button>
-        </div>
-        <div class = "button-toolbar mb-0">
-          <button id = 'stun_btn' class="btn btn-info">Stunned</button>
           <button id = 'die_btn' class="btn btn-info">Die</button>
         </div>
-        <p class = 'mb-0 border-top' style="margin-top:10px;padding-left: 10px;width:100%">Win animation settings</p>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 10px;width:100%">Standby animation settings</p>
+        <div>
+          <select class="form-control mt-0 d-inline align-middle" id="standbyWeapon" style='width:60%'>
+            <option selected = "selected" value ='SWD'>Sword</option>
+            <option value = 'KAT'>Blade</option>
+            <option value = 'DAG'>Dagger</option>
+            <option value = 'AXE'>Axe</option>
+            <option value = 'LAN'>Lance</option>
+            <option value = 'BOW'>Bow</option>
+            <option value = 'ROD'>Wand</option>
+            <option value = 'CAN'>Staff</option>
+            <option value = 'MM'>Mega Man</option>
+          </select>
+          <div class="btn-group btn-group-toggle align-middle" data-toggle="buttons">
+            <label class="btn btn-secondary active" id="standbyMale">
+              <input type="radio" name="standby" checked>M
+            </label>
+            <label class="btn btn-secondary" id="standbyFemale">
+              <input type="radio" name="standby">F
+            </label>
+          </div>
+          <button id = 'standby_btn' class="btn btn-success" style = "width:100%;margin-top:5px; margin-bottom:5px">Standby</button>
+        </div>
+        <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 10px;width:90%">Win animation settings</p>
+        <div class="btn-group btn-group-toggle mb-2" data-toggle="buttons">
           <label class="btn btn-secondary active" id="defaultWin">
-            <input type="radio" name="winstyle" id="defaultWinbtn" checked>Default
+            <input type="radio" name="winstyle" checked>Default
           </label>
           <label class="btn btn-secondary" id="weaponWin">
-            <input type="radio" name="winstyle" id="weaponWinbtn">Weapon
+            <input type="radio" name="winstyle">Weapon
           </label>
           <label class="btn btn-secondary" id="spWin">
             <input type="radio" name="winstyle">Special
           </label>
         </div>
-        <p style = "font-size:small"></p>
         <select class="form-control" id="weaponWStyle" style = 'display:none'>
           <option selected = "selected" value ='SWD'>Sword</option>
           <option value = 'KAT'>Blade</option>
@@ -125,7 +145,7 @@
         </select>
         <select class="form-control" id="spWStyle" style = "display:none">
         </select>
-        <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:10px; margin-bottom:10px">Win</button>
+        <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:5px; margin-bottom:5px">Win</button>
       </div>
       <a href='' target="_blank" id='currentLink' style = "margin-left:10px;display:none">Link of current animation</a>
     </div>
@@ -628,6 +648,29 @@
       updateIframe(link);
     }
 
+    function Standby()
+    {
+      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let face = document.getElementById('selectedFace').innerHTML;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let weaponCode = document.getElementById('standbyWeapon').value;
+      let genderCode = '23';  // 23 for female
+      if (document.getElementById('standbyMale').classList.contains('active')){
+        genderCode = '21';  // 21 for male
+      }
+      let link = '';
+      if (weaponCode === "MM"){
+        link = base_url + cid + "/lobby+ROD_ONT_21_11035401/face" + face;
+      }
+      else{
+        link = base_url + cid + "/lobby+" + weaponCode + '_ONT_' + genderCode + '/face' + face;
+      }
+      updateIframe(link);
+    }
+
     function Win()
     {
       let cid = document.getElementById('selectedAdvId').innerHTML;
@@ -735,9 +778,10 @@
       document.getElementById('bob_btn').addEventListener("click", Bob);
       document.getElementById('walk_btn').addEventListener("click", Walk);
       document.getElementById('run_btn').addEventListener("click", Run);
-      document.getElementById('win_btn').addEventListener("click", Win);
       document.getElementById('stun_btn').addEventListener("click", Stun);
       document.getElementById('die_btn').addEventListener("click", Die);
+      document.getElementById('standby_btn').addEventListener("click", Standby);
+      document.getElementById('win_btn').addEventListener("click", Win);
       // Generates filters
       for(var key in filters){
         let value = filters[key];

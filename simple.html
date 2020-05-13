@@ -25,12 +25,11 @@
       <div class="sidebar-heading">Settings </div>
       <form>
         <div class="form-group">
-          <select class="form-control" id="char_set">
+          <select class="form-control mb-2" id="char_set">
             <option selected = "selected" value = '0'>Regular Adventurers</option>
             <option value = '1'>Allies</option>
             <option value = '2'>Enemies</option>
           </select>
-          <p style = "border-bottom: medium"></p>
           <div id="filter"> <!-- Filter -->
             <select class="form-control" id="raritySelect">
               <option selected = "selected">Any rarity</option>
@@ -58,11 +57,9 @@
             <option>Staff</option>
           </select>
           </div>
-          <p style = "font-size:small"></p>
-          <select class="form-control mt-0 bg-light" id="advSelect" style = "width: 15rem" autofocus>
+          <select class="form-control mt-2 bg-light" id="advSelect" style = "width: 15rem" autofocus>
           </select>
-          <p style = "font-size:small"></p>
-          <select class="form-control" id="faceSelect" style = 'display:none'>
+          <select class="form-control mt-2" id="faceSelect" style = 'display:none'>
             <option value ='1'>Face 1</option>
             <option selected = "selected" value = '2'>Face 2</option>
             <option value = '3'>Face 3</option>
@@ -79,18 +76,38 @@
         <div class = "button-toolbar mb-1">
           <button id = 'still_btn' class="btn btn-info">Still</button>
           <button id = 'bob_btn' class="btn btn-info">Bob</button>
+          <button id = 'stun_btn' class="btn btn-info">Stun</button>
         </div>
-        <div class = "button-toolbar mb-1">
+        <div class = "button-toolbar mb-2">
           <button id = 'walk_btn' class="btn btn-info">Walk</button>
           <button id = 'run_btn' class="btn btn-info">Run</button>
-        </div>
-        <div class = "button-toolbar mb-0">
-          <button id = 'stun_btn' class="btn btn-info">Stunned</button>
           <button id = 'die_btn' class="btn btn-info">Die</button>
         </div>
-        <br style = "font-size:small">
-        <p class = 'mt-6 mb-0 border-top' style="padding-left: 10px;width:100%">Win animation settings</p>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 10px;width:100%">Standby animation settings</p>
+        <div>
+          <select class="form-control mt-0 d-inline align-middle" id="standbyWeapon" style='width:60%'>
+            <option selected = "selected" value ='SWD'>Sword</option>
+            <option value = 'KAT'>Blade</option>
+            <option value = 'DAG'>Dagger</option>
+            <option value = 'AXE'>Axe</option>
+            <option value = 'LAN'>Lance</option>
+            <option value = 'BOW'>Bow</option>
+            <option value = 'ROD'>Wand</option>
+            <option value = 'CAN'>Staff</option>
+            <option value = 'MM'>Mega Man</option>
+          </select>
+          <div class="btn-group btn-group-toggle align-middle" data-toggle="buttons">
+            <label class="btn btn-secondary active" id="standbyMale">
+              <input type="radio" name="standby" checked>M
+            </label>
+            <label class="btn btn-secondary" id="standbyFemale">
+              <input type="radio" name="standby">F
+            </label>
+          </div>
+          <button id = 'standby_btn' class="btn btn-success" style = "width:100%;margin-top:5px; margin-bottom:5px">Standby</button>
+        </div>
+        <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 10px;width:90%">Win animation settings</p>
+        <div class="btn-group btn-group-toggle mb-2" data-toggle="buttons">
           <label class="btn btn-secondary active" id="defaultWin">
             <input type="radio" name="winstyle" id="defaultWinbtn" checked>Default
           </label>
@@ -101,7 +118,6 @@
             <input type="radio" name="winstyle">Special
           </label>
         </div>
-        <p style = "font-size:small"></p>
         <select class="form-control" id="weaponWStyle" style = 'display:none'>
           <option selected = "selected" value ='SWD'>Sword</option>
           <option value = 'KAT'>Blade</option>
@@ -114,7 +130,7 @@
         </select>
         <select class="form-control" id="spWStyle" style = "display:none">
         </select>
-        <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:10px; margin-bottom:10px">Win</button>
+        <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:5px; margin-bottom:5px">Win</button>
       </div>
       <a href='' target="_blank" id='currentLink' style = "display:none">Link of current animation</a>
     </div>
@@ -432,8 +448,8 @@
 
     function Stun()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
@@ -444,13 +460,36 @@
 
     function Die()
     {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
+      let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
       if (cid === '0')
       {
         return false;
       }
       let link = base_url + cid + "/cmn+CMN_DIE_02" + '/face' + face;
+      updateIframe(link);
+    }
+
+    function Standby()
+    {
+      let cid = document.getElementById('advSelect').value;
+      let face = document.getElementById('faceSelect').value;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let weaponCode = document.getElementById('standbyWeapon').value;
+      let genderCode = '23';  // 23 for female
+      if (document.getElementById('standbyMale').classList.contains('active')){
+        genderCode = '21';  // 21 for male
+      }
+      let link = '';
+      if (weaponCode === "MM"){
+        link = base_url + cid + "/lobby+ROD_ONT_21_11035401/face" + face;
+      }
+      else{
+        link = base_url + cid + "/lobby+" + weaponCode + '_ONT_' + genderCode + '/face' + face;
+      }
       updateIframe(link);
     }
 
@@ -561,9 +600,10 @@
       document.getElementById('bob_btn').addEventListener("click", Bob);
       document.getElementById('walk_btn').addEventListener("click", Walk);
       document.getElementById('run_btn').addEventListener("click", Run);
-      document.getElementById('win_btn').addEventListener("click", Win);
       document.getElementById('stun_btn').addEventListener("click", Stun);
       document.getElementById('die_btn').addEventListener("click", Die);
+      document.getElementById('standby_btn').addEventListener("click", Standby);
+      document.getElementById('win_btn').addEventListener("click", Win);
     }
 
     window.onload = init;
