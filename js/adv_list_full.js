@@ -1486,6 +1486,22 @@ const adv = [
 		element: 'Water',
 		weapon: 'Dagger',
 		rarity: 5
+	},
+	{
+		cid: '110272_01',
+		name: 'Forte',
+		title: 'Lord of the Skies',
+		element: 'Shadow',
+		weapon: 'Lance',
+		rarity: 5
+	},
+	{
+		cid: '110362_01',
+		name: 'Yurius',
+		title: 'Ravenous Researcher',
+		element: 'Water',
+		weapon: 'Wand',
+		rarity: 5
 	}
 ];
 export default adv;
