@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.9, shrink-to-fit=no">
   <link rel="icon" href="images/favicon.png">
@@ -14,7 +13,6 @@
   <!-- Custom styles for this template -->
   <link rel="stylesheet" href="./css/styles.css">
   <link href="css/sidebar.css" rel="stylesheet">
-
 
 </head>
 
@@ -89,14 +87,14 @@
       </form>
       <div id = 'ctrl_btn' style = 'display:none;text-align:center;max-width: 15rem'>
         <div class = "button-toolbar mb-1">
-          <button id = 'still_btn' class="btn btn-info">Still</button>
-          <button id = 'bob_btn' class="btn btn-info">Bob</button>
-          <button id = 'stun_btn' class="btn btn-info">Stun</button>
+          <button data-action = 'still' class="btn btn-info action-btn">Still</button>
+          <button data-action = 'bob' class="btn btn-info action-btn">Bob</button>
+          <button data-action = 'stun' class="btn btn-info action-btn">Stun</button>
         </div>
         <div class = "button-toolbar mb-1">
-          <button id = 'walk_btn' class="btn btn-info">Walk</button>
-          <button id = 'run_btn' class="btn btn-info">Run</button>
-          <button id = 'die_btn' class="btn btn-info">Die</button>
+          <button data-action = 'walk' class="btn btn-info action-btn">Walk</button>
+          <button data-action = 'run' class="btn btn-info action-btn">Run</button>
+          <button data-action = 'die' class="btn btn-info action-btn">Die</button>
         </div>
         <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 5px;">Standby animation settings</p>
         <div>
@@ -119,7 +117,7 @@
               <input type="radio" name="standby">F
             </label>
           </div>
-          <button id = 'standby_btn' class="btn btn-success" style = "width:100%;margin-top:5px; margin-bottom:5px">Standby</button>
+          <button data-action = 'standby' class="btn btn-success action-btn" style = "width:100%;margin-top:5px; margin-bottom:5px">Standby</button>
         </div>
         <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 5px;">Win animation settings</p>
         <div class="btn-group btn-group-toggle mb-2" data-toggle="buttons">
@@ -145,7 +143,7 @@
         </select>
         <select class="form-control" id="spWStyle" style = "display:none">
         </select>
-        <button id = 'win_btn' class="btn btn-success" style = "width:100%;margin-top:5px; margin-bottom:5px">Win</button>
+        <button data-action = 'win' class="btn btn-success action-btn" style = "width:100%;margin-top:5px; margin-bottom:5px">Win</button>
       </div>
       <a href='' target="_blank" id='currentLink' style = "margin-left:10px;display:none">Link of current animation</a>
     </div>
@@ -174,7 +172,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-  <!-- Menu Toggle Script -->
+  <!-- Menu Toggle and Iframe Script -->
   <script>
     $("#menu-toggle").click(function(e) {
       e.preventDefault();
@@ -211,32 +209,23 @@
       iframe.style.width = size + 'px';
     }
 
-    // .onload doesn't work with IE8 and older.
-    if (iframe.attachEvent) {
-        iframe.attachEvent("onload", resizeIframe);
-    } else {
-        iframe.onload=resizeIframe;
-    }
-
     window.onresize = resizeIframe;
     window.onload = resizeIframe;
   </script>
   <!-- Other Scripts -->
   <script type='module'>
+    const base_url = 'https://mushymato.github.io/dl-fbx/#/c';
+
     import adv from 'https://dgk3593.github.io/DLModel/js/adv_list_full.js';
     import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
     import allies from 'https://dgk3593.github.io/DLModel/js/allies.js';
     import enemy from 'https://dgk3593.github.io/DLModel/js/enemy.js';
-    adv.sort((a, b) => a.name.localeCompare(b.name)); // Sort adv by name
-    sp_adv.sort((a, b) => a.name.localeCompare(b.name));
 
     let advBox = document.getElementById('advSelect');
     let spwinbox = document.getElementById('spWStyle');
 
-    var base_url = 'https://mushymato.github.io/dl-fbx/#/c';
-
-    var wintype = 0;  // default
-    var ch_set = '0';
+    var wintype = 0;  // default win
+    var ch_set = '0'; // default character set is regular adventurer
     var card_list = document.getElementById('card_list');
     // Sort list by rarity then name
     // Sort by name first
@@ -245,6 +234,8 @@
     adv.sort(function(a,b){
       return b.rarity - a.rarity;
     });
+    // Sort special adventures by name
+    sp_adv.sort((a, b) => a.name.localeCompare(b.name));
 
     var rarity_cond = [];
     var wea_cond = [];
@@ -266,6 +257,7 @@
       resizeIframe();
       document.getElementById('currentLink').href = link;
     }
+
     function createFilter(key, e){
       let label = document.createElement('label');
       label.className = "btn btn-light border-dark";
@@ -304,7 +296,7 @@
       });
     }
 
-    function updateRarity() {
+    function updateRarity(){
       getChecked('rarity');
       rarity_cond = checked['rarity'].map(Number);
       if (rarity_cond.length == 0){
@@ -312,7 +304,7 @@
       }
     }
 
-    function updateWeapon() {
+    function updateWeapon(){
       getChecked('wea');
       wea_cond = checked['wea'];
       if (wea_cond.length == 0){
@@ -320,7 +312,7 @@
       }
     }
 
-    function updateElement() {
+    function updateElement(){
       getChecked('ele');
       ele_cond = checked['ele'];
       if (ele_cond.length == 0){
@@ -328,7 +320,7 @@
       }
     }
 
-    function filter() {
+    function filter(){
       updateRarity();
       updateWeapon();
       updateElement();
@@ -340,28 +332,29 @@
       temp_list.forEach(advhandleCard);
     }
 
-    function advhandle(adv)
-    {
+    function advhandle(adv){
       var listItem = document.createElement('option');
       listItem.innerHTML = adv.name;
       listItem.value = adv.cid;
       advBox.appendChild(listItem);
     }
 
+    function cardClicked(){
+      let cid = this.dataset.cid;
+      document.getElementById('selectedAdvId').innerHTML = cid;
+      document.getElementById('advDetails').style.display = 'block';
+      $('#SelectBox').modal('hide');
+      advSelected();
+    }
+
     function advhandleCard(adv) {
-      let img_link = 'images/full_body_300/' + adv.cid + '.png';
       let outer = document.createElement('div');
       outer.className = "col mb-2"
 
       let tmpCard = document.createElement('div');
       tmpCard.className = "card mx-auto text-center border-primary rounded";
-      tmpCard.cid = adv.cid;
-      tmpCard.onclick = function(){
-        document.getElementById('selectedAdvId').innerHTML = adv.cid;
-        document.getElementById('advDetails').style.display = 'block';
-        $('#SelectBox').modal('hide');
-        advSelected();
-      };
+      tmpCard.dataset.cid = adv.cid;
+      tmpCard.addEventListener("click", cardClicked);
 
       let title = document.createElement('h5');
       title.className = "card-title mb-0";
@@ -378,6 +371,7 @@
       r_img.src = 'images/rarity_' + adv.rarity + '_line.png';
       tmpCard.appendChild(r_img);
 
+      let img_link = 'images/full_body_300/' + adv.cid + '.png';
       let img = document.createElement('img');
       img.className = "card-img-top my-3";
       img.src = img_link;
@@ -398,8 +392,7 @@
       card_list.appendChild(outer);
     }
 
-    function defaultWinClicked()
-    {
+    function defaultWinClicked(){
       if (wintype === 0)
       {
         return false;
@@ -409,8 +402,7 @@
       wintype = 0;
     }
 
-    function weaponWinClicked()
-    {
+    function weaponWinClicked(){
       if (wintype === 1)
       {
         return false;
@@ -420,8 +412,7 @@
       wintype = 1;
     }
 
-    function spWinClicked()
-    {
+    function spWinClicked(){
       if (wintype === 2)
       {
         return false;
@@ -431,14 +422,12 @@
       wintype = 2;
     }
 
-    function loadSpWin()
-    {
+    function loadSpWin(){
       spwinbox.innerHTML = '';
       sp_adv.forEach(spwinhandle);
     }
 
-    function loadAllies()
-    {
+    function loadOptions(){
       advBox.innerHTML = '';
       var listItem = document.createElement('option');
       listItem.innerHTML = 'Choose a character';
@@ -446,58 +435,41 @@
       listItem.disabled = 'disabled';
       listItem.selected = 'selected';
       advBox.appendChild(listItem);
-
-      allies.forEach(advhandle);
+      switch (ch_set){
+        case '1': // Allies
+          allies.forEach(advhandle);
+          break;
+        case '2': // Enemies
+          enemy.forEach(advhandle);
+          break;
+      }
+      advBox.focus();
     }
 
-    function loadEnemy()
-    {
-      advBox.innerHTML = '';
-      var listItem = document.createElement('option');
-      listItem.innerHTML = 'Choose a character';
-      listItem.value = '0';
-      listItem.disabled = 'disabled';
-      listItem.selected = 'selected';
-      advBox.appendChild(listItem);
-
-      enemy.forEach(advhandle);
-    }
-
-    function charSetChanged()
-    {
+    function charSetChanged(){
       ch_set = document.getElementById('char_set').value;
+
+      document.getElementById('faceBtn').style.display= 'none';  // Show face control
+      document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
+      document.getElementById('currentLink').style.display= 'none';
+
       switch (ch_set)
       {
-        case '0':
+        case '0': // Regular Adventurers
           document.getElementById('advSelect').style.display= 'none';
           document.getElementById('chooseBtn').style.display= 'block';
-          document.getElementById('faceBtn').style.display= 'none';  // Show face control
-          document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
-          document.getElementById('currentLink').style.display= 'none';
           break;
         case '1': // allies
+        case '2': // enemies
           document.getElementById('advSelect').style.display= 'block';
           document.getElementById('chooseBtn').style.display= 'none';
           document.getElementById('advDetails').style.display = 'none';
-          document.getElementById('faceBtn').style.display= 'none';  // Show face control
-          document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
-          document.getElementById('currentLink').style.display= 'none';
-          loadAllies();
-          break;
-        case '2': // enemy
-          document.getElementById('advSelect').style.display= 'block';
-          document.getElementById('chooseBtn').style.display= 'none';
-          document.getElementById('advDetails').style.display = 'none';
-          document.getElementById('faceBtn').style.display= 'none';  // Show face control
-          document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
-          document.getElementById('currentLink').style.display= 'none';
-          loadEnemy();
+          loadOptions();
           break;
       }
     }
 
-    function spwinhandle(sp_adv)
-    {
+    function spwinhandle(sp_adv){
       var listItem = document.createElement('option');
       listItem.innerHTML = sp_adv.name;
       listItem.value = sp_adv.cid;
@@ -524,20 +496,18 @@
       tmpCard.className = "mx-auto rounded";
 
       outer.appendChild(tmpCard);
-
       faceBox.appendChild(outer);
     }
 
     function loadFaces(){
       document.getElementById('faces').innerHTML = '';
-      var i;
+      let i = 1;
       for (i=1; i < 10; i++){
         addFace(i);
       }
     }
 
-    function advSelected()
-    {
+    function advSelected(){
       let selected = '';
       let cid = '';
 
@@ -563,122 +533,39 @@
       updateIframe(link);
     }
 
-    function faceSelected()
-    {
+    function faceSelected(){
       let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
       if (cid === '0')
       {
         return false;
       }
-      let link = document.getElementById('ifm').src;
-      link = link.substr(0,link.length-1) + face;
+      let face = document.getElementById('selectedFace').innerHTML;
+      let link = document.getElementById('ifm').src.replace(/face[0-9]/,'face'+face);
       updateIframe(link);
     }
 
-    function Still()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
+    function getWeaponcode(weapon){
+      switch (weapon){
+        case 'Sword':
+          return 'SWD';
+        case 'Blade':
+          return 'KAT';
+        case 'Dagger':
+          return 'DAG';
+        case 'Axe':
+          return 'AXE';
+        case 'Lance':
+          return 'LAN';
+        case 'Bow':
+          return 'BOW';
+        case 'Wand':
+          return 'ROD';
+        case 'Staff':
+          return 'CAN';
       }
-      let link = base_url + cid +'/-/face' + face;
-      updateIframe(link);
     }
 
-    function Bob()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
-      let link = base_url + cid + "/cmn+CMN_MWM_03" + '/face' + face;
-      updateIframe(link);
-    }
-
-    function Walk()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
-      let link = base_url + cid + "/cmn+CMN_MWM_01" + '/face' + face;
-      updateIframe(link);
-    }
-
-    function Run()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
-      let link = base_url + cid + "/cmn+CMN_MWM_02" + '/face' + face;
-      updateIframe(link);
-    }
-
-    function Stun()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
-      let link = base_url + cid + "/cmn+CMN_SWN_01" + '/face' + face + '/-/0,0,0/0,0,1.5';
-      updateIframe(link);
-    }
-
-    function Die()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
-      let link = base_url + cid + "/cmn+CMN_DIE_02" + '/face' + face + '/-/0,0,0/0,0,1.5';
-      updateIframe(link);
-    }
-
-    function Standby()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
-      let weaponCode = document.getElementById('standbyWeapon').value;
-      let genderCode = '23';  // 23 for female
-      if (document.getElementById('standbyMale').classList.contains('active')){
-        genderCode = '21';  // 21 for male
-      }
-      let link = '';
-      if (weaponCode === "MM"){
-        link = base_url + cid + "/lobby+ROD_ONT_21_11035401/face" + face;
-      }
-      else{
-        link = base_url + cid + "/lobby+" + weaponCode + '_ONT_' + genderCode + '/face' + face;
-      }
-      updateIframe(link);
-    }
-
-    function Win()
-    {
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
-      if (cid === '0')
-      {
-        return false;
-      }
+    function getWinLink(cid, face){
       let sp = 0;   // equals 1 if playing special animation
       let wid = cid;  // id of the final animation
       if (wintype == 2) // special animation
@@ -715,33 +602,7 @@
           temp = sp_adv.find(d => d.cid === wid);
           weapon = temp.weapon;
         }
-        switch (weapon)
-          {
-            case 'Sword':
-              wincode = 'SWD';
-              break;
-            case 'Blade':
-              wincode = 'KAT';
-              break;
-            case 'Dagger':
-              wincode = 'DAG';
-              break;
-            case 'Axe':
-              wincode = 'AXE';
-              break;
-            case 'Lance':
-              wincode = 'LAN';
-              break;
-            case 'Bow':
-              wincode = 'BOW';
-              break;
-            case 'Wand':
-              wincode = 'ROD';
-              break;
-            case 'Staff':
-              wincode = 'CAN';
-              break;
-          }
+        wincode = getWeaponcode(weapon);
       }
       else {
         wincode = document.getElementById('weaponWStyle').value;
@@ -755,16 +616,55 @@
       {
         link = base_url + cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
       }
+      return link;
+    }
+
+    function actionClicked(){
+      let cid = document.getElementById('selectedAdvId').innerHTML;
+      let face = document.getElementById('selectedFace').innerHTML;
+      if (cid === '0')
+      {
+        return false;
+      }
+      let link = '';
+      let action = this.dataset.action;
+      switch (action) {
+        case 'still':
+          link = base_url + cid +'/-/face' + face;
+          break;
+        case 'bob':
+          link = base_url + cid + "/cmn+CMN_MWM_03" + '/face' + face;
+          break;
+        case 'walk':
+          link = base_url + cid + "/cmn+CMN_MWM_01" + '/face' + face;
+          break;
+        case 'run':
+          link = base_url + cid + "/cmn+CMN_MWM_02" + '/face' + face;
+          break;
+        case 'stun':
+          link = base_url + cid + "/cmn+CMN_SWN_01" + '/face' + face + '/-/0,0,0/0,0,1.5';
+          break;
+        case 'die':
+          link = base_url + cid + "/cmn+CMN_DIE_02" + '/face' + face + '/-/0,0,0/0,0,1.5';
+          break;
+        case 'standby':
+          let weaponCode = document.getElementById('standbyWeapon').value;
+          if (weaponCode === "MM"){
+            link = base_url + cid + "/lobby+ROD_ONT_21_11035401/face" + face;
+          }
+          else {
+            let genderCode = document.getElementById('standbyMale').classList.contains('active') ? '21' : '23';  // 21 for male, 23 for female
+            link = base_url + cid + "/lobby+" + weaponCode + '_ONT_' + genderCode + '/face' + face;
+          }
+          break;
+        case 'win':
+          link = getWinLink(cid, face);
+          break;
+      }
       updateIframe(link);
     }
-    document.getElementById('filterReset').onclick = function(){
-      $(":checkbox").prop('checked', false).parent().removeClass('active');
-      $('input[type=checkbox]').val('off');
-      filter()};
 
-
-    function init()
-    {
+    function init(){
       resizeIframe();
       filter();
       loadSpWin();
@@ -774,14 +674,18 @@
       document.getElementById('defaultWin').addEventListener("click", defaultWinClicked);
       document.getElementById('weaponWin').addEventListener("click", weaponWinClicked);
       document.getElementById('spWin').addEventListener("click", spWinClicked);
-      document.getElementById('still_btn').addEventListener("click", Still);
-      document.getElementById('bob_btn').addEventListener("click", Bob);
-      document.getElementById('walk_btn').addEventListener("click", Walk);
-      document.getElementById('run_btn').addEventListener("click", Run);
-      document.getElementById('stun_btn').addEventListener("click", Stun);
-      document.getElementById('die_btn').addEventListener("click", Die);
-      document.getElementById('standby_btn').addEventListener("click", Standby);
-      document.getElementById('win_btn').addEventListener("click", Win);
+
+      // Reset Filter button
+      document.getElementById('filterReset').onclick = function(){
+        $(":checkbox").prop('checked', false).parent().removeClass('active');
+        $('input[type=checkbox]').val('off');
+        filter();
+      };
+
+      document.querySelectorAll('.action-btn').forEach(button => {
+        button.addEventListener("click", actionClicked);
+      });
+
       // Generates filters
       for(var key in filters){
         let value = filters[key];
@@ -801,7 +705,7 @@
       filter();
     }
 
-    window.onload = init;
+    window.onload = init; // Initialize when loaded
   </script>
 </body>
 
