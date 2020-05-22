@@ -198,6 +198,7 @@
     var cid = '0'; // ID of current character
     var face = 2; // Currently selected face, default face2
     var subLink = ''; // Current sub link
+    var name = ''; // Name of current character
 
     // Sort list by rarity then name
     // Sort by name first
@@ -284,7 +285,7 @@
       label.appendChild(input);
 
       const img = document.createElement('img');
-      img.src = 'images/' + key + '_' + e + '.png';
+      img.src = `images/${ key }_${ e }.png`;
       img.className = "filterIcon";
       label.appendChild(img);
 
@@ -380,10 +381,10 @@
 
       const r_img = document.createElement('img');
       r_img.className = "cardImg_r";
-      r_img.src = 'images/rarity_' + adv.rarity + '_line.png';
+      r_img.src = `images/rarity_${ adv.rarity }_line.png`;
       tmpCard.appendChild(r_img);
 
-      const img_link = 'images/full_body_300/' + adv.cid + '.png';
+      const img_link = `images/full_body_300/${ adv.cid }.png`;
       const img = document.createElement('img');
       img.className = "card-img-top my-3";
       img.src = img_link;
@@ -394,10 +395,10 @@
       icons.style="margin:auto";
       const icon1 = document.createElement('img');
       icon1.style = "margin-right:5px";
-      icon1.src = 'images/ele_' + adv.element + '.png';
+      icon1.src = `images/ele_${ adv.element }.png`;
       icons.appendChild(icon1);
       const icon2 = document.createElement('img');
-      icon2.src = 'images/wea_' + adv.weapon + '.png';
+      icon2.src = `images/wea_${ adv.weapon }.png`;
       icons.appendChild(icon2);
       tmpCard.appendChild(icons);
       outer.appendChild(tmpCard);
@@ -480,9 +481,9 @@
     }
 
     function addFace(n){
-      const img_link = 'https://mushymato.github.io/dl-fbx/fbx/c' + cid + '/c' + cid +'.png';
+      const img_link = `https://mushymato.github.io/dl-fbx/fbx/c${ cid }/c${ cid }.png`;
       const faceBox = document.getElementById('faces');
-      const idName = 'face' + n;
+      const idName = `face${ n }`;
 
       const outer = document.createElement('div');
       outer.className = "col-4 mb-2 align-items-center"
@@ -497,7 +498,7 @@
 
       const tmpCard = document.createElement('div');
       tmpCard.id = idName;
-      tmpCard.style = 'background-image: url(' + img_link + ');';
+      tmpCard.style = `background-image: url('${ img_link }');`;
       tmpCard.className = "mx-auto rounded";
 
       outer.appendChild(tmpCard);
@@ -514,21 +515,24 @@
     function advSelected(){
       if (ch_set != '0'){
         cid = document.getElementById('advSelect').value;
+        name = advBox.options[advBox.selectedIndex].text;
       }
       else {
         let s_adv = adv.find(d => d.cid == cid);
-        let icon_link = 'images/icons/' + cid + '_r0' + s_adv.rarity + '.png';
+        let icon_link = `images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+        name = s_adv.name;
         document.getElementById('adv_icon').src = icon_link;
-        document.getElementById('adv_name').innerHTML = s_adv.name;
+        document.getElementById('adv_name').innerHTML = name;
       }
 
       document.getElementById('faceBtn').style.display= 'block';  // Show face control
       document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
       document.getElementById('currentLink').style.display= 'block';
       loadFaces();
-      subLink = cid +'/-/face' + face;
+      subLink = `${ cid }/-/face${ face }`;
       let link = base_url + subLink;
       updateIframe(link);
+      document.title = `${ name } - Dragalia Lost 3D Models`; // Update title
     }
 
     function faceSelected(){
@@ -562,7 +566,7 @@
       }
     }
 
-    function getWinSubLink(cid, face){
+    function getWinSubLink(){
       let sp = 0;   // equals 1 if playing special animation
       let wid = cid;  // id of the final animation
       if (wintype == 2) // special animation
@@ -604,14 +608,14 @@
       else {
         wincode = document.getElementById('weaponWStyle').value;
       }
-      let subLink = '';
+
       if (sp == 0)
       {
-        subLink = cid + "/win+" + wincode + "_WIN_01" + '/face' + face;
+        subLink = `${ cid }/win+${ wincode }_WIN_01/face${ face }`;
       }
       else
       {
-        subLink = cid + "/wins+" + wincode + "_WIN_01_" + wid.replace('_','') + '/face' + face;
+        subLink = `${ cid }/wins+${ wincode }_WIN_01_${ wid.replace('_','') }/face${ face }`;
       }
       return subLink;
     }
@@ -624,36 +628,36 @@
       let action = this.dataset.action;
       switch (action) {
         case 'still':
-          subLink = cid +'/-/face' + face;
+          subLink = `${ cid }/-/face${ face }`;
           break;
         case 'bob':
-          subLink = cid + "/cmn+CMN_MWM_03" + '/face' + face;
+          subLink = `${ cid }/cmn+CMN_MWM_03/face${ face }`;
           break;
         case 'walk':
-          subLink = cid + "/cmn+CMN_MWM_01" + '/face' + face;
+          subLink = `${ cid }/cmn+CMN_MWM_01/face${ face }`;
           break;
         case 'run':
-          subLink = cid + "/cmn+CMN_MWM_02" + '/face' + face;
+          subLink = `${ cid }/cmn+CMN_MWM_02/face${ face }`;
           break;
         case 'stun':
-          subLink = cid + "/cmn+CMN_SWN_01" + '/face' + face + '/-/0,0,0/0,0,1.5';
+          subLink = `${ cid }/cmn+CMN_SWN_01/face${ face }/-/0,0,0/0,0,1.5`;
           break;
         case 'die':
-          subLink = cid + "/cmn+CMN_DIE_02" + '/face' + face + '/-/0,0,0/0,0,1.5';
+          subLink = `${ cid }/cmn+CMN_DIE_02/face${ face }/-/0,0,0/0,0,1.5`;
           break;
         case 'standby':
-          let weaponCode = document.getElementById('standbyWeapon').value;
+          const weaponCode = document.getElementById('standbyWeapon').value;
           if (weaponCode === "MM"){
-            subLink = cid + "/lobby+ROD_ONT_21_11035401/face" + face;
+            subLink = `${ cid }/lobby+ROD_ONT_21_11035401/face${ face }`;
           }
           else {
-            let isMale = document.getElementById('standbyMale').classList.contains('active');
-            let genderCode = isMale ? '21' : '23';  // 21 for male, 23 for female
-            subLink = cid + "/lobby+" + weaponCode + '_ONT_' + genderCode + '/face' + face;
+            const isMale = document.getElementById('standbyMale').classList.contains('active');
+            const genderCode = isMale ? '21' : '23';  // 21 for male, 23 for female
+            subLink = `${ cid }/lobby+${ weaponCode }_ONT_${ genderCode }/face${ face }`;
           }
           break;
         case 'win':
-          subLink = getWinSubLink(cid, face);
+          subLink = getWinSubLink();
           break;
       }
       let link = base_url + subLink;
