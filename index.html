@@ -213,11 +213,12 @@
     var rarity_cond = [];
     var wea_cond = [];
     var ele_cond =[];
+    var cond = {};
     var checked = {};
 
     const filters = {rarity:[3, 4, 5],
-                    ele:['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
-                    wea:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
+                    element:['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
+                    weapon:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
                     };
 
     function pageY(elem) {
@@ -312,22 +313,12 @@
     }
 
     function updateFilter(){
-      getChecked('rarity');
-      rarity_cond = checked['rarity'].map(Number);
-      if (rarity_cond.length == 0){
-        rarity_cond = filters['rarity'];
-      }
-
-      getChecked('wea');
-      wea_cond = checked['wea'];
-      if (wea_cond.length == 0){
-        wea_cond = filters['wea'];
-      }
-
-      getChecked('ele');
-      ele_cond = checked['ele'];
-      if (ele_cond.length == 0){
-        ele_cond = filters['ele'];
+      for(var key in filters){
+        getChecked(key);
+        cond[key] = typeof(filters[key][0]) == 'number' ? checked[key].map(Number) : checked[key];
+        if (cond[key].length == 0){
+          cond[key] = filters[key];
+        }
       }
     }
 
@@ -335,9 +326,9 @@
       updateFilter();
       card_list.innerHTML = '';
       let temp_list = adv;
-      temp_list = temp_list.filter(d => rarity_cond.includes(d.rarity));
-      temp_list = temp_list.filter(d => wea_cond.includes(d.weapon));
-      temp_list = temp_list.filter(d => ele_cond.includes(d.element));
+      temp_list = temp_list.filter(d => cond['rarity'].includes(d.rarity));
+      temp_list = temp_list.filter(d => cond['weapon'].includes(d.weapon));
+      temp_list = temp_list.filter(d => cond['element'].includes(d.element));
       temp_list.forEach(advhandleCard);
     }
 
