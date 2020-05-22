@@ -8,6 +8,10 @@ const allies = [
 		name: 'Leif',
 	},
 	{
+		cid: '100018_06',
+		name: 'Leif (Chapter 13)',
+	},
+	{
 		cid: '100027_01',
 		name: 'Summon Lady',
 	},
