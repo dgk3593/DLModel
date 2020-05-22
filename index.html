@@ -313,7 +313,7 @@
     }
 
     function updateFilter(){
-      for(var key in filters){
+      for (var key in filters){
         getChecked(key);
         cond[key] = typeof(filters[key][0]) == 'number' ? checked[key].map(Number) : checked[key];
         if (cond[key].length == 0){
@@ -326,9 +326,13 @@
       updateFilter();
       card_list.innerHTML = '';
       let temp_list = adv;
-      temp_list = temp_list.filter(d => cond['rarity'].includes(d.rarity));
-      temp_list = temp_list.filter(d => cond['weapon'].includes(d.weapon));
-      temp_list = temp_list.filter(d => cond['element'].includes(d.element));
+      // Filter
+      for (var key in filters){
+        if (cond[key].length == filters[key].length){
+          continue;
+        }
+        temp_list = temp_list.filter(d => cond[key].includes(d[key]));
+      }
       temp_list.forEach(advhandleCard);
     }
 
