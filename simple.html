@@ -167,73 +167,27 @@
     });
     var buffer = 20; //scroll bar buffer
     var iframe = document.getElementById('ifm');
-
-    function pageY(elem) {
-        return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
-    }
-
-    function pageX(elem) {
-        return elem.offsetParent ? (elem.offsetLeft + pageX(elem.offsetParent)) : elem.offsetLeft;
-    }
-
-    function resizeIframe() {
-      let iframe = document.getElementById('ifm');
-      var width = document.documentElement.clientWidth;
-      var height = document.documentElement.clientHeight;
-      if (width >= 768)
-      {
-        width -= pageX(document.getElementById('ifm'))+ buffer ;
-        width = (width < 0) ? 0 : width;
-        height -= pageY(document.getElementById('ifm'))+ buffer ;
-        height = (height < 0) ? 0 : height;
-      }
-      else
-      {
-        height -= pageY(document.getElementById('ifm'))+ buffer ;
-        height = (height < 0) ? 0 : height;
-      }
-      var size = (width > height) ? height : width;
-      iframe.style.height = size + 'px';
-      iframe.style.width = size + 'px';
-    }
-
-    // .onload doesn't work with IE8 and older.
-    if (iframe.attachEvent) {
-        iframe.attachEvent("onload", resizeIframe);
-    } else {
-        iframe.onload=resizeIframe;
-    }
-
-    window.onresize = resizeIframe;
-    window.onload = resizeIframe;
   </script>
+  <!-- iframe Scripts -->
+  <script src = './js/iframe.js'></script>
   <!-- Other Scripts -->
   <script type='module'>
+    var base_url = 'https://mushymato.github.io/dl-fbx/#/c';
+
     import adv from 'https://dgk3593.github.io/DLModel/js/adv_list_full.js';
     import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
     import allies from 'https://dgk3593.github.io/DLModel/js/allies.js';
     import enemy from 'https://dgk3593.github.io/DLModel/js/enemy.js';
-    adv.sort((a, b) => a.name.localeCompare(b.name)); // Sort adv by name
-    sp_adv.sort((a, b) => a.name.localeCompare(b.name));
 
     let advBox = document.getElementById('advSelect');
     let spwinbox = document.getElementById('spWStyle');
 
-    var base_url = 'https://mushymato.github.io/dl-fbx/#/c';
-
     var wintype = 0;  // default
     var ch_set = '0';
 
-    function updateIframe(link){
-      document.getElementById('ifm_container').innerHTML ='';
-      let tempifm = document.createElement('iframe');
-      tempifm.style = "border:none";
-      tempifm.id = 'ifm';
-      tempifm.src = link;
-      document.getElementById('ifm_container').appendChild(tempifm);
-      resizeIframe();
-      document.getElementById('currentLink').href = link;
-    }
+    adv.sort((a, b) => a.name.localeCompare(b.name)); // Sort adv by name
+    sp_adv.sort((a, b) => a.name.localeCompare(b.name));
+
     function defaultWinClicked()
     {
       if (wintype === 0)
@@ -359,7 +313,6 @@
 
     function advhandle(adv)
     {
-      let img_link = 'images/icon/' + adv.cid + '_r0' + adv.rarity + '.png';
       var listItem = document.createElement('option');
       listItem.innerHTML = adv.name;
       listItem.value = adv.cid;
@@ -606,6 +559,7 @@
       document.getElementById('win_btn').addEventListener("click", Win);
     }
 
+    window.onresize = resizeIframe;
     window.onload = init;
   </script>
 </body>
