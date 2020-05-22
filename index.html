@@ -74,9 +74,7 @@
             <option value = '2'>Enemies</option>
           </select>
           <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#SelectBox" id='chooseBtn' style='margin-top:5px; margin-bottom:5px'>Choose an Adventurer</button>
-          <div id='selectedAdvId' style='display:none'></div>
-          <div id='selectedFace' style='display:none'>2</div>
-          <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:5px; margin-bottom:5px" autofocus>
+          <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:5px; margin-bottom:5px">
           </select>
           <!-- Chosen adventurer's details -->
           <div id="advDetails" class ='row mb-0' style="display:none">
@@ -179,9 +177,8 @@
       $("#wrapper").toggleClass("toggled");
     });
     var buffer = 20; //scroll bar buffer
+
   </script>
-  <!-- iframe Scripts -->
-  <script src = './js/iframe.js'></script>
   <!-- Other Scripts -->
   <script type='module'>
     const base_url = 'https://mushymato.github.io/dl-fbx/#/c';
@@ -195,10 +192,13 @@
     let spwinbox = document.getElementById('spWStyle');
     let card_list = document.getElementById('card_list');
 
-    var wintype = 0;  // default win
+    // Declare glabal variables
+    var wintype = 0;  // default win style is default
     var ch_set = '0'; // default character set is regular adventurer
     var cid = '0'; // ID of current character
-    var subLink = '';
+    var face = 2; // Currently selected face, default face2
+    var subLink = ''; // Current sub link
+
     // Sort list by rarity then name
     // Sort by name first
     adv.sort((a, b) => a.name.localeCompare(b.name));
@@ -218,6 +218,59 @@
                     ele:['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
                     wea:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
                     };
+
+    function pageY(elem) {
+        return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
+    }
+
+    function pageX(elem) {
+        return elem.offsetParent ? (elem.offsetLeft + pageX(elem.offsetParent)) : elem.offsetLeft;
+    }
+
+    function iframeSize(){
+      let width = document.documentElement.clientWidth;
+      let height = document.documentElement.clientHeight;
+      if (width >= 768)
+      {
+        width -= pageX(document.getElementById('ifm'))+ buffer ;
+        width = (width < 0) ? 0 : width;
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+      }
+      else
+      {
+        height -= pageY(document.getElementById('ifm'))+ buffer ;
+        height = (height < 0) ? 0 : height;
+      }
+      let size = (width > height) ? height : width;
+      return size;
+    }
+
+    function updateIframe(link){
+      let size = iframeSize();
+      document.getElementById('ifm_container').innerHTML ='';
+      let tempifm = document.createElement('iframe');
+      tempifm.style = "border:none";
+      tempifm.style.height = size + 'px';
+      tempifm.style.width = size + 'px';
+      tempifm.id = 'ifm';
+      tempifm.src = link;
+      document.getElementById('ifm_container').appendChild(tempifm);
+      document.getElementById('currentLink').href = link;
+    }
+
+    function resizeIframe(){
+      let iframe = document.getElementById('ifm');
+      if (cid != '0'){
+        let link = iframe.src;
+        updateIframe(link); // Only run if a character has been selected
+      }
+      else {  // If no character has been selected
+        let size = iframeSize();
+        iframe.style.height = size + 'px';
+        iframe.style.width = size + 'px';
+      }
+    }
 
     function createFilter(key, e){
       const label = document.createElement('label');
@@ -295,10 +348,14 @@
     }
 
     function cardClicked(){
-      const cid = this.dataset.cid;
-      document.getElementById('selectedAdvId').innerHTML = cid;
-      document.getElementById('advDetails').style.display = 'block';
       $('#SelectBox').modal('hide');
+      if (cid == '0') { // First time choosing a character
+        document.getElementById('advDetails').style.display = 'block';
+      }
+      if (cid == this.dataset.cid) {
+        return false; // If selected character is the same as current one, do nothing
+      }
+      cid = this.dataset.cid; // Update current character id
       advSelected();
     }
 
@@ -423,7 +480,6 @@
     }
 
     function addFace(n){
-      const cid = document.getElementById('selectedAdvId').innerHTML;
       const img_link = 'https://mushymato.github.io/dl-fbx/fbx/c' + cid + '/c' + cid +'.png';
       const faceBox = document.getElementById('faces');
       const idName = 'face' + n;
@@ -431,8 +487,11 @@
       const outer = document.createElement('div');
       outer.className = "col-4 mb-2 align-items-center"
       outer.onclick = function(){
-        document.getElementById('selectedFace').innerHTML = n;
         $('#FaceBox').modal('hide');
+        if (face == n) {
+          return false; // If selected face is the same as current, do nothing
+        }
+        face = n;
         faceSelected();
       };
 
@@ -453,14 +512,10 @@
     }
 
     function advSelected(){
-      let cid = '';
-
       if (ch_set != '0'){
         cid = document.getElementById('advSelect').value;
-        document.getElementById('selectedAdvId').innerHTML = cid;
       }
       else {
-        cid = document.getElementById('selectedAdvId').innerHTML;
         let s_adv = adv.find(d => d.cid == cid);
         let icon_link = 'images/icons/' + cid + '_r0' + s_adv.rarity + '.png';
         document.getElementById('adv_icon').src = icon_link;
@@ -471,20 +526,18 @@
       document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
       document.getElementById('currentLink').style.display= 'block';
       loadFaces();
-      let face = document.getElementById('selectedFace').innerHTML;
-
-      let link = base_url + cid +'/-/face' + face;
+      subLink = cid +'/-/face' + face;
+      let link = base_url + subLink;
       updateIframe(link);
     }
 
     function faceSelected(){
-      const cid = document.getElementById('selectedAdvId').innerHTML;
       if (cid === '0')
       {
         return false;
       }
-      const face = document.getElementById('selectedFace').innerHTML;
-      const link = document.getElementById('ifm').src.replace(/face[0-9]/,'face'+face);
+      subLink = subLink.replace(/face[0-9]/,'face'+face);
+      const link = base_url + subLink;
       updateIframe(link);
     }
 
@@ -564,13 +617,10 @@
     }
 
     function actionClicked(){
-      let cid = document.getElementById('selectedAdvId').innerHTML;
-      let face = document.getElementById('selectedFace').innerHTML;
       if (cid === '0')
       {
         return false;
       }
-      let subLink = '';
       let action = this.dataset.action;
       switch (action) {
         case 'still':
@@ -615,7 +665,6 @@
       filter();
       loadSpWin();
       document.getElementById('char_set').addEventListener("change", charSetChanged);
-      document.getElementById('selectedAdvId').addEventListener("change", advSelected);
       document.getElementById('advSelect').addEventListener("change", advSelected);
 
       // Reset Filter button
