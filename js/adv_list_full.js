@@ -1502,6 +1502,46 @@ const adv = [
 		element: 'Water',
 		weapon: 'Wand',
 		rarity: 5
+	},
+	{
+		cid: '110322_01',
+		name: 'Zhu Bajie',
+		title: 'Indebted General',
+		element: 'Light',
+		weapon: 'Axe',
+		rarity: 5
+	},
+	{
+		cid: '110299_02',
+		name: 'Radiant Xuan Zang',
+		title: 'Radiant Sealer',
+		element: 'Light',
+		weapon: 'Wand',
+		rarity: 5
+	},
+	{
+		cid: '110324_01',
+		name: 'Wu Kong',
+		title: 'Rookie Sealer',
+		element: 'Light',
+		weapon: 'Dagger',
+		rarity: 5
+	},
+	{
+		cid: '110323_01',
+		name: 'Sha Wujing',
+		title: 'Deadly Tactician',
+		element: 'Light',
+		weapon: 'Lance',
+		rarity: 4
+	},
+	{
+		cid: '100018_02',
+		name: 'Gala Leif',
+		title: 'White Sparrow',
+		element: 'Wind',
+		weapon: 'Sword',
+		rarity: 5
 	}
 ];
 export default adv;
