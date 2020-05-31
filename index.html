@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.9, shrink-to-fit=no">
-  <link rel="icon" href="images/favicon.png">
+  <link rel="icon" href="/images/favicon.png">
 
   <title>Dragalia Lost 3D Models</title>
 
@@ -177,7 +177,6 @@
       $("#wrapper").toggleClass("toggled");
     });
     var buffer = 20; //scroll bar buffer
-
   </script>
   <!-- Other Scripts -->
   <script type='module'>
@@ -188,7 +187,7 @@
     import allies from 'https://dgk3593.github.io/DLModel/js/allies.js';
     import enemy from 'https://dgk3593.github.io/DLModel/js/enemy.js';
 
-    let advBox = document.getElementById('advSelect');
+    let characterBox = document.getElementById('advSelect');
     let spwinbox = document.getElementById('spWStyle');
     let card_list = document.getElementById('card_list');
 
@@ -199,6 +198,7 @@
     var face = 2; // Currently selected face, default face2
     var subLink = ''; // Current sub link
     var name = ''; // Name of current character
+    var title = 'Dragalia Lost 3D Models';
 
     // Sort list by rarity then name
     // Sort by name first
@@ -210,12 +210,10 @@
     // Sort special adventures by name
     sp_adv.sort((a, b) => a.name.localeCompare(b.name));
 
-    var rarity_cond = [];
-    var wea_cond = [];
-    var ele_cond =[];
-    var cond = {};
-    var checked = {};
+    var cond = {};  // Filter condition
+    var checked = {}; // Checked filter options
 
+    // List of filters and options
     const filters = {rarity:[3, 4, 5],
                     element:['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
                     weapon:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
@@ -249,12 +247,12 @@
     }
 
     function updateIframe(link){
-      let size = iframeSize();
+      const size = iframeSize();
       document.getElementById('ifm_container').innerHTML ='';
-      let tempifm = document.createElement('iframe');
+      const tempifm = document.createElement('iframe');
       tempifm.style = "border:none";
-      tempifm.style.height = size + 'px';
-      tempifm.style.width = size + 'px';
+      tempifm.style.height = `${ size }px`;
+      tempifm.style.width = `${ size }px`;
       tempifm.id = 'ifm';
       tempifm.src = link;
       document.getElementById('ifm_container').appendChild(tempifm);
@@ -269,50 +267,41 @@
       }
       else {  // If no character has been selected
         let size = iframeSize();
-        iframe.style.height = size + 'px';
-        iframe.style.width = size + 'px';
+        iframe.style.height = `${ size }px`;
+        iframe.style.width = `${ size }px`;
       }
     }
 
-    function createFilter(key, e){
+    function createFilter(key, value){ // Create a filter button e for key
       const label = document.createElement('label');
       label.className = "btn btn-light border-dark";
-
-      const input = document.createElement('input');
-      input.type = 'checkbox';
-      input.name = key;
-      input.setAttribute('data', e);
-      input.autocomplete = 'off';
-      label.appendChild(input);
-
-      const img = document.createElement('img');
-      img.src = `images/${ key }_${ e }.png`;
-      img.className = "filterIcon";
-      label.appendChild(img);
+      label.innerHTML = `
+        <input type="checkbox" name="${ key }" data="${ value }" autocomplete="off" value="off"><img src="images/${ key }_${ value }.png" class="filterIcon">
+      `;
 
       return label;
     }
 
-    function createFilterGroup(key, el){
+    function createFilterGroup(key, values){ // Generate filter groups
       const filter_box = document.getElementById('filter');
       const filter_group = document.createElement('div');
       filter_group.className = "btn-group-toggle btn-group mx-auto";
       filter_group.setAttribute('role', "group");
       filter_group.setAttribute('data-toggle', 'buttons');
-      el.forEach((item, i) => {
-        const label = createFilter(key, item);
+      values.forEach((value) => {
+        const label = createFilter(key, value);
         filter_group.appendChild(label);
       });
       filter_box.appendChild(filter_group);
     }
 
-    function getChecked(name) {
+    function getChecked(name) { // Get the checked options from filters
       checked[name] = Array.from(document.querySelectorAll('input[name=' + name + '][value = "on"]')).map(function (el) {
         return el.getAttribute('data');
       });
     }
 
-    function updateFilter(){
+    function updateFilter(){ // get the user's filter conditions
       for (var key in filters){
         getChecked(key);
         cond[key] = typeof(filters[key][0]) == 'number' ? checked[key].map(Number) : checked[key];
@@ -322,28 +311,34 @@
       }
     }
 
-    function filter(){
+    function filter(){ // Filter adventurer list
       updateFilter();
       card_list.innerHTML = '';
-      let temp_list = adv;
+      let result = adv;
       // Filter
       for (var key in filters){
-        if (cond[key].length == filters[key].length){
+        if (cond[key].length == filters[key].length){ // If no need to filter for this key, skip
           continue;
         }
-        temp_list = temp_list.filter(d => cond[key].includes(d[key]));
+        result = result.filter(d => cond[key].includes(d[key]));
       }
-      temp_list.forEach(advhandleCard);
+
+      result.forEach(addToList); // Add each result to card list
+
+      // Add onclick to cards in result
+      document.querySelectorAll('.adv-card').forEach(card => {
+        card.addEventListener("click", cardClicked);
+      });
     }
 
     function advhandle(adv){
       const listItem = document.createElement('option');
       listItem.innerHTML = adv.name;
       listItem.value = adv.cid;
-      advBox.appendChild(listItem);
+      characterBox.appendChild(listItem);
     }
 
-    function cardClicked(){
+    function cardClicked(){ // Run when an adventurer card is clicked
       $('#SelectBox').modal('hide');
       if (cid == '0') { // First time choosing a character
         document.getElementById('advDetails').style.display = 'block';
@@ -355,49 +350,27 @@
       advSelected();
     }
 
-    function advhandleCard(adv) {
-      const outer = document.createElement('div');
-      outer.className = "col mb-2"
+    function advToCardData(adv) { // Generate card from adv data using template literal
+      return `
+        <div class="card mx-auto text-center border-primary rounded adv-card" data-cid="${ adv.cid }">
+          <h5 class="card-title mb-0">${ adv.name }</h5>
+          <h6 class="card-text mb-2 text-muted">${ adv.title }</h6>
+          <img class="cardImg_r" src="images/rarity_${ adv.rarity }_line.png">
+          <img class="card-img-top my-3" src="images/full_body_300/${ adv.cid }.png">
+          <div class="row cardIcon" style="margin: auto;">
+            <img src="images/element_${ adv.element }.png" style="margin-right: 5px;">
+            <img src="images/weapon_${ adv.weapon }.png">
+          </div>
+        </div>
+      `;
+    }
 
-      const tmpCard = document.createElement('div');
-      tmpCard.className = "card mx-auto text-center border-primary rounded";
-      tmpCard.dataset.cid = adv.cid;
-      tmpCard.addEventListener("click", cardClicked);
+    function addToList(adv) {
+      const card = document.createElement('div');
+      card.className = "col mb-2"
+      card.innerHTML = advToCardData(adv);
 
-      const title = document.createElement('h5');
-      title.className = "card-title mb-0";
-      title.innerHTML = adv.name;
-      tmpCard.appendChild(title);
-
-      const subtitle = document.createElement('h6');
-      subtitle.className = "card-text mb-2 text-muted";
-      subtitle.innerHTML = adv.title;
-      tmpCard.appendChild(subtitle);
-
-      const r_img = document.createElement('img');
-      r_img.className = "cardImg_r";
-      r_img.src = `images/rarity_${ adv.rarity }_line.png`;
-      tmpCard.appendChild(r_img);
-
-      const img_link = `images/full_body_300/${ adv.cid }.png`;
-      const img = document.createElement('img');
-      img.className = "card-img-top my-3";
-      img.src = img_link;
-      tmpCard.appendChild(img);
-
-      const icons = document.createElement('div');
-      icons.className = "row cardIcon";
-      icons.style="margin:auto";
-      const icon1 = document.createElement('img');
-      icon1.style = "margin-right:5px";
-      icon1.src = `images/element_${ adv.element }.png`;
-      icons.appendChild(icon1);
-      const icon2 = document.createElement('img');
-      icon2.src = `images/weapon_${ adv.weapon }.png`;
-      icons.appendChild(icon2);
-      tmpCard.appendChild(icons);
-      outer.appendChild(tmpCard);
-      card_list.appendChild(outer);
+      card_list.appendChild(card);
     }
 
     function winStyleChanged(){
@@ -427,13 +400,13 @@
     }
 
     function loadOptions(){
-      advBox.innerHTML = '';
+      characterBox.innerHTML = '';
       const listItem = document.createElement('option');
       listItem.innerHTML = 'Choose a character';
       listItem.value = '0';
       listItem.disabled = 'disabled';
       listItem.selected = 'selected';
-      advBox.appendChild(listItem);
+      characterBox.appendChild(listItem);
       switch (ch_set){
         case '1': // Allies
           allies.forEach(advhandle);
@@ -442,10 +415,10 @@
           enemy.forEach(advhandle);
           break;
       }
-      advBox.focus();
+      characterBox.focus();
     }
 
-    function charSetChanged(){
+    function charSetChanged(){ // Run when the character set is changed
       ch_set = document.getElementById('char_set').value;
 
       document.getElementById('faceBtn').style.display= 'none';  // Show face control
@@ -475,10 +448,9 @@
       spwinbox.appendChild(listItem);
     }
 
-    function addFace(n){
+    function addFace(n){ // Add face n to face selection
       const img_link = `https://mushymato.github.io/dl-fbx/fbx/c${ cid }/c${ cid }.png`;
       const faceBox = document.getElementById('faces');
-      const idName = `face${ n }`;
 
       const outer = document.createElement('div');
       outer.className = "col-4 mb-2 align-items-center"
@@ -492,7 +464,7 @@
       };
 
       const tmpCard = document.createElement('div');
-      tmpCard.id = idName;
+      tmpCard.id = `face${ n }`;
       tmpCard.style = `background-image: url('${ img_link }');`;
       tmpCard.className = "mx-auto rounded";
 
@@ -510,11 +482,11 @@
     function advSelected(){
       if (ch_set != '0'){
         cid = document.getElementById('advSelect').value;
-        name = advBox.options[advBox.selectedIndex].text;
+        name = characterBox.options[characterBox.selectedIndex].text;
       }
       else {
         let s_adv = adv.find(d => d.cid == cid);
-        let icon_link = `images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+        let icon_link = `/images/icons/${ cid }_r0${ s_adv.rarity }.png`;
         name = s_adv.name;
         document.getElementById('adv_icon').src = icon_link;
         document.getElementById('adv_name').innerHTML = name;
@@ -527,7 +499,10 @@
       subLink = `${ cid }/-/face${ face }`;
       let link = base_url + subLink;
       updateIframe(link);
-      document.title = `${ name } - Dragalia Lost 3D Models`; // Update title
+
+      title = `${ name } - Dragalia Lost 3D Models`;
+      document.title =  title // Update title
+      history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
     }
 
     function faceSelected(){
@@ -657,9 +632,91 @@
       }
       let link = base_url + subLink;
       updateIframe(link);
+      history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
     }
 
-    function init(){
+    function getCharSet(id) { // get the character set that contains cid = id
+      let tmp = '';
+      tmp = allies.find(d => d.cid == id); // Check if the id belongs to an ally
+      if (tmp) {
+        return '1';
+      }
+      tmp = enemy.find(d => d.cid == id); // Check if the id belongs to an enemy
+      if (tmp) {
+        return '2';
+      }
+      tmp = adv.find(d => d.cid == id); // Check if the id belongs to an adventurer
+      if (tmp) {
+        return '0';
+      }
+      return undefined;
+    }
+
+    function getIndex(id) {
+      let options = document.getElementById('advSelect').options
+      let max = options.length;
+      for (let i = 0; i < max; i++) {
+        if (options[i].value == id){
+          return i;
+        }
+      }
+      return max;
+    }
+
+    function handleURL() {
+      let temp = location.hash;
+      if (temp != '') {// Special url
+        let subURL = temp.slice(2);
+        let tmp_cid = subURL.substring(0, 9);
+        let tmp_ch_set = getCharSet(tmp_cid);
+        if (tmp_ch_set) { // Valid character id
+          ch_set = tmp_ch_set;
+          cid = tmp_cid;
+          subLink = subURL;
+          document.getElementById("char_set").selectedIndex = ch_set;
+          switch (ch_set)
+          {
+            case '0': // Regular Adventurers
+              document.getElementById('advSelect').style.display= 'none';
+              document.getElementById('chooseBtn').style.display= 'block';
+              document.getElementById('advDetails').style.display = 'block';
+
+              let s_adv = adv.find(d => d.cid == cid);
+              let icon_link = `/images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+              name = s_adv.name;
+              document.getElementById('adv_icon').src = icon_link;
+              document.getElementById('adv_name').innerHTML = name;
+              break;
+            case '1': // allies
+            case '2': // enemies
+              document.getElementById('advSelect').style.display= 'block';
+              loadOptions();
+              document.getElementById('chooseBtn').style.display= 'none';
+              document.getElementById('advDetails').style.display = 'none';
+              let index = getIndex(cid);
+              document.getElementById('advSelect').selectedIndex = index;
+              name = characterBox.options[index].text;
+              break;
+          }
+
+          document.getElementById('faceBtn').style.display= 'block';  // Show face control
+          loadFaces();
+          document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
+          document.getElementById('currentLink').style.display= 'block';
+          let link = base_url + subLink;
+          updateIframe(link);
+
+          title = `${ name } - Dragalia Lost 3D Models`;
+          document.title =  title // Update title
+          history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
+        }
+        else {  // invalid id
+          window.location.href = "./";
+        }
+      }
+    }
+
+    function init(){ // Initialize
       resizeIframe();
       filter();
       loadSpWin();
@@ -684,9 +741,9 @@
       });
 
       // Generates filters
-      for(var key in filters){
-        let value = filters[key];
-        createFilterGroup(key, value);
+      for (var key in filters){
+        let values = filters[key];
+        createFilterGroup(key, values);
       }
 
       // Add toggle on click to all filter
@@ -700,8 +757,41 @@
 
       $('input[type=checkbox]').val('off'); // Reset filters
       filter();
+
+      // Analyze url
+      handleURL();
     }
 
+    window.onpopstate = e => {
+      const data = e.state;
+      cid = data.cid;
+      subLink = data.subLink;
+      ch_set = data.ch_set;
+      document.getElementById("char_set").selectedIndex = ch_set;
+      charSetChanged();
+
+      if (ch_set != '0'){
+        let index = getIndex(cid);
+        document.getElementById('advSelect').selectedIndex = index;
+        name = characterBox.options[index].text;
+      }
+      else {
+        document.getElementById('advDetails').style.display = 'block';
+        let s_adv = adv.find(d => d.cid == cid);
+        let icon_link = `/images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+        name = s_adv.name;
+        document.getElementById('adv_icon').src = icon_link;
+        document.getElementById('adv_name').innerHTML = name;
+      }
+
+      document.getElementById('faceBtn').style.display= 'block';  // Show face control
+      document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
+      document.getElementById('currentLink').style.display= 'block';
+      loadFaces();
+
+      const link = base_url + subLink;
+      updateIframe(link);
+    };
     window.onresize = resizeIframe;
     window.onload = init; // Initialize when loaded
   </script>
