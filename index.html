@@ -486,7 +486,7 @@
       }
       else {
         let s_adv = adv.find(d => d.cid == cid);
-        let icon_link = `./DLModel/images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+        let icon_link = `./images/icons/${ cid }_r0${ s_adv.rarity }.png`;
         name = s_adv.name;
         document.getElementById('adv_icon').src = icon_link;
         document.getElementById('adv_name').innerHTML = name;
@@ -682,7 +682,7 @@
               document.getElementById('advDetails').style.display = 'block';
 
               let s_adv = adv.find(d => d.cid == cid);
-              let icon_link = `./DLModel/images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+              let icon_link = `./images/icons/${ cid }_r0${ s_adv.rarity }.png`;
               name = s_adv.name;
               document.getElementById('adv_icon').src = icon_link;
               document.getElementById('adv_name').innerHTML = name;
@@ -778,7 +778,7 @@
       else {
         document.getElementById('advDetails').style.display = 'block';
         let s_adv = adv.find(d => d.cid == cid);
-        let icon_link = `./DLModel/images/icons/${ cid }_r0${ s_adv.rarity }.png`;
+        let icon_link = `./images/icons/${ cid }_r0${ s_adv.rarity }.png`;
         name = s_adv.name;
         document.getElementById('adv_icon').src = icon_link;
         document.getElementById('adv_name').innerHTML = name;
