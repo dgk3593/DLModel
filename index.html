@@ -94,6 +94,7 @@
           <button data-action = 'run' class="btn btn-info action-btn">Run</button>
           <button data-action = 'die' class="btn btn-info action-btn">Die</button>
         </div>
+        <button data-action = 'RavishingRainbow' class="btn btn-info action-btn mb-1">Ravishing Rainbow</button>
         <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 5px;">Standby animation settings</p>
         <div>
           <select class="form-control mt-0 d-inline align-middle" id="standbyWeapon" style='width:60%'>
@@ -629,6 +630,9 @@
           break;
         case 'win':
           subLink = getWinSubLink();
+          break;
+        case 'RavishingRainbow':
+          subLink = `${ cid }/misc+KAT_SKL_01_01_11001502/face${ face }/-/0,0,0/0,0,1.5`;
           break;
       }
       let link = base_url + subLink;
