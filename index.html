@@ -511,7 +511,18 @@
       {
         return false;
       }
-      subLink = subLink.replace(/face[0-9]/,'face'+face);
+      if (subLink.match(/face[0-9]/) == null){ // if no face parameter in URL
+        let tmp = subLink.match(/[0-9]{6}_[0-9]{2}\/.*\//); // Check for action code
+        if (tmp == null){// if no action code
+          subLink = `${ cid }/-/face${ face }`;
+        }
+        else { // If there is action code
+          subLink = subLink.replace(/[0-9]{6}_[0-9]{2}\/.*\/?/, `${ tmp2[0] }face${ face }`);
+        }
+      }
+      else {
+        subLink = subLink.replace(/face[0-9]/, `face${ face }`);
+      }
       const link = base_url + subLink;
       updateIframe(link);
       history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
@@ -668,16 +679,25 @@
       return max;
     }
 
+    function getFaceId(url) {
+      let tmp = url.match(/face[0-9]/);
+      if (tmp == null){
+        return 2;
+      }
+      return parseInt(tmp[0][4]);
+    }
+
     function handleURL() {
       let temp = location.hash;
       if (temp != '') {// Special url
         let subURL = temp.slice(2);
         let tmp_cid = subURL.substring(0, 9);
+        face = getFaceId(subURL);
         let tmp_ch_set = getCharSet(tmp_cid);
         if (tmp_ch_set) { // Valid character id
           ch_set = tmp_ch_set;
           cid = tmp_cid;
-          subLink = subURL;
+          subLink = subURL.concat(subURL.charAt(subURL.length - 1) === '/' ? '' : '/'); // Add / to end of URL if it's not there
           document.getElementById("char_set").selectedIndex = ch_set;
           switch (ch_set)
           {
@@ -715,7 +735,7 @@
           document.title =  title // Update title
           history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
         }
-        else {  // invalid id
+        else {  // invalid id -> go to Index
           window.location.href = "./";
         }
       }
@@ -772,6 +792,7 @@
       cid = data.cid;
       subLink = data.subLink;
       ch_set = data.ch_set;
+      face = getFaceId(subLink);
       document.getElementById("char_set").selectedIndex = ch_set;
       charSetChanged();
 
