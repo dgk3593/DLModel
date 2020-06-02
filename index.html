@@ -513,6 +513,7 @@
       subLink = subLink.replace(/face[0-9]/,'face'+face);
       const link = base_url + subLink;
       updateIframe(link);
+      history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
     }
 
     function getWeaponcode(weapon){
