@@ -1503,14 +1503,14 @@ const adv = [
 		weapon: 'Wand',
 		rarity: 5
 	},
-	// {
-	// 	cid: '100018_02',
-	// 	name: 'Gala Leif',
-	// 	title: 'White Sparrow',
-	// 	element: 'Wind',
-	// 	weapon: 'Sword',
-	// 	rarity: 5
-	// },
+	{
+		cid: '100018_02',
+		name: 'Gala Leif',
+		title: 'White Sparrow',
+		element: 'Wind',
+		weapon: 'Sword',
+		rarity: 5
+	},
 	{
 		cid: '110324_01',
 		name: 'Wu Kong',
