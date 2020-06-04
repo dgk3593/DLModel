@@ -215,10 +215,11 @@
     var checked = {}; // Checked filter options
 
     // List of filters and options
-    const filters = {rarity:[3, 4, 5],
-                    element:['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
-                    weapon:['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
-                    };
+    const filters = {
+      rarity:[3, 4, 5],
+      element: ['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
+      weapon: ['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
+    };
 
     function pageY(elem) {
         return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
