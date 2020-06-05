@@ -1,8 +1,4 @@
-#card_list .card:hover {
-  box-shadow: 0px 0px 3px 1px #000000;
-}
-
-#filter .btn-light{
+#filter .btn-light {
   background-color: #dae0e5;
 }
 
@@ -11,49 +7,50 @@
 }
 
 .filterIcon {
-  width:20px;
-  height:20px;
+  width: 20px;
+  height: 20px;
 }
 
 .filter_box {
-  border-top-style: hidden;
-  border-right-style: hidden;
+  border-style: hidden;
   border-bottom-style: solid;
-  border-left-style: hidden;
 }
 
 .cardIcon img {
-  width:30px;
-  height:30px;
+  width: 30px;
+  height: 30px;
 }
 
 #adv_icon {
-  width:50px;
-  height:50px;
-  margin-left:25px;
-  margin-right:5px;
+  width: 50px;
+  height: 50px;
+  margin-left: 25px;
+  margin-right: 5px;
 }
 
 #card_list {
-  margin-top:10px;
-  margin-left:5px;
-  margin-right:5px;
+  margin: 10px 5px 0px 5px;
 }
 
 #card_list .card {
-  min-width:200px;
-  max-width:200px;
-  padding:5px;
+  min-width: 200px;
+  max-width: 200px;
+  padding: 5px;
+}
+
+#card_list .card:hover {
+  -webkit-box-shadow: 0px 0px 3px 1px #000000;
+          box-shadow: 0px 0px 3px 1px #000000;
 }
 
 #card_list .cardImg_r {
-  margin:auto;
+  margin: auto;
 }
 
 #card_list .card-img-top {
   min-width: 120px;
-  max-width:200px;
-  margin:auto;
+  max-width: 200px;
+  margin: auto;
 }
 
 footer {
@@ -62,95 +59,89 @@ footer {
 
 @media (max-width: 768px) {
   .filterIcon {
-    width:18px;
-    height:18px;
+    width: 18px;
+    height: 18px;
   }
-
   .modal-dialog {
-    margin:5px;
+    margin: 5px;
   }
-
   .modal-body {
     padding: 0px;
   }
-
   #card_list {
-    margin-top:10px;
-    margin-left:2px;
-    margin-right:2px;
+    margin: 10px 2px 0px 2px;
   }
-
   #card_list .card {
-    min-width:150px;
-    max-width:150px;
-    padding:5px;
+    min-width: 150px;
+    max-width: 150px;
+    padding: 5px;
   }
-
   #card_list .cardImg_r {
     max-width: 100px;
-    margin:auto;
+    margin: auto;
   }
 }
 
 #face1 {
-  width:64px;
-  height:64px;
-  background-position:-280px -165px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -280px -165px;
 }
 
 #face2 {
-  width:64px;
-  height:64px;
-  background-position:-24px -293px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -24px -293px;
 }
 
 #face3 {
-  width:64px;
-  height:64px;
-  background-position: -152px -293px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -152px -293px;
 }
 
 #face4 {
-  width:64px;
-  height:64px;
-  background-position: -280px -293px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -280px -293px;
 }
 
 #face5 {
-  width:64px;
-  height:64px;
-  background-position: -408px -293px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -408px -293px;
 }
 
 #face6 {
-  width:64px;
-  height:64px;
-  background-position: -24px -421px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -24px -421px;
 }
 
 #face7 {
-  width:64px;
-  height:64px;
-  background-position: -152px -421px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -152px -421px;
 }
 
 #face8 {
-  width:64px;
-  height:64px;
-  background-position: -280px -421px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -280px -421px;
 }
 
 #face9 {
-  width:64px;
-  height:64px;
-  background-position: -408px -421px;
+  width: 64px;
+  height: 64px;
   background-size: 512px 512px;
+  background-position: -408px -421px;
 }
+/*# sourceMappingURL=styles.css.map */
