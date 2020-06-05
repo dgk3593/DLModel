@@ -43,14 +43,9 @@
           box-shadow: 0px 0px 3px 1px #000000;
 }
 
-#card_list .cardImg_r {
-  margin: auto;
-}
-
 #card_list .card-img-top {
   min-width: 120px;
   max-width: 200px;
-  margin: auto;
 }
 
 footer {
