@@ -1542,6 +1542,22 @@ const adv = [
 		element: 'Light',
 		weapon: 'Lance',
 		rarity: 4
+	},
+	{
+		cid: '110357_01',
+		name: 'Nadine',
+		title: 'Selfie Addict',
+		element: 'Flame',
+		weapon: 'Lance',
+		rarity: 5
+	},
+	{
+		cid: '110271_01',
+		name: 'Linnea',
+		title: 'Taciturn Warrior',
+		element: 'Shadow',
+		weapon: 'Blade',
+		rarity: 5
 	}
 ];
 export default adv;

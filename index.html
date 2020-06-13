@@ -192,7 +192,7 @@
     let spwinbox = document.getElementById('spWStyle');
     let card_list = document.getElementById('card_list');
 
-    // Declare glabal variables
+    // Declare global variables
     var wintype = 0;  // default win style is default
     var ch_set = '0'; // default character set is regular adventurer
     var cid = '0'; // ID of current character
@@ -216,7 +216,7 @@
 
     // List of filters and options
     const filters = {
-      rarity:[3, 4, 5],
+      rarity: [3, 4, 5],
       element: ['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
       weapon: ['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
     };
@@ -252,7 +252,7 @@
       const size = iframeSize();
       document.getElementById('ifm_container').innerHTML ='';
       const tempifm = document.createElement('iframe');
-      tempifm.style = "border:none";
+      tempifm.style = "border: none";
       tempifm.style.height = `${ size }px`;
       tempifm.style.width = `${ size }px`;
       tempifm.id = 'ifm';
