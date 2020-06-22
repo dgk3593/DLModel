@@ -1558,6 +1558,14 @@ const adv = [
 		element: 'Shadow',
 		weapon: 'Blade',
 		rarity: 5
+	},
+	{
+		cid: '100009_07',
+		name: 'Zena',
+		title: 'Otherworld Auspex',
+		element: 'Shadow',
+		weapon: 'Wand',
+		rarity: 5
 	}
 ];
 export default adv;
