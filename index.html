@@ -1,827 +1,1125 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, shrink-to-fit=no">
-  <link rel="icon" href="./images/favicon.png">
-
-  <title>Dragalia Lost 3D Models</title>
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-  <!-- Custom styles for this template -->
-  <link rel="stylesheet" href="./css/styles.css">
-  <link href="css/sidebar.css" rel="stylesheet">
-
-</head>
-
-<body>
-  <div class="modal fade w-100 h-100" id="SelectBox" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog p-0" role="document" style="max-width:95%; min-width:95%">
-      <div class="modal-content">
-        <div class="modal-header pt-3 border-0 pb-1">
-          <button type = "button" class ="btn btn-primary float-left mx-0" id='filterReset'>Reset filter</button>
-          <h5 class="modal-title mx-auto">Choose an adventurer</h5>
-          <button type="button" class="close float-right mx-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Placeholder for filter -->
-          <div class = "card mx-auto filter_box pb-2 pt-0" style="margin-top:0px;">
-            <div class = "btn-toolbar" id ='filter'></div>
-          </div>
-          <!-- Placeholder for adventurer cards -->
-          <div class="text-center row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6" id="card_list"></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade mx-auto" id="FaceBox" tabindex="-1" role="dialog" aria-hidden="true" style="max-width:300px">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title mx-auto">Choose a face</h5>
-          <button type="button" class="close float-right mx-0" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Placeholder for adventurer faces -->
-          <div class="row row-cols-3" id='faces'></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="d-flex" id="wrapper">
-
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Settings </div>
-      <form>
-        <div class="form-group">
-          <select class="form-control" id="char_set" style = "width: 15rem">
-            <option selected = "selected" value = '0'>Regular Adventurers</option>
-            <option value = '1'>Allies</option>
-            <option value = '2'>Enemies</option>
-          </select>
-          <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#SelectBox" id='chooseBtn' style='margin-top:5px; margin-bottom:5px'>Choose an Adventurer</button>
-          <select class="form-control bg-light" id="advSelect" style = "width: 15rem; display:none; margin-top:5px; margin-bottom:5px">
-          </select>
-          <!-- Chosen adventurer's details -->
-          <div id="advDetails" class ='row mb-0' style="display:none">
-            <img src='' class='d-inline-block' id='adv_icon'><span class='d-inline-block'><h6 id='adv_name'></h6></span>
-          </div>
-          <button type="button" class="btn btn-secondary w-100" data-toggle="modal" data-target="#FaceBox" id='faceBtn' style='margin-top:3px; display:none'>Choose a face</button>
-        </div>
-      </form>
-      <div id = 'ctrl_btn' style = 'display:none;text-align:center;max-width: 15rem'>
-        <div class = "button-toolbar mb-1">
-          <button data-action = 'still' class="btn btn-info action-btn">Still</button>
-          <button data-action = 'bob' class="btn btn-info action-btn">Bob</button>
-          <button data-action = 'stun' class="btn btn-info action-btn">Stun</button>
-        </div>
-        <div class = "button-toolbar mb-1">
-          <button data-action = 'walk' class="btn btn-info action-btn">Walk</button>
-          <button data-action = 'run' class="btn btn-info action-btn">Run</button>
-          <button data-action = 'die' class="btn btn-info action-btn">Die</button>
-        </div>
-        <button data-action = 'RavishingRainbow' class="btn btn-info action-btn mb-1">Ravishing Rainbow</button>
-        <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 5px;">Standby animation settings</p>
-        <div>
-          <select class="form-control mt-0 d-inline align-middle" id="standbyWeapon" style='width:60%'>
-            <option selected = "selected" value ='SWD'>Sword</option>
-            <option value = 'KAT'>Blade</option>
-            <option value = 'DAG'>Dagger</option>
-            <option value = 'AXE'>Axe</option>
-            <option value = 'LAN'>Lance</option>
-            <option value = 'BOW'>Bow</option>
-            <option value = 'ROD'>Wand</option>
-            <option value = 'CAN'>Staff</option>
-            <option value = 'MM'>Mega Man</option>
-          </select>
-          <div class="btn-group btn-group-toggle align-middle" data-toggle="buttons">
-            <label class="btn btn-secondary active" id="standbyMale">
-              <input type="radio" name="standby" checked>M
-            </label>
-            <label class="btn btn-secondary" id="standbyFemale">
-              <input type="radio" name="standby">F
-            </label>
-          </div>
-          <button data-action = 'standby' class="btn btn-success action-btn" style = "width:100%;margin-top:5px; margin-bottom:5px">Standby</button>
-        </div>
-        <p class = 'mb-1 border-top' style="margin-top:5px;padding-left: 5px;">Win animation settings</p>
-        <div class="btn-group btn-group-toggle mb-2" data-toggle="buttons">
-          <label class="btn btn-secondary winstyle active" data-style='default'>
-            <input type="radio" name="winstyle" checked>Default
-          </label>
-          <label class="btn btn-secondary winstyle" data-style='weapon'>
-            <input type="radio" name="winstyle">Weapon
-          </label>
-          <label class="btn btn-secondary winstyle" data-style='special'>
-            <input type="radio" name="winstyle">Special
-          </label>
-        </div>
-        <select class="form-control" id="weaponWStyle" style = 'display:none'>
-          <option selected = "selected" value ='SWD'>Sword</option>
-          <option value = 'KAT'>Blade</option>
-          <option value = 'DAG'>Dagger</option>
-          <option value = 'AXE'>Axe</option>
-          <option value = 'LAN'>Lance</option>
-          <option value = 'BOW'>Bow</option>
-          <option value = 'ROD'>Wand</option>
-          <option value = 'CAN'>Staff</option>
-        </select>
-        <select class="form-control" id="spWStyle" style = "display:none">
-        </select>
-        <button data-action = 'win' class="btn btn-success action-btn" style = "width:100%;margin-top:5px; margin-bottom:5px">Win</button>
-      </div>
-      <a href='' target="_blank" id='currentLink' style = "margin-left:10px;display:none">Link of current animation</a>
-    </div>
-    <!-- /#sidebar-wrapper -->
-
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-
-      <nav class="navbar navbar-expand-sm navbar-light">
-        <button class="btn btn-primary" id="menu-toggle">Settings</button>
-        <span style="padding-left:5px"></span>
-        <p class ="nav-item"> Using resources from <a href="https://mushymato.github.io/dl-fbx/#/" target="_blank">mushymato's GitHub</a></p>
-      </nav>
-      <!-- Placeholder for iframe -->
-      <div class="container-fluid" id='ifm_container'>
-        <iframe id="ifm" src="" style="height:500px; width:500px; border: none"></iframe>
-      </div>
-    </div>
-    <!-- /#page-content-wrapper -->
-
-  </div>
-  <!-- /#wrapper -->
-
-  <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-
-  <!-- Menu Toggle Script -->
-  <script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-    var buffer = 20; //scroll bar buffer
-  </script>
-  <!-- Other Scripts -->
-  <script type='module'>
-    const base_url = 'https://mushymato.github.io/dl-fbx/#/c';
-
-    import adv from 'https://dgk3593.github.io/DLModel/js/adv_list_full.js';
-    import sp_adv from 'https://dgk3593.github.io/DLModel/js/sp_adv.js';
-    import allies from 'https://dgk3593.github.io/DLModel/js/allies.js';
-    import enemy from 'https://dgk3593.github.io/DLModel/js/enemy.js';
-
-    let characterBox = document.getElementById('advSelect');
-    let spwinbox = document.getElementById('spWStyle');
-    let card_list = document.getElementById('card_list');
-
-    // Declare global variables
-    var wintype = 0;  // default win style is default
-    var ch_set = '0'; // default character set is regular adventurer
-    var cid = '0'; // ID of current character
-    var face = 2; // Currently selected face, default face2
-    var subLink = ''; // Current sub link
-    var name = ''; // Name of current character
-    var title = 'Dragalia Lost 3D Models';
-
-    // Sort list by rarity then name
-    // Sort by name first
-    adv.sort((a, b) => a.name.localeCompare(b.name));
-    // Then sort by rarity
-    adv.sort(function(a,b){
-      return b.rarity - a.rarity;
-    });
-    // Sort special adventures by name
-    sp_adv.sort((a, b) => a.name.localeCompare(b.name));
-
-    var cond = {};  // Filter condition
-    var checked = {}; // Checked filter options
-
-    // List of filters and options
-    const filters = {
-      rarity: [3, 4, 5],
-      element: ['Flame', 'Water', 'Wind', 'Light', 'Shadow'],
-      weapon: ['Sword', 'Blade', 'Dagger', 'Axe', 'Lance', 'Bow', 'Wand', 'Staff']
-    };
-
-    function pageY(elem) {
-        return elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;
-    }
-
-    function pageX(elem) {
-        return elem.offsetParent ? (elem.offsetLeft + pageX(elem.offsetParent)) : elem.offsetLeft;
-    }
-
-    function iframeSize(){
-      let width = document.documentElement.clientWidth;
-      let height = document.documentElement.clientHeight;
-      if (width >= 768)
-      {
-        width -= pageX(document.getElementById('ifm'))+ buffer ;
-        width = (width < 0) ? 0 : width;
-        height -= pageY(document.getElementById('ifm'))+ buffer ;
-        height = (height < 0) ? 0 : height;
-      }
-      else
-      {
-        height -= pageY(document.getElementById('ifm'))+ buffer ;
-        height = (height < 0) ? 0 : height;
-      }
-      let size = (width > height) ? height : width;
-      return size;
-    }
-
-    function updateIframe(link){
-      const size = iframeSize();
-      document.getElementById('ifm_container').innerHTML ='';
-      const tempifm = document.createElement('iframe');
-      tempifm.style = "border: none";
-      tempifm.style.height = `${ size }px`;
-      tempifm.style.width = `${ size }px`;
-      tempifm.id = 'ifm';
-      tempifm.src = link;
-      document.getElementById('ifm_container').appendChild(tempifm);
-      document.getElementById('currentLink').href = link;
-    }
-
-    function resizeIframe(){
-      let iframe = document.getElementById('ifm');
-      if (cid != '0'){
-        let link = iframe.src;
-        updateIframe(link); // Only run if a character has been selected
-      }
-      else {  // If no character has been selected
-        let size = iframeSize();
-        iframe.style.height = `${ size }px`;
-        iframe.style.width = `${ size }px`;
-      }
-    }
-
-    function createFilter(key, value){ // Create a filter button e for key
-      const label = document.createElement('label');
-      label.className = "btn btn-light border-dark";
-      label.innerHTML = `
-        <input type="checkbox" name="${ key }" data="${ value }" autocomplete="off" value="off"><img src="images/filter/${ key }_${ value }.png" class="filterIcon">
-      `;
-
-      return label;
-    }
-
-    function createFilterGroup(key, values){ // Generate filter groups
-      const filter_box = document.getElementById('filter');
-      const filter_group = document.createElement('div');
-      filter_group.className = "btn-group-toggle btn-group mx-auto";
-      filter_group.setAttribute('role', "group");
-      filter_group.setAttribute('data-toggle', 'buttons');
-      values.forEach((value) => {
-        const label = createFilter(key, value);
-        filter_group.appendChild(label);
-      });
-      filter_box.appendChild(filter_group);
-    }
-
-    function getChecked(name) { // Get the checked options from filters
-      checked[name] = Array.from(document.querySelectorAll('input[name=' + name + '][value = "on"]')).map(function (el) {
-        return el.getAttribute('data');
-      });
-    }
-
-    function updateFilter(){ // get the user's filter conditions
-      for (var key in filters){
-        getChecked(key);
-        cond[key] = typeof(filters[key][0]) == 'number' ? checked[key].map(Number) : checked[key];
-        if (cond[key].length == 0){
-          cond[key] = filters[key];
-        }
-      }
-    }
-
-    function filter(){ // Filter adventurer list
-      updateFilter();
-      card_list.innerHTML = '';
-      let result = adv;
-      // Filter
-      for (var key in filters){
-        if (cond[key].length == filters[key].length){ // If no need to filter for this key, skip
-          continue;
-        }
-        result = result.filter(d => cond[key].includes(d[key]));
-      }
-
-      result.forEach(addToList); // Add each result to card list
-
-      // Add onclick to cards in result
-      document.querySelectorAll('.adv-card').forEach(card => {
-        card.addEventListener("click", cardClicked);
-      });
-    }
-
-    function advhandle(adv){
-      const listItem = document.createElement('option');
-      listItem.innerHTML = adv.name;
-      listItem.value = adv.cid;
-      characterBox.appendChild(listItem);
-    }
-
-    function cardClicked(){ // Run when an adventurer card is clicked
-      $('#SelectBox').modal('hide');
-      if (cid == '0') { // First time choosing a character
-        document.getElementById('advDetails').style.display = 'block';
-      }
-      if (cid == this.dataset.cid) {
-        return false; // If selected character is the same as current one, do nothing
-      }
-      cid = this.dataset.cid; // Update current character id
-      advSelected();
-    }
-
-    function advToCardData(adv) { // Generate card from adv data using template literal
-      return `
-        <div class="card mx-auto text-center border-primary rounded adv-card" data-cid="${ adv.cid }">
-          <h5 class="card-title mb-0">${ adv.name }</h5>
-          <h6 class="card-text mb-2 text-muted">${ adv.title }</h6>
-          <img class="cardImg_r" src="images/filter/rarity_${ adv.rarity }_line.png">
-          <img class="card-img-top my-3" src="images/full_body_300/${ adv.cid }.png">
-          <div class="row cardIcon" style="margin: auto;">
-            <img src="images/filter/element_${ adv.element }.png" style="margin-right: 5px;">
-            <img src="images/filter/weapon_${ adv.weapon }.png">
-          </div>
-        </div>
-      `;
-    }
-
-    function addToList(adv) {
-      const card = document.createElement('div');
-      card.className = "col mb-2"
-      card.innerHTML = advToCardData(adv);
-
-      card_list.appendChild(card);
-    }
-
-    function winStyleChanged(){
-      const style = this.dataset.style;
-      switch (style) {
-        case 'default':
-          wintype = 0;
-          document.getElementById('weaponWStyle').style.display= 'none';
-          document.getElementById('spWStyle').style.display= 'none';
-          break;
-        case 'weapon':
-          wintype = 1;
-          document.getElementById('weaponWStyle').style.display= 'block';
-          document.getElementById('spWStyle').style.display= 'none';
-          break;
-        case 'special':
-          wintype = 2;
-          document.getElementById('weaponWStyle').style.display= 'none';
-          document.getElementById('spWStyle').style.display= 'block';
-          break;
-      }
-    }
-
-    function loadSpWin(){
-      spwinbox.innerHTML = '';
-      sp_adv.forEach(spwinhandle);
-    }
-
-    function loadOptions(){
-      characterBox.innerHTML = '';
-      const listItem = document.createElement('option');
-      listItem.innerHTML = 'Choose a character';
-      listItem.value = '0';
-      listItem.disabled = 'disabled';
-      listItem.selected = 'selected';
-      characterBox.appendChild(listItem);
-      switch (ch_set){
-        case '1': // Allies
-          allies.forEach(advhandle);
-          break;
-        case '2': // Enemies
-          enemy.forEach(advhandle);
-          break;
-      }
-      characterBox.focus();
-    }
-
-    function charSetChanged(){ // Run when the character set is changed
-      ch_set = document.getElementById('char_set').value;
-
-      document.getElementById('faceBtn').style.display= 'none';  // Show face control
-      document.getElementById('ctrl_btn').style.display= 'none';  // Show control button
-      document.getElementById('currentLink').style.display= 'none';
-
-      switch (ch_set)
-      {
-        case '0': // Regular Adventurers
-          document.getElementById('advSelect').style.display= 'none';
-          document.getElementById('chooseBtn').style.display= 'block';
-          break;
-        case '1': // allies
-        case '2': // enemies
-          document.getElementById('advSelect').style.display= 'block';
-          document.getElementById('chooseBtn').style.display= 'none';
-          document.getElementById('advDetails').style.display = 'none';
-          loadOptions();
-          break;
-      }
-    }
-
-    function spwinhandle(sp_adv){
-      const listItem = document.createElement('option');
-      listItem.innerHTML = sp_adv.name;
-      listItem.value = sp_adv.cid;
-      spwinbox.appendChild(listItem);
-    }
-
-    function addFace(n){ // Add face n to face selection
-      const img_link = `https://mushymato.github.io/dl-fbx/fbx/c${ cid }/c${ cid }.png`;
-      const faceBox = document.getElementById('faces');
-
-      const outer = document.createElement('div');
-      outer.className = "col-4 mb-2 align-items-center"
-      outer.onclick = function(){
-        $('#FaceBox').modal('hide');
-        if (face == n) {
-          return false; // If selected face is the same as current, do nothing
-        }
-        face = n;
-        faceSelected();
-      };
-
-      const tmpCard = document.createElement('div');
-      tmpCard.id = `face${ n }`;
-      tmpCard.style = `background-image: url('${ img_link }');`;
-      tmpCard.className = "mx-auto rounded";
-
-      outer.appendChild(tmpCard);
-      faceBox.appendChild(outer);
-    }
-
-    function loadFaces(){
-      document.getElementById('faces').innerHTML = '';
-      for (let i=1; i < 10; i++){
-        addFace(i);
-      }
-    }
-
-    function advSelected(){
-      if (ch_set != '0'){
-        cid = document.getElementById('advSelect').value;
-        name = characterBox.options[characterBox.selectedIndex].text;
-      }
-      else {
-        let s_adv = adv.find(d => d.cid == cid);
-        let icon_link = `./images/icons/${ cid }_r0${ s_adv.rarity }.png`;
-        name = s_adv.name;
-        document.getElementById('adv_icon').src = icon_link;
-        document.getElementById('adv_name').innerHTML = name;
-      }
-
-      document.getElementById('faceBtn').style.display= 'block';  // Show face control
-      document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
-      document.getElementById('currentLink').style.display= 'block';
-      loadFaces();
-      subLink = `${ cid }/-/face${ face }`;
-      let link = base_url + subLink;
-      updateIframe(link);
-
-      title = `${ name } - Dragalia Lost 3D Models`;
-      document.title =  title // Update title
-      history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
-    }
-
-    function faceSelected(){
-      if (cid === '0')
-      {
-        return false;
-      }
-      if (subLink.match(/face[0-9]/) == null){ // if no face parameter in URL
-        let tmp = subLink.match(/[0-9]{6}_[0-9]{2}\/.*\//); // Check for action code
-        if (tmp == null){// if no action code
-          subLink = `${ cid }/-/face${ face }`;
-        }
-        else { // If there is action code
-          subLink = subLink.replace(/[0-9]{6}_[0-9]{2}\/.*\/?/, `${ tmp2[0] }face${ face }`);
-        }
-      }
-      else {
-        subLink = subLink.replace(/face[0-9]/, `face${ face }`);
-      }
-      const link = base_url + subLink;
-      updateIframe(link);
-      history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
-    }
-
-    function getWeaponcode(weapon){
-      switch (weapon){
-        case 'Sword':
-          return 'SWD';
-        case 'Blade':
-          return 'KAT';
-        case 'Dagger':
-          return 'DAG';
-        case 'Axe':
-          return 'AXE';
-        case 'Lance':
-          return 'LAN';
-        case 'Bow':
-          return 'BOW';
-        case 'Wand':
-          return 'ROD';
-        case 'Staff':
-          return 'CAN';
-      }
-    }
-
-    function getWinSubLink(){
-      let sp = 0;   // equals 1 if playing special animation
-      let wid = cid;  // id of the final animation
-      if (wintype == 2) // special animation
-      {
-        wid = document.getElementById('spWStyle').value;
-        sp = 1;
-      }
-      let temp = sp_adv.find(d => d.cid === cid);
-      if (typeof(temp) != 'undefined') // Not a special adventurer
-      {
-        sp = 1;  // cid is from a special adventurer
-      }
-      if (wintype == 1)
-      {
-        sp = 0;
-      }
-      let wincode = '';
-      let weapon = '';
-
-      if (wintype != 1)
-      {
-        if (wintype == 0)
-          if (ch_set != '0')
-          {
-            weapon = "Sword"
-          }
-          else
-          {
-            temp = adv.find(d => d.cid === cid);
-            weapon = temp.weapon;
-          }
-        else // wintype = 2, special animation
-        {
-          temp = sp_adv.find(d => d.cid === wid);
-          weapon = temp.weapon;
-        }
-        wincode = getWeaponcode(weapon);
-      }
-      else {
-        wincode = document.getElementById('weaponWStyle').value;
-      }
-
-      if (sp == 0)
-      {
-        subLink = `${ cid }/win+${ wincode }_WIN_01/face${ face }`;
-      }
-      else
-      {
-        subLink = `${ cid }/wins+${ wincode }_WIN_01_${ wid.replace('_','') }/face${ face }`;
-      }
-      return subLink;
-    }
-
-    function actionClicked(){
-      if (cid === '0')
-      {
-        return false;
-      }
-      let action = this.dataset.action;
-      switch (action) {
-        case 'still':
-          subLink = `${ cid }/-/face${ face }`;
-          break;
-        case 'bob':
-          subLink = `${ cid }/cmn+CMN_MWM_03/face${ face }`;
-          break;
-        case 'walk':
-          subLink = `${ cid }/cmn+CMN_MWM_01/face${ face }`;
-          break;
-        case 'run':
-          subLink = `${ cid }/cmn+CMN_MWM_02/face${ face }`;
-          break;
-        case 'stun':
-          subLink = `${ cid }/cmn+CMN_SWN_01/face${ face }/-/0,0,0/0,0.5,1.8`;
-          break;
-        case 'die':
-          subLink = `${ cid }/cmn+CMN_DIE_02/face${ face }/-/0,0,0/0,0.5,1.8`;
-          break;
-        case 'standby':
-          const weaponCode = document.getElementById('standbyWeapon').value;
-          if (weaponCode === "MM"){
-            subLink = `${ cid }/lobby+ROD_ONT_21_11035401/face${ face }`;
-          }
-          else {
-            const isMale = document.getElementById('standbyMale').classList.contains('active');
-            const genderCode = isMale ? '21' : '23';  // 21 for male, 23 for female
-            subLink = `${ cid }/lobby+${ weaponCode }_ONT_${ genderCode }/face${ face }`;
-          }
-          break;
-        case 'win':
-          subLink = getWinSubLink();
-          break;
-        case 'RavishingRainbow':
-          subLink = `${ cid }/misc+KAT_SKL_01_01_11001502/face${ face }`;
-          break;
-      }
-      let link = base_url + subLink;
-      updateIframe(link);
-      history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
-    }
-
-    function getCharSet(id) { // get the character set that contains cid = id
-      let tmp = '';
-      tmp = allies.find(d => d.cid == id); // Check if the id belongs to an ally
-      if (tmp) {
-        return '1';
-      }
-      tmp = enemy.find(d => d.cid == id); // Check if the id belongs to an enemy
-      if (tmp) {
-        return '2';
-      }
-      tmp = adv.find(d => d.cid == id); // Check if the id belongs to an adventurer
-      if (tmp) {
-        return '0';
-      }
-      return undefined;
-    }
-
-    function getIndex(id) {
-      let options = document.getElementById('advSelect').options
-      let max = options.length;
-      for (let i = 0; i < max; i++) {
-        if (options[i].value == id){
-          return i;
-        }
-      }
-      return max;
-    }
-
-    function getFaceId(url) {
-      let tmp = url.match(/face[0-9]/);
-      if (tmp == null){
-        return 2;
-      }
-      return parseInt(tmp[0][4]);
-    }
-
-    function handleURL() {
-      let temp = location.hash;
-      if (temp != '') {// Special url
-        let subURL = temp.slice(2);
-        let tmp_cid = subURL.substring(0, 9);
-        face = getFaceId(subURL);
-        let tmp_ch_set = getCharSet(tmp_cid);
-        if (tmp_ch_set) { // Valid character id
-          ch_set = tmp_ch_set;
-          cid = tmp_cid;
-          subLink = subURL.concat(subURL.charAt(subURL.length - 1) === '/' ? '' : '/'); // Add / to end of URL if it's not there
-          document.getElementById("char_set").selectedIndex = ch_set;
-          switch (ch_set)
-          {
-            case '0': // Regular Adventurers
-              document.getElementById('advSelect').style.display= 'none';
-              document.getElementById('chooseBtn').style.display= 'block';
-              document.getElementById('advDetails').style.display = 'block';
-
-              let s_adv = adv.find(d => d.cid == cid);
-              let icon_link = `./images/icons/${ cid }_r0${ s_adv.rarity }.png`;
-              name = s_adv.name;
-              document.getElementById('adv_icon').src = icon_link;
-              document.getElementById('adv_name').innerHTML = name;
-              break;
-            case '1': // allies
-            case '2': // enemies
-              document.getElementById('advSelect').style.display= 'block';
-              loadOptions();
-              document.getElementById('chooseBtn').style.display= 'none';
-              document.getElementById('advDetails').style.display = 'none';
-              let index = getIndex(cid);
-              document.getElementById('advSelect').selectedIndex = index;
-              name = characterBox.options[index].text;
-              break;
-          }
-
-          document.getElementById('faceBtn').style.display= 'block';  // Show face control
-          loadFaces();
-          document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
-          document.getElementById('currentLink').style.display= 'block';
-          let link = base_url + subLink;
-          updateIframe(link);
-
-          title = `${ name } - Dragalia Lost 3D Models`;
-          document.title =  title // Update title
-          history.pushState({'ch_set' : ch_set, 'cid' : cid, 'subLink' : subLink}, title, `./#/${ subLink }`);
-        }
-        else {  // invalid id -> go to Index
-          window.location.href = "./";
-        }
-      }
-    }
-
-    function init(){ // Initialize
-      resizeIframe();
-      filter();
-      loadSpWin();
-      document.getElementById('char_set').addEventListener("change", charSetChanged);
-      document.getElementById('advSelect').addEventListener("change", advSelected);
-
-      // Reset Filter button
-      document.getElementById('filterReset').onclick = function(){
-        $(":checkbox").prop('checked', false).parent().removeClass('active');
-        $('input[type=checkbox]').val('off');
-        filter();
-      };
-
-      // Action buttons
-      document.querySelectorAll('.action-btn').forEach(button => {
-        button.addEventListener("click", actionClicked);
-      });
-
-      // Win Styles selection
-      document.querySelectorAll('.winstyle').forEach(button => {
-        button.addEventListener("click", winStyleChanged);
-      });
-
-      // Generates filters
-      for (var key in filters){
-        let values = filters[key];
-        createFilterGroup(key, values);
-      }
-
-      // Add toggle on click to all filter
-      $('#filter label').each(function(){
-        $(this).on('click',function filterClicked(e){
-          let value = this.children[[0]].value;
-          this.children[[0]].value = value === 'on' ? 'off' : 'on';
-          filter();
-        });
-      });
-
-      $('input[type=checkbox]').val('off'); // Reset filters
-      filter();
-
-      // Analyze url
-      handleURL();
-    }
-
-    window.onpopstate = e => {
-      const data = e.state;
-      cid = data.cid;
-      subLink = data.subLink;
-      ch_set = data.ch_set;
-      face = getFaceId(subLink);
-      document.getElementById("char_set").selectedIndex = ch_set;
-      charSetChanged();
-
-      if (ch_set != '0'){
-        let index = getIndex(cid);
-        document.getElementById('advSelect').selectedIndex = index;
-        name = characterBox.options[index].text;
-      }
-      else {
-        document.getElementById('advDetails').style.display = 'block';
-        let s_adv = adv.find(d => d.cid == cid);
-        let icon_link = `./images/icons/${ cid }_r0${ s_adv.rarity }.png`;
-        name = s_adv.name;
-        document.getElementById('adv_icon').src = icon_link;
-        document.getElementById('adv_name').innerHTML = name;
-      }
-
-      document.getElementById('faceBtn').style.display= 'block';  // Show face control
-      document.getElementById('ctrl_btn').style.display= 'block';  // Show control button
-      document.getElementById('currentLink').style.display= 'block';
-      loadFaces();
-
-      const link = base_url + subLink;
-      updateIframe(link);
-    };
-    window.onresize = resizeIframe;
-    window.onload = init; // Initialize when loaded
-  </script>
-</body>
-
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=0.9, shrink-to-fit=no"
+		/>
+		<link rel="icon" href="./images/favicon.png" />
+
+		<title>Dragalia Lost 3D Models</title>
+
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+			integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+			crossorigin="anonymous"
+		/>
+
+		<!-- Custom styles for this template -->
+		<link rel="stylesheet" href="./css/styles.css" />
+		<link href="css/sidebar.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div
+			class="modal fade w-100 h-100"
+			id="SelectBox"
+			tabindex="-1"
+			role="dialog"
+			aria-hidden="true"
+		>
+			<div
+				class="modal-dialog p-0"
+				role="document"
+				style="max-width: 95%; min-width: 95%;"
+			>
+				<div class="modal-content">
+					<div class="modal-header pt-3 border-0 pb-1">
+						<button
+							type="button"
+							class="btn btn-primary float-left mx-0"
+							id="filterReset"
+						>
+							Reset filter
+						</button>
+						<h5 class="modal-title mx-auto">
+							Choose an adventurer
+						</h5>
+						<button
+							type="button"
+							class="close float-right mx-0"
+							data-dismiss="modal"
+							aria-label="Close"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Placeholder for filter -->
+						<div
+							class="card mx-auto filter_box pb-2 pt-0"
+							style="margin-top: 0px;"
+						>
+							<div class="btn-toolbar" id="filter"></div>
+						</div>
+						<!-- Placeholder for adventurer cards -->
+						<div
+							class="text-center row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 row-cols-xl-6"
+							id="card_list"
+						></div>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-dismiss="modal"
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div
+			class="modal fade mx-auto"
+			id="FaceBox"
+			tabindex="-1"
+			role="dialog"
+			aria-hidden="true"
+			style="max-width: 300px;"
+		>
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title mx-auto">Choose a face</h5>
+						<button
+							type="button"
+							class="close float-right mx-0"
+							data-dismiss="modal"
+							aria-label="Close"
+						>
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<!-- Placeholder for adventurer faces -->
+						<div class="row row-cols-3" id="faces"></div>
+					</div>
+					<div class="modal-footer">
+						<button
+							type="button"
+							class="btn btn-secondary"
+							data-dismiss="modal"
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="d-flex" id="wrapper">
+			<!-- Sidebar -->
+			<div class="bg-light border-right" id="sidebar-wrapper">
+				<div class="sidebar-heading">Settings</div>
+				<form>
+					<div class="form-group">
+						<select
+							class="form-control"
+							id="char_set"
+							style="width: 15rem;"
+						>
+							<option selected="selected" value="0"
+								>Regular Adventurers</option
+							>
+							<option value="1">Allies</option>
+							<option value="2">Enemies</option>
+						</select>
+						<button
+							type="button"
+							class="btn btn-primary w-100"
+							data-toggle="modal"
+							data-target="#SelectBox"
+							id="chooseBtn"
+							style="margin-top: 5px; margin-bottom: 5px;"
+						>
+							Choose an Adventurer
+						</button>
+						<select
+							class="form-control bg-light"
+							id="advSelect"
+							style="
+								width: 15rem;
+								display: none;
+								margin-top: 5px;
+								margin-bottom: 5px;
+							"
+						>
+						</select>
+						<!-- Chosen adventurer's details -->
+						<div
+							id="advDetails"
+							class="row mb-0"
+							style="display: none;"
+						>
+							<img
+								src=""
+								class="d-inline-block"
+								id="adv_icon"
+							/><span class="d-inline-block"
+								><h6 id="adv_name"></h6
+							></span>
+						</div>
+						<button
+							type="button"
+							class="btn btn-secondary w-100"
+							data-toggle="modal"
+							data-target="#FaceBox"
+							id="faceBtn"
+							style="margin-top: 3px; display: none;"
+						>
+							Choose a face
+						</button>
+					</div>
+				</form>
+				<div
+					id="ctrl_btn"
+					style="display: none; text-align: center; max-width: 15rem;"
+				>
+					<div class="button-toolbar mb-1">
+						<button
+							data-action="still"
+							class="btn btn-info action-btn"
+						>
+							Still
+						</button>
+						<button
+							data-action="bob"
+							class="btn btn-info action-btn"
+						>
+							Bob
+						</button>
+						<button
+							data-action="stun"
+							class="btn btn-info action-btn"
+						>
+							Stun
+						</button>
+					</div>
+					<div class="button-toolbar mb-1">
+						<button
+							data-action="walk"
+							class="btn btn-info action-btn"
+						>
+							Walk
+						</button>
+						<button
+							data-action="run"
+							class="btn btn-info action-btn"
+						>
+							Run
+						</button>
+						<button
+							data-action="die"
+							class="btn btn-info action-btn"
+						>
+							Die
+						</button>
+					</div>
+					<button
+						data-action="RavishingRainbow"
+						class="btn btn-info action-btn mb-1"
+					>
+						Ravishing Rainbow
+					</button>
+					<p
+						class="mb-1 border-top"
+						style="margin-top: 5px; padding-left: 5px;"
+					>
+						Standby animation settings
+					</p>
+					<div>
+						<select
+							class="form-control mt-0 d-inline align-middle"
+							id="standbyWeapon"
+							style="width: 60%;"
+						>
+							<option selected="selected" value="SWD"
+								>Sword</option
+							>
+							<option value="KAT">Blade</option>
+							<option value="DAG">Dagger</option>
+							<option value="AXE">Axe</option>
+							<option value="LAN">Lance</option>
+							<option value="BOW">Bow</option>
+							<option value="ROD">Wand</option>
+							<option value="CAN">Staff</option>
+							<option value="MM">Mega Man</option>
+						</select>
+						<div
+							class="btn-group btn-group-toggle align-middle"
+							data-toggle="buttons"
+						>
+							<label
+								class="btn btn-secondary active"
+								id="standbyMale"
+							>
+								<input type="radio" name="standby" checked />M
+							</label>
+							<label class="btn btn-secondary" id="standbyFemale">
+								<input type="radio" name="standby" />F
+							</label>
+						</div>
+						<button
+							data-action="standby"
+							class="btn btn-success action-btn"
+							style="
+								width: 100%;
+								margin-top: 5px;
+								margin-bottom: 5px;
+							"
+						>
+							Standby
+						</button>
+					</div>
+					<p
+						class="mb-1 border-top"
+						style="margin-top: 5px; padding-left: 5px;"
+					>
+						Win animation settings
+					</p>
+					<div
+						class="btn-group btn-group-toggle mb-2"
+						data-toggle="buttons"
+					>
+						<label
+							class="btn btn-secondary winstyle active"
+							data-style="default"
+						>
+							<input
+								type="radio"
+								name="winstyle"
+								checked
+							/>Default
+						</label>
+						<label
+							class="btn btn-secondary winstyle"
+							data-style="weapon"
+						>
+							<input type="radio" name="winstyle" />Weapon
+						</label>
+						<label
+							class="btn btn-secondary winstyle"
+							data-style="special"
+						>
+							<input type="radio" name="winstyle" />Special
+						</label>
+					</div>
+					<select
+						class="form-control"
+						id="weaponWStyle"
+						style="display: none;"
+					>
+						<option selected="selected" value="SWD">Sword</option>
+						<option value="KAT">Blade</option>
+						<option value="DAG">Dagger</option>
+						<option value="AXE">Axe</option>
+						<option value="LAN">Lance</option>
+						<option value="BOW">Bow</option>
+						<option value="ROD">Wand</option>
+						<option value="CAN">Staff</option>
+					</select>
+					<select
+						class="form-control"
+						id="spWStyle"
+						style="display: none;"
+					>
+					</select>
+					<button
+						data-action="win"
+						class="btn btn-success action-btn"
+						style="
+							width: 100%;
+							margin-top: 5px;
+							margin-bottom: 5px;
+						"
+					>
+						Win
+					</button>
+				</div>
+				<a
+					href=""
+					target="_blank"
+					id="currentLink"
+					style="margin-left: 10px; display: none;"
+					>Link of current animation</a
+				>
+			</div>
+			<!-- /#sidebar-wrapper -->
+
+			<!-- Page Content -->
+			<div id="page-content-wrapper">
+				<nav class="navbar navbar-expand-sm navbar-light">
+					<button class="btn btn-primary" id="menu-toggle">
+						Settings
+					</button>
+					<span style="padding-left: 5px;"></span>
+					<p class="nav-item">
+						Using resources from
+						<a
+							href="https://mushymato.github.io/dl-fbx/#/"
+							target="_blank"
+							>mushymato's GitHub</a
+						>
+					</p>
+				</nav>
+				<!-- Placeholder for iframe -->
+				<div class="container-fluid" id="ifm_container">
+					<iframe
+						id="ifm"
+						src=""
+						style="height: 500px; width: 500px; border: none;"
+					></iframe>
+				</div>
+			</div>
+			<!-- /#page-content-wrapper -->
+		</div>
+		<!-- /#wrapper -->
+
+		<!-- Bootstrap JS -->
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+			integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+			integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+			crossorigin="anonymous"
+		></script>
+
+		<!-- Menu Toggle Script -->
+		<script>
+			$("#menu-toggle").click(function (e) {
+				e.preventDefault();
+				$("#wrapper").toggleClass("toggled");
+			});
+			let buffer = 20; //scroll bar buffer
+		</script>
+		<!-- Other Scripts -->
+		<script type="module">
+			const base_url = "https://mushymato.github.io/dl-fbx/#/c";
+
+			import adv from "https://dgk3593.github.io/DLModel/js/adv_list_full.js";
+			import sp_adv from "https://dgk3593.github.io/DLModel/js/sp_adv.js";
+			import allies from "https://dgk3593.github.io/DLModel/js/allies.js";
+			import enemy from "https://dgk3593.github.io/DLModel/js/enemy.js";
+
+			let characterBox = document.getElementById("advSelect");
+			let spwinbox = document.getElementById("spWStyle");
+			let card_list = document.getElementById("card_list");
+
+			// Declare global variables
+			let wintype = 0; // default win style is default
+			let ch_set = "0"; // default character set is regular adventurer
+			let cid = "0"; // ID of current character
+			let face = 2; // Currently selected face, default face2
+			let subLink = ""; // Current sub link
+			let name = ""; // Name of current character
+			let title = "Dragalia Lost 3D Models";
+
+			// Sort list by rarity then name
+			// Sort by name first
+			adv.sort((a, b) => a.name.localeCompare(b.name));
+			// Then sort by rarity
+			adv.sort(function (a, b) {
+				return b.rarity - a.rarity;
+			});
+			// Sort special adventures by name
+			sp_adv.sort((a, b) => a.name.localeCompare(b.name));
+
+			let cond = {}; // Filter condition
+			let checked = {}; // Checked filter options
+
+			// List of filters and options
+			const filters = {
+				rarity: [3, 4, 5],
+				element: ["Flame", "Water", "Wind", "Light", "Shadow"],
+				weapon: [
+					"Sword",
+					"Blade",
+					"Dagger",
+					"Axe",
+					"Lance",
+					"Bow",
+					"Wand",
+					"Staff",
+				],
+			};
+
+			function pageY(elem) {
+				return elem.offsetParent
+					? elem.offsetTop + pageY(elem.offsetParent)
+					: elem.offsetTop;
+			}
+
+			function pageX(elem) {
+				return elem.offsetParent
+					? elem.offsetLeft + pageX(elem.offsetParent)
+					: elem.offsetLeft;
+			}
+
+			function iframeSize() {
+				let width = document.documentElement.clientWidth;
+				let height = document.documentElement.clientHeight;
+				if (width >= 768) {
+					width -= pageX(document.getElementById("ifm")) + buffer;
+					width = width < 0 ? 0 : width;
+					height -= pageY(document.getElementById("ifm")) + buffer;
+					height = height < 0 ? 0 : height;
+				} else {
+					height -= pageY(document.getElementById("ifm")) + buffer;
+					height = height < 0 ? 0 : height;
+				}
+				let size = width > height ? height : width;
+				return size;
+			}
+
+			function updateIframe(link) {
+				const size = iframeSize();
+				document.getElementById("ifm_container").innerHTML = "";
+				const tempifm = document.createElement("iframe");
+				tempifm.style = "border: none";
+				tempifm.style.height = `${size}px`;
+				tempifm.style.width = `${size}px`;
+				tempifm.id = "ifm";
+				tempifm.src = link;
+				document.getElementById("ifm_container").appendChild(tempifm);
+				document.getElementById("currentLink").href = link;
+			}
+
+			function resizeIframe() {
+				let iframe = document.getElementById("ifm");
+				if (cid != "0") {
+					let link = iframe.src;
+					updateIframe(link); // Only run if a character has been selected
+				} else {
+					// If no character has been selected
+					let size = iframeSize();
+					iframe.style.height = `${size}px`;
+					iframe.style.width = `${size}px`;
+				}
+			}
+
+			function createFilter(key, value) {
+				// Create a filter button e for key
+				const label = document.createElement("label");
+				label.className = "btn btn-light border-dark";
+				label.innerHTML = `
+							<input type="checkbox" name="${key}" data="${value}" autocomplete="off" value="off">
+							<img src="images/filter/${key}_${value}.png" class="filterIcon">
+            `;
+				return label;
+			}
+
+			function createFilterGroup(key, values) {
+				// Generate filter groups
+				const filter_box = document.getElementById("filter");
+				const filter_group = document.createElement("div");
+				filter_group.className = "btn-group-toggle btn-group mx-auto";
+				filter_group.setAttribute("role", "group");
+				filter_group.setAttribute("data-toggle", "buttons");
+				values.forEach(value => {
+					const label = createFilter(key, value);
+					filter_group.appendChild(label);
+				});
+				filter_box.appendChild(filter_group);
+			}
+
+			function getChecked(name) {
+				// Get the checked options from filters
+				checked[name] = Array.from(
+					document.querySelectorAll(
+						"input[name=" + name + '][value = "on"]'
+					)
+				).map(function (el) {
+					return el.getAttribute("data");
+				});
+			}
+
+			function updateFilter() {
+				// get the user's filter conditions
+				for (let key in filters) {
+					getChecked(key);
+					cond[key] =
+						typeof filters[key][0] === "number"
+							? checked[key].map(Number)
+							: checked[key];
+					if (cond[key].length === 0) {
+						cond[key] = filters[key];
+					}
+				}
+			}
+
+			function filter() {
+				// Filter adventurer list
+				updateFilter();
+				card_list.innerHTML = "";
+				let result = adv;
+				// Filter
+				for (let key in filters) {
+					if (cond[key].length === filters[key].length) {
+						// If no need to filter for this key, skip
+						continue;
+					}
+					result = result.filter(d => cond[key].includes(d[key]));
+				}
+
+				result.forEach(addToList); // Add each result to card list
+
+				// Add onclick to cards in result
+				document.querySelectorAll(".adv-card").forEach(card => {
+					card.addEventListener("click", cardClicked);
+				});
+			}
+
+			function advhandle(adv) {
+				const listItem = document.createElement("option");
+				listItem.innerHTML = adv.name;
+				listItem.value = adv.cid;
+				characterBox.appendChild(listItem);
+			}
+
+			function cardClicked() {
+				// Run when an adventurer card is clicked
+				$("#SelectBox").modal("hide");
+				if (cid === "0") {
+					// First time choosing a character
+					document.getElementById("advDetails").style.display =
+						"block";
+				}
+				if (cid === this.dataset.cid) {
+					return false; // If selected character is the same as current one, do nothing
+				}
+				cid = this.dataset.cid; // Update current character id
+				advSelected();
+			}
+
+			function advToCardData(adv) {
+				// Generate card from adv data using template literal
+				return `
+              <div class="card mx-auto text-center border-primary rounded adv-card" data-cid="${adv.cid}">
+                <h5 class="card-title mb-0">${adv.name}</h5>
+                <h6 class="card-text mb-2 text-muted">${adv.title}</h6>
+                <img class="cardImg_r" src="images/filter/rarity_${adv.rarity}_line.png">
+                <img class="card-img-top my-3" src="images/full_body_300/${adv.cid}.png">
+                <div class="row cardIcon" style="margin: auto;">
+                  <img src="images/filter/element_${adv.element}.png" style="margin-right: 5px;">
+                  <img src="images/filter/weapon_${adv.weapon}.png">
+                </div>
+              </div>
+            `;
+			}
+
+			function addToList(adv) {
+				const card = document.createElement("div");
+				card.className = "col mb-2";
+				card.innerHTML = advToCardData(adv);
+
+				card_list.appendChild(card);
+			}
+
+			function winStyleChanged() {
+				const style = this.dataset.style;
+				const weaponWin = document.getElementById("weaponWStyle");
+				const spWin = document.getElementById("spWStyle");
+				switch (style) {
+					case "default":
+						wintype = 0;
+						weaponWin.style.display = "none";
+						spWin.style.display = "none";
+						break;
+					case "weapon":
+						wintype = 1;
+						weaponWin.style.display = "block";
+						spWin.style.display = "none";
+						break;
+					case "special":
+						wintype = 2;
+						weaponWin.style.display = "none";
+						spWin.style.display = "block";
+						break;
+				}
+			}
+
+			function loadSpWin() {
+				spwinbox.innerHTML = "";
+				sp_adv.forEach(spwinhandle);
+			}
+
+			function loadOptions() {
+				characterBox.innerHTML = "";
+				const listItem = document.createElement("option");
+				listItem.innerHTML = "Choose a character";
+				listItem.value = "0";
+				listItem.disabled = "disabled";
+				listItem.selected = "selected";
+				characterBox.appendChild(listItem);
+				switch (ch_set) {
+					case "1": // Allies
+						allies.forEach(advhandle);
+						break;
+					case "2": // Enemies
+						enemy.forEach(advhandle);
+						break;
+				}
+				characterBox.focus();
+			}
+
+			function charSetChanged() {
+				// Run when the character set is changed
+				ch_set = document.getElementById("char_set").value;
+
+				document.getElementById("faceBtn").style.display = "none"; // Show face control
+				document.getElementById("ctrl_btn").style.display = "none"; // Show control button
+				document.getElementById("currentLink").style.display = "none";
+
+				switch (ch_set) {
+					case "0": // Regular Adventurers
+						document.getElementById("advSelect").style.display =
+							"none";
+						document.getElementById("chooseBtn").style.display =
+							"block";
+						break;
+					case "1": // allies
+					case "2": // enemies
+						document.getElementById("advSelect").style.display =
+							"block";
+						document.getElementById("chooseBtn").style.display =
+							"none";
+						document.getElementById("advDetails").style.display =
+							"none";
+						loadOptions();
+						break;
+				}
+			}
+
+			function spwinhandle(sp_adv) {
+				const listItem = document.createElement("option");
+				listItem.innerHTML = sp_adv.name;
+				listItem.value = sp_adv.cid;
+				spwinbox.appendChild(listItem);
+			}
+
+			function addFace(n) {
+				// Add face n to face selection
+				const img_link = `https://mushymato.github.io/dl-fbx/fbx/c${cid}/c${cid}.png`;
+				const faceBox = document.getElementById("faces");
+
+				const outer = document.createElement("div");
+				outer.className = "col-4 mb-2 align-items-center";
+				outer.onclick = function () {
+					$("#FaceBox").modal("hide");
+					if (face === n) {
+						return false; // If selected face is the same as current, do nothing
+					}
+					face = n;
+					faceSelected();
+				};
+
+				const tmpCard = document.createElement("div");
+				tmpCard.id = `face${n}`;
+				tmpCard.style = `background-image: url('${img_link}');`;
+				tmpCard.className = "mx-auto rounded";
+
+				outer.appendChild(tmpCard);
+				faceBox.appendChild(outer);
+			}
+
+			function loadFaces() {
+				document.getElementById("faces").innerHTML = "";
+				for (let i = 1; i < 10; i++) {
+					addFace(i);
+				}
+			}
+
+			function advSelected() {
+				if (ch_set != "0") {
+					cid = document.getElementById("advSelect").value;
+					name =
+						characterBox.options[characterBox.selectedIndex].text;
+				} else {
+					let s_adv = adv.find(d => d.cid === cid);
+					let icon_link = `./images/icons/${cid}_r0${s_adv.rarity}.png`;
+					name = s_adv.name;
+					document.getElementById("adv_icon").src = icon_link;
+					document.getElementById("adv_name").innerHTML = name;
+				}
+
+				document.getElementById("faceBtn").style.display = "block"; // Show face control
+				document.getElementById("ctrl_btn").style.display = "block"; // Show control button
+				document.getElementById("currentLink").style.display = "block";
+				loadFaces();
+				subLink = `${cid}/-/face${face}`;
+				let link = base_url + subLink;
+				updateIframe(link);
+
+				title = `${name} - Dragalia Lost 3D Models`;
+				document.title = title; // Update title
+				history.pushState(
+					{ ch_set: ch_set, cid: cid, subLink: subLink },
+					title,
+					`./#/${subLink}`
+				);
+			}
+
+			function faceSelected() {
+				if (cid === "0") {
+					return false;
+				}
+				if (subLink.match(/face[0-9]/) === null) {
+					// if no face parameter in URL
+					let tmp = subLink.match(/[0-9]{6}_[0-9]{2}\/.*\//); // Check for action code
+					if (tmp === null) {
+						// if no action code
+						subLink = `${cid}/-/face${face}`;
+					} else {
+						// If there is action code
+						subLink = subLink.replace(
+							/[0-9]{6}_[0-9]{2}\/.*\/?/,
+							`${tmp2[0]}face${face}`
+						);
+					}
+				} else {
+					subLink = subLink.replace(/face[0-9]/, `face${face}`);
+				}
+				const link = base_url + subLink;
+				updateIframe(link);
+				history.pushState(
+					{ ch_set: ch_set, cid: cid, subLink: subLink },
+					title,
+					`./#/${subLink}`
+				);
+			}
+
+			function getWeaponcode(weapon) {
+				const code = {
+					Sword: "SWD",
+					Blade: "KAT",
+					Dagger: "DAG",
+					Axe: "AXE",
+					Lance: "LAN",
+					Bow: "BOW",
+					Wand: "ROD",
+					Staff: "CAN",
+				};
+				return code[weapon];
+			}
+
+			function getWinSubLink() {
+				let sp = 0; // equals 1 if playing special animation
+				let wid = cid; // id of the final animation
+				if (wintype === 2) {
+					// special animation
+					wid = document.getElementById("spWStyle").value;
+					sp = 1;
+				}
+				let temp = sp_adv.find(d => d.cid === cid);
+				if (typeof temp != "undefined") {
+					// Not a special adventurer
+					sp = 1; // cid is from a special adventurer
+				}
+				if (wintype === 1) {
+					sp = 0;
+				}
+				let wincode = "";
+				let weapon = "";
+
+				if (wintype != 1) {
+					if (wintype === 0)
+						if (ch_set != "0") {
+							weapon = "Sword";
+						} else {
+							temp = adv.find(d => d.cid === cid);
+							weapon = temp.weapon;
+						}
+					// wintype = 2, special animation
+					else {
+						temp = sp_adv.find(d => d.cid === wid);
+						weapon = temp.weapon;
+					}
+					wincode = getWeaponcode(weapon);
+				} else {
+					wincode = document.getElementById("weaponWStyle").value;
+				}
+
+				return sp === 0
+					? `${cid}/win+${wincode}_WIN_01/face${face}`
+					: `${cid}/wins+${wincode}_WIN_01_${wid.replace(
+							"_",
+							""
+					  )}/face${face}`;
+			}
+
+			function getStandBySubLink() {
+				const weaponCode = document.getElementById("standbyWeapon")
+					.value;
+				if (weaponCode === "MM")
+					return `${cid}/lobby+ROD_ONT_21_11035401/face${face}`;
+
+				const isMale = document
+					.getElementById("standbyMale")
+					.classList.contains("active");
+				const genderCode = isMale ? "21" : "23"; // 21 for male, 23 for female
+				return `${cid}/lobby+${weaponCode}_ONT_${genderCode}/face${face}`;
+			}
+
+			const getSubLink = action => {
+				let actions = {};
+				actions["still"] = () => `${cid}/-/face${face}`;
+				actions["bob"] = () => `${cid}/cmn+CMN_MWM_03/face${face}`;
+				actions["walk"] = () => `${cid}/cmn+CMN_MWM_01/face${face}`;
+				actions["run"] = () => `${cid}/cmn+CMN_MWM_02/face${face}`;
+				actions["win"] = () => getWinSubLink();
+				actions["standby"] = () => getStandBySubLink();
+				actions["stun"] = () =>
+					`${cid}/cmn+CMN_SWN_01/face${face}/-/0,0,0/0,0.5,1.8`;
+				actions["die"] = () =>
+					`${cid}/cmn+CMN_DIE_02/face${face}/-/0,0,0/0,0.5,1.8`;
+				actions["RavishingRainbow"] = () =>
+					`${cid}/misc+KAT_SKL_01_01_11001502/face${face}`;
+
+				return actions[action].call();
+			};
+
+			function actionClicked() {
+				if (cid === "0") {
+					return false;
+				}
+				subLink = getSubLink(this.dataset.action);
+				let link = base_url + subLink;
+				updateIframe(link);
+				history.pushState(
+					{ ch_set: ch_set, cid: cid, subLink: subLink },
+					title,
+					`./#/${subLink}`
+				);
+			}
+
+			function getCharSet(id) {
+				// get the character set that contains cid = id
+				// Check if the id belongs to an ally
+				if (allies.find(d => d.cid === id)) {
+					return "1";
+				}
+				// Check if the id belongs to an enemy
+				if (enemy.find(d => d.cid === id)) {
+					return "2";
+				}
+				// Check if the id belongs to an adventurer
+				if (adv.find(d => d.cid === id)) {
+					return "0";
+				}
+				return undefined;
+			}
+
+			function getIndex(id) {
+				let options = document.getElementById("advSelect").options;
+				let max = options.length;
+				for (let i = 0; i < max; i++) {
+					if (options[i].value === id) {
+						return i;
+					}
+				}
+				return max;
+			}
+
+			function getFaceId(url) {
+				let tmp = url.match(/face[0-9]/);
+				if (tmp === null) return 2;
+
+				return parseInt(tmp[0][4]);
+			}
+
+			function handleURL() {
+				let temp = location.hash;
+				if (temp != "") {
+					// Special url
+					let subURL = temp.slice(2);
+					let tmp_cid = subURL.substring(0, 9);
+					face = getFaceId(subURL);
+					let tmp_ch_set = getCharSet(tmp_cid);
+					if (tmp_ch_set) {
+						// Valid character id
+						ch_set = tmp_ch_set;
+						cid = tmp_cid;
+						subLink = subURL.concat(
+							subURL.charAt(subURL.length - 1) === "/" ? "" : "/"
+						); // Add / to end of URL if it's not there
+						document.getElementById(
+							"char_set"
+						).selectedIndex = ch_set;
+						switch (ch_set) {
+							case "0": // Regular Adventurers
+								document.getElementById(
+									"advSelect"
+								).style.display = "none";
+								document.getElementById(
+									"chooseBtn"
+								).style.display = "block";
+								document.getElementById(
+									"advDetails"
+								).style.display = "block";
+
+								let s_adv = adv.find(d => d.cid === cid);
+								let icon_link = `./images/icons/${cid}_r0${s_adv.rarity}.png`;
+								name = s_adv.name;
+								document.getElementById(
+									"adv_icon"
+								).src = icon_link;
+								document.getElementById(
+									"adv_name"
+								).innerHTML = name;
+								break;
+							case "1": // allies
+							case "2": // enemies
+								document.getElementById(
+									"advSelect"
+								).style.display = "block";
+								loadOptions();
+								document.getElementById(
+									"chooseBtn"
+								).style.display = "none";
+								document.getElementById(
+									"advDetails"
+								).style.display = "none";
+								let index = getIndex(cid);
+								document.getElementById(
+									"advSelect"
+								).selectedIndex = index;
+								name = characterBox.options[index].text;
+								break;
+						}
+
+						document.getElementById("faceBtn").style.display =
+							"block"; // Show face control
+						loadFaces();
+						document.getElementById("ctrl_btn").style.display =
+							"block"; // Show control button
+						document.getElementById("currentLink").style.display =
+							"block";
+						let link = base_url + subLink;
+						updateIframe(link);
+
+						title = `${name} - Dragalia Lost 3D Models`;
+						document.title = title; // Update title
+						history.pushState(
+							{ ch_set: ch_set, cid: cid, subLink: subLink },
+							title,
+							`./#/${subLink}`
+						);
+					} else {
+						// invalid id -> go to Index
+						window.location.href = "./";
+					}
+				}
+			}
+
+			function init() {
+				// Initialize
+				resizeIframe();
+				filter();
+				loadSpWin();
+				document
+					.getElementById("char_set")
+					.addEventListener("change", charSetChanged);
+				document
+					.getElementById("advSelect")
+					.addEventListener("change", advSelected);
+
+				// Reset Filter button
+				document.getElementById("filterReset").onclick = function () {
+					$(":checkbox")
+						.prop("checked", false)
+						.parent()
+						.removeClass("active");
+					$("input[type=checkbox]").val("off");
+					filter();
+				};
+
+				// Action buttons
+				document.querySelectorAll(".action-btn").forEach(button => {
+					button.addEventListener("click", actionClicked);
+				});
+
+				// Win Styles selection
+				document.querySelectorAll(".winstyle").forEach(button => {
+					button.addEventListener("click", winStyleChanged);
+				});
+
+				// Generates filters
+				for (let key in filters) {
+					let values = filters[key];
+					createFilterGroup(key, values);
+				}
+
+				// Add toggle on click to all filter
+				$("#filter label").each(function () {
+					$(this).on("click", function filterClicked(e) {
+						let value = this.children[[0]].value;
+						this.children[[0]].value =
+							value === "on" ? "off" : "on";
+						filter();
+					});
+				});
+
+				$("input[type=checkbox]").val("off"); // Reset filters
+				filter();
+
+				// Analyze url
+				handleURL();
+			}
+
+			window.onpopstate = e => {
+				const data = e.state;
+				cid = data.cid;
+				subLink = data.subLink;
+				ch_set = data.ch_set;
+				face = getFaceId(subLink);
+				document.getElementById("char_set").selectedIndex = ch_set;
+				charSetChanged();
+
+				if (ch_set != "0") {
+					let index = getIndex(cid);
+					document.getElementById("advSelect").selectedIndex = index;
+					name = characterBox.options[index].text;
+				} else {
+					document.getElementById("advDetails").style.display =
+						"block";
+					let s_adv = adv.find(d => d.cid === cid);
+					let icon_link = `./images/icons/${cid}_r0${s_adv.rarity}.png`;
+					name = s_adv.name;
+					document.getElementById("adv_icon").src = icon_link;
+					document.getElementById("adv_name").innerHTML = name;
+				}
+
+				document.getElementById("faceBtn").style.display = "block"; // Show face control
+				document.getElementById("ctrl_btn").style.display = "block"; // Show control button
+				document.getElementById("currentLink").style.display = "block";
+				loadFaces();
+
+				const link = base_url + subLink;
+				updateIframe(link);
+			};
+			window.onresize = resizeIframe;
+			window.onload = init; // Initialize when loaded
+		</script>
+	</body>
 </html>
