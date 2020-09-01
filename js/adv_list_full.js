@@ -1599,5 +1599,21 @@ const adv = [
 		weapon: "Staff",
 		rarity: 5,
 	},
+	{
+		cid: "110365_01",
+		name: "Nevin",
+		title: "The Wing of Revelation",
+		element: "Shadow",
+		weapon: "Dagger",
+		rarity: 5,
+	},
+	{
+		cid: "110366_01",
+		name: "Pinon",
+		title: "The Wing of Purity",
+		element: "Water",
+		weapon: "Bow",
+		rarity: 5,
+	},
 ];
 export default adv;
